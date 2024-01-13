@@ -14,6 +14,7 @@ public interface ShooterIO {
         public double rightFeedAppliedVolts = 0.0;
 
         public double[] currentAmps = new double[] {};
+        
         public double leftFlywheelVelocityRadPerSec;
         public double rightFlywheelVelocityRadPerSec;
         public double[] leftFlywheelCurrentAmps;

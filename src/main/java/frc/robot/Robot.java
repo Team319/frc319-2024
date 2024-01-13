@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -38,6 +39,12 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+
+    SmartDashboard.putNumber("leftShooter volts",0.0);
+    SmartDashboard.putNumber("rightShooter volts",0.0);
+    SmartDashboard.putNumber("leftFeed volts",0.0);
+    SmartDashboard.putNumber("rightFeedvolts",0.0);
+
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -92,6 +99,8 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+   
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
