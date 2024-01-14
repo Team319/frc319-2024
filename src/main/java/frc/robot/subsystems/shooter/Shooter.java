@@ -15,37 +15,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  //private final ShooterIO io;
-  //private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-  //private final SimpleMotorFeedforward ffModel;
+  private final ShooterIO io;
+  private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
+  private final SimpleMotorFeedforward ffModel;
 
-    private TalonFX shooterLeft = new TalonFX(21); 
-    private TalonFX shooterRight = new TalonFX(22);
-
-    private TalonFX feedLeft = new TalonFX(23);
-    private TalonFX feedRight = new TalonFX(24);
-
+    
   /** Creates a new Shooter. */
-  public Shooter() { //ShooterIO io
-    //this.io = io;
+  public Shooter(ShooterIO io) { 
+    this.io = io;
 
-    shooterLeft.setInverted(true);
-    feedLeft.setInverted(true);
-    shooterRight.setInverted(false);
-    feedRight.setInverted(false);
+   
     // Switch constants based on mode (the physics simulator is treated as a
     // separate robot with different tuning)
     switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-        //ffModel = new SimpleMotorFeedforward(0.1, 0.05);
+        ffModel = new SimpleMotorFeedforward(0.1, 0.05);
         break;
       case SIM:
-        //ffModel = new SimpleMotorFeedforward(0.1, 0.05);
+        ffModel = new SimpleMotorFeedforward(0.1, 0.05);
         break;  
     
       default:
-        //ffModel = new SimpleMotorFeedforward(0.0, 0.0);
+        ffModel = new SimpleMotorFeedforward(0.0, 0.0);
         break;
     }
   }
@@ -54,10 +46,12 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     double leftShooterVolts = SmartDashboard.getNumber("leftShooter volts", 0.0);
     double rightShooterVolts = SmartDashboard.getNumber("rightShooter volts", 0.0);
-    double leftFeedVolts = SmartDashboard.getNumber("leftFeed volts", 0.0);
-    double rightFeedVolts = SmartDashboard.getNumber("rightFeed volts", 0.0);
+    double feedVolts = SmartDashboard.getNumber("feed volts", 0.0);
 
-    //setVoltages(leftShooterVolts, rightShooterVolts, leftFeedVolts, rightFeedVolts);
+
+   
+
+    io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
 
 
     ///io.updateInputs(inputs);
@@ -73,13 +67,9 @@ public class Shooter extends SubsystemBase {
   }
 
   /** Stops the flywheel. */
-  public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double leftFeedVolts, double rightFeedVolts) {
-    //io.setVoltages(v1,v2,v3,v4);
+  public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double feedVolts) {
+    io.setVoltages(leftShooterVolts,rightShooterVolts,feedVolts);
 
-    shooterLeft.setVoltage(leftShooterVolts);
-    shooterRight.setVoltage(rightShooterVolts);
-    feedLeft.setVoltage(leftFeedVolts);
-    feedRight.setVoltage(rightFeedVolts);
   }
   public void setPercentOutput(double rightShooterPO, double leftShooterPO, double feedPO) {
 

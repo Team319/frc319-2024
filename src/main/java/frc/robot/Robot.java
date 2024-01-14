@@ -42,8 +42,11 @@ public class Robot extends LoggedRobot {
 
     SmartDashboard.putNumber("leftShooter volts",0.0);
     SmartDashboard.putNumber("rightShooter volts",0.0);
-    SmartDashboard.putNumber("leftFeed volts",0.0);
-    SmartDashboard.putNumber("rightFeedvolts",0.0);
+    SmartDashboard.putNumber("feed volts",0.0);
+
+    SmartDashboard.putNumber("leftShooter rpm",0.0);
+    SmartDashboard.putNumber("rightShooter rpm",0.0);
+    SmartDashboard.putNumber("feed rpm",0.0);
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -120,7 +123,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
+ //   autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

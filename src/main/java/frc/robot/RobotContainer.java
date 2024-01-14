@@ -32,6 +32,7 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.ShooterIOSim;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -51,7 +52,7 @@ public class RobotContainer {
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+ // private final LoggedDashboardChooser<Command> autoChooser;
   // private final LoggedDashboardNumber flywheelSpeedInput =
   //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
@@ -68,7 +69,9 @@ public class RobotContainer {
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
         shooter =
-          new Shooter();
+          new Shooter(
+            new ShooterIOReal()
+          );
         break;
 
       case SIM:
@@ -82,7 +85,9 @@ public class RobotContainer {
                 new ModuleIOSim());
         // flywheel = new Flywheel(new FlywheelIOSim());
         shooter =
-          new Shooter();
+          new Shooter(
+            new ShooterIOSim()
+            );
           
         break;
 
@@ -98,7 +103,9 @@ public class RobotContainer {
         // flywheel = new Flywheel(new FlywheelIO() {});
 
       shooter =
-          new Shooter();
+          new Shooter(new ShooterIO() {
+            
+          });
         break;
     }
 
@@ -109,13 +116,13 @@ public class RobotContainer {
     //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+   // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up FF characterization routines
-    autoChooser.addOption(
-        "Drive FF Characterization",
-        new FeedForwardCharacterization(
-            drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
+   // autoChooser.addOption(
+     //   "Drive FF Characterization",
+     //   new FeedForwardCharacterization(
+      //      drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
     // autoChooser.addOption(
     //    "Flywheel FF Characterization",
     //    new FeedForwardCharacterization(
@@ -161,7 +168,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+ // public Command getAutonomousCommand() {
+  //  return autoChooser.get();
+ // }
 }

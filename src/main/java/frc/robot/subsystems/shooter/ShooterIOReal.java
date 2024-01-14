@@ -2,6 +2,8 @@ package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class ShooterIOReal implements ShooterIO{
 
     private final TalonFX shooterLeft = new TalonFX(21); 
@@ -12,18 +14,24 @@ public class ShooterIOReal implements ShooterIO{
 
 
     public ShooterIOReal(){
+
+        shooterLeft.setInverted(true);
+        feedLeft.setInverted(true);
+        shooterRight.setInverted(false);
+        feedRight.setInverted(false);
         
     }
 
     public void updateInputs(ShooterIOInputs inputs) {}
 
     public void setVoltages(double leftShooterVolts, double rightShooterVolts,
-                            double leftFeedVolts, double rightFeedVolts) {
+                            double feedVolts) {
                                         shooterLeft.setVoltage(leftShooterVolts);
                                         shooterRight.setVoltage(rightShooterVolts);
-                                        feedLeft.setVoltage(leftFeedVolts);
-                                        feedRight.setVoltage(rightFeedVolts);
+                                        feedLeft.setVoltage(feedVolts);
+                                        feedRight.setVoltage(feedVolts);
 
+                                    updateRPM();
                                     }
     
     public void setLeftShooterVoltage(double velocityRadPerSec, double ffVolts) {}
@@ -39,6 +47,12 @@ public class ShooterIOReal implements ShooterIO{
     public void stop() {}
 
     public void configurePID(double kP, double kI, double kD) {}
+
+    public void updateRPM(){
+    SmartDashboard.putNumber("leftShooter rpm", shooterLeft.getVelocity().getValueAsDouble()*60);
+    SmartDashboard.putNumber("rightShooter rpm",shooterRight.getVelocity().getValueAsDouble()*60);
+    SmartDashboard.putNumber("feed rpm",feedLeft.getVelocity().getValueAsDouble()*60);
+    }
 
 
     

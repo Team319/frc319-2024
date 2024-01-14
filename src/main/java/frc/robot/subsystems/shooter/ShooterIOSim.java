@@ -58,7 +58,7 @@ public class ShooterIOSim implements ShooterIO {
 
     @Override
     public void setVoltages(double leftFlywheelVolts, double rightFlywheelVolts,
-                            double leftFeedVolts, double rightFeedVolts) {
+                            double feedVolts) {
         
         closedLoop = false;
         leftShooterAppliedVolts = 0.0;
@@ -68,8 +68,8 @@ public class ShooterIOSim implements ShooterIO {
         
         leftShooterSim.setInputVoltage(leftFlywheelVolts);
         rightShooterSim.setInputVoltage(rightFlywheelVolts);
-        leftFeedSim.setInputVoltage(leftFeedVolts);
-        rightFeedSim.setInputVoltage(rightFeedVolts);
+        leftFeedSim.setInputVoltage(feedVolts);
+        rightFeedSim.setInputVoltage(feedVolts);
         
     }
 
@@ -110,7 +110,7 @@ public class ShooterIOSim implements ShooterIO {
 
     @Override
     public void stop() {
-        setVoltages(0.0, 0.0, 0.0, 0.0);
+        setVoltages(0.0, 0.0, 0.0);
     }
 
     @Override
