@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 2.0,
-      "y": 7.0
+      "y": 7.110045901003483
     },
     "rotation": 0
   },
@@ -18,13 +18,25 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Example Path"
+                  "pathName": "SquarePath1"
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Run Flywheel"
+                  "pathName": "Square Path2"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": " SquarePath3"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Square Path4"
                 }
               }
             ]
@@ -33,5 +45,6 @@
       ]
     }
   },
-  "folder": null
+  "folder": null,
+  "choreoAuto": false
 }
