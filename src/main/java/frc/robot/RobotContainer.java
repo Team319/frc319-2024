@@ -78,13 +78,10 @@ public class RobotContainer {
       
         case TANK:
         drive = 
-          new Drive(
-            new GyroIO() {},
-            new TankIOReal()
-          );
+          new Drive(new GyroIO() {});
         shooter =
           new Shooter(
-          new ShooterIOReal()
+            new ShooterIOReal()
           );
         break;
       
