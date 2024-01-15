@@ -51,7 +51,9 @@ public class Shooter extends SubsystemBase {
 
    
 
-    io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
+   // io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
+   io.setLeftShooterVelocity(leftShooterVolts, feedVolts);
+   io.setRightShooterVelocity(rightShooterVolts, feedVolts);
 
 
     ///io.updateInputs(inputs);
