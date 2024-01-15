@@ -29,6 +29,13 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.drive.TankIO;
+import frc.robot.subsystems.drive.TankIOReal;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.ShooterIOSim;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -40,13 +47,14 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  public final Shooter shooter;
   // private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+ // private final LoggedDashboardChooser<Command> autoChooser;
   // private final LoggedDashboardNumber flywheelSpeedInput =
   //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
@@ -55,14 +63,6 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        // drive =
-        //    new Drive(
-        //       new GyroIOPigeon2(),
-        //        new ModuleIOSparkMax(0),
-        //        new ModuleIOSparkMax(1),
-        //        new ModuleIOSparkMax(2),
-        //        new ModuleIOSparkMax(3));
-        // flywheel = new Flywheel(new FlywheelIOSparkMax());
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -70,10 +70,25 @@ public class RobotContainer {
                 new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
-        // flywheel = new Flywheel(new FlywheelIOTalonFX());
+        shooter =
+          new Shooter(
+            new ShooterIOReal()
+          );
         break;
-
-      case SIM:
+      
+        case TANK:
+        drive = 
+          new Drive(
+            new GyroIO() {},
+            new TankIOReal()
+          );
+        shooter =
+          new Shooter(
+          new ShooterIOReal()
+          );
+        break;
+      
+        case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
@@ -83,7 +98,14 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         // flywheel = new Flywheel(new FlywheelIOSim());
+        shooter =
+          new Shooter(
+            new ShooterIOSim()
+            );
+          
         break;
+
+
 
       default:
         // Replayed robot, disable IO implementations
@@ -95,6 +117,11 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         // flywheel = new Flywheel(new FlywheelIO() {});
+
+      shooter =
+          new Shooter(new ShooterIO() {
+            
+          });
         break;
     }
 
@@ -105,13 +132,13 @@ public class RobotContainer {
     //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+   // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up FF characterization routines
-    autoChooser.addOption(
-        "Drive FF Characterization",
-        new FeedForwardCharacterization(
-            drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
+   // autoChooser.addOption(
+     //   "Drive FF Characterization",
+     //   new FeedForwardCharacterization(
+      //      drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
     // autoChooser.addOption(
     //    "Flywheel FF Characterization",
     //    new FeedForwardCharacterization(
@@ -135,6 +162,8 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX(),
             () -> controller.getLeftTriggerAxis()));
+    
+    
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     controller
         .b()
@@ -157,7 +186,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+ // public Command getAutonomousCommand() {
+  //  return autoChooser.get();
+ // }
 }

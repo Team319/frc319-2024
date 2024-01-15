@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -38,6 +39,15 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+
+    SmartDashboard.putNumber("leftShooter volts",0.0);
+    SmartDashboard.putNumber("rightShooter volts",0.0);
+    SmartDashboard.putNumber("feed volts",0.0);
+
+    SmartDashboard.putNumber("leftShooter rpm",0.0);
+    SmartDashboard.putNumber("rightShooter rpm",0.0);
+    SmartDashboard.putNumber("feed rpm",0.0);
+
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -59,6 +69,7 @@ public class Robot extends LoggedRobot {
     // Set up data receivers & replay source
     switch (Constants.currentMode) {
       case REAL:
+      case TANK:
         // Running on a real robot, log to a USB stick
         Logger.addDataReceiver(new WPILOGWriter("/U"));
         Logger.addDataReceiver(new NT4Publisher());
@@ -76,6 +87,10 @@ public class Robot extends LoggedRobot {
         Logger.setReplaySource(new WPILOGReader(logPath));
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
         break;
+
+      default:
+        // Do nothing
+        break;
     }
 
     // See http://bit.ly/3YIzFZ6 for more information on timestamps in AdvantageKit.
@@ -92,6 +107,8 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+   
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
@@ -111,7 +128,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
+ //   autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
