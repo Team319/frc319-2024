@@ -29,6 +29,8 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.drive.TankIO;
+import frc.robot.subsystems.drive.TankIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -73,8 +75,20 @@ public class RobotContainer {
             new ShooterIOReal()
           );
         break;
-
-      case SIM:
+      
+        case TANK:
+        drive = 
+          new Drive(
+            new GyroIO() {},
+            new TankIOReal()
+          );
+        shooter =
+          new Shooter(
+          new ShooterIOReal()
+          );
+        break;
+      
+        case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
@@ -90,6 +104,8 @@ public class RobotContainer {
             );
           
         break;
+
+
 
       default:
         // Replayed robot, disable IO implementations
@@ -146,6 +162,8 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX(),
             () -> controller.getLeftTriggerAxis()));
+    
+    
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     controller
         .b()

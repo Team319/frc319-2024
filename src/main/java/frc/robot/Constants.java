@@ -22,11 +22,14 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.TANK;
 
   public static enum Mode {
     /** Running on a real robot. */
     REAL,
+
+    /** Running a real robot with a tank drive. */
+    TANK,
 
     /** Running a physics simulator. */
     SIM,

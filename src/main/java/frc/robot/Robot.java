@@ -69,6 +69,7 @@ public class Robot extends LoggedRobot {
     // Set up data receivers & replay source
     switch (Constants.currentMode) {
       case REAL:
+      case TANK:
         // Running on a real robot, log to a USB stick
         Logger.addDataReceiver(new WPILOGWriter("/U"));
         Logger.addDataReceiver(new NT4Publisher());
@@ -85,6 +86,10 @@ public class Robot extends LoggedRobot {
         String logPath = LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
+
+      default:
+        // Do nothing
         break;
     }
 

@@ -21,6 +21,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
@@ -40,57 +41,73 @@ public class DriveCommands {
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier,
       DoubleSupplier throttleSupplier) {
-    return Commands.run(
-        () -> {
-          // Apply deadband
-          double linearMagnitude =
-              MathUtil.applyDeadband(
-                  Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()),
-                  DEADBAND); // get the magnitude of the joystick
 
-          Rotation2d linearDirection =
-              new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+    switch(Constants.currentMode){
+      case TANK:
+        return Commands.run(
+        () -> {  drive.tankDrive( ySupplier.getAsDouble(), omegaSupplier.getAsDouble()); },
+         drive);
 
-          double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+      case REAL:
+      case SIM:
+      case REPLAY:
+      return Commands.run(
+          () -> {
+            // Apply deadband
+            double linearMagnitude =
+                MathUtil.applyDeadband(
+                    Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()),
+                    DEADBAND); // get the magnitude of the joystick
 
-          double throttle = MathUtil.applyDeadband(throttleSupplier.getAsDouble(), DEADBAND);
+            Rotation2d linearDirection =
+                new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
-          //  Old implementation : just square values
-          // linearMagnitude = linearMagnitude * linearMagnitude;
-          // omega = Math.copySign(omega * omega, omega);
+            double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
-          // New implementation : square values and apply relative throttle
-          // Note : we don't care about the magnitude of the throttle, as we have the
-          // linearDirection to apply later
-          // Note : only apply throttle if we have provided a linear magnitude
+            double throttle = MathUtil.applyDeadband(throttleSupplier.getAsDouble(), DEADBAND);
 
-          linearMagnitude = (linearMagnitude * linearMagnitude * JOYSTICK_GOVERNOR);
-          if (linearMagnitude > 0.0 && throttle > 0.0) {
-            linearMagnitude +=
-                Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
-          }
+            //  Old implementation : just square values
+            // linearMagnitude = linearMagnitude * linearMagnitude;
+            // omega = Math.copySign(omega * omega, omega);
 
-          // Note : we need to consider the sign as we don't have a linearDirection for the right
-          // joystick axis
-          omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
-          if (omega != 0.0 && throttle > 0.0) {
-            omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
-          }
+            // New implementation : square values and apply relative throttle
+            // Note : we don't care about the magnitude of the throttle, as we have the
+            // linearDirection to apply later
+            // Note : only apply throttle if we have provided a linear magnitude
 
-          // Calcaulate new linear velocity
-          Translation2d linearVelocity =
-              new Pose2d(new Translation2d(), linearDirection)
-                  .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
-                  .getTranslation();
+            linearMagnitude = (linearMagnitude * linearMagnitude * JOYSTICK_GOVERNOR);
+            if (linearMagnitude > 0.0 && throttle > 0.0) {
+              linearMagnitude +=
+                  Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
+            }
 
-          // Convert to field relative speeds & send command
-          drive.runVelocity(
-              ChassisSpeeds.fromFieldRelativeSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                  omega * drive.getMaxAngularSpeedRadPerSec(),
-                  drive.getRotation()));
-        },
+            // Note : we need to consider the sign as we don't have a linearDirection for the right
+            // joystick axis
+            omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
+            if (omega != 0.0 && throttle > 0.0) {
+              omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+            }
+
+            // Calcaulate new linear velocity
+            Translation2d linearVelocity =
+                new Pose2d(new Translation2d(), linearDirection)
+                    .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
+                    .getTranslation();
+
+            // Convert to field relative speeds & send command
+            drive.runVelocity(
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                    omega * drive.getMaxAngularSpeedRadPerSec(),
+                    drive.getRotation()));
+          },
+          drive);
+
+      default:
+        return Commands.run(
+        () -> {} /* do nothing */,
         drive);
+    }
   }
 }
