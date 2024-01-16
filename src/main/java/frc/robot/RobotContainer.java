@@ -152,25 +152,39 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX(),
-            () -> controller.getLeftTriggerAxis()));
+
+    switch (Constants.currentMode) {
+      case REAL:
+      case SIM:
+      case REPLAY:
+
+        drive.setDefaultCommand(
+          DriveCommands.joystickDrive(
+              drive,
+              () -> -controller.getLeftY(),
+              () -> -controller.getLeftX(),
+              () -> -controller.getRightX(),
+              () -> controller.getLeftTriggerAxis()));
+      
+      
+        controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        controller
+            .b()
+            .onTrue(
+                Commands.runOnce(
+                        () ->
+                            drive.setPose(
+                                new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                        drive)
+                    .ignoringDisable(true));
+        
+        break;
     
+      default:
+      /* Do nothing */
+        break;
+    }
     
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-    controller
-        .b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
     // controller
     //    .a()
     //    .whileTrue(
