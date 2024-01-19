@@ -47,13 +47,23 @@ public class Shooter extends SubsystemBase {
     double leftShooterVolts = SmartDashboard.getNumber("leftShooter volts", 0.0);
     double rightShooterVolts = SmartDashboard.getNumber("rightShooter volts", 0.0);
     double feedVolts = SmartDashboard.getNumber("feed volts", 0.0);
+    
+    double leftShooterVelocity = SmartDashboard.getNumber("leftShooter velocity", 0.0);
+    double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
+    double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
 
+    double shooterP = SmartDashboard.getNumber("shooter P", 0.0);
+    double shooterI = SmartDashboard.getNumber("shooter I", 0.0);
+    double shooterD = SmartDashboard.getNumber("shooter D", 0.0);
 
-   
 
    // io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
-   io.setLeftShooterVelocity(leftShooterVolts, feedVolts);
-   io.setRightShooterVelocity(rightShooterVolts, feedVolts);
+    io.configurePID(shooterP, shooterI, shooterD);
+
+    io.setLeftShooterVelocity(leftShooterVelocity, feedforward);
+    io.setRightShooterVelocity(rightShooterVelocity, feedforward);
+
+    io.setFeedVoltage(feedVolts);
 
 
     ///io.updateInputs(inputs);

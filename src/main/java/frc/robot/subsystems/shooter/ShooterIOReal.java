@@ -12,8 +12,8 @@ public class ShooterIOReal implements ShooterIO{
     private final TalonFX shooterLeft = new TalonFX(21); 
     private final TalonFX shooterRight = new TalonFX(22);
 
-    private final TalonFX feedLeft = new TalonFX(24);
-    private final TalonFX feedRight = new TalonFX(23);
+    private final TalonFX feedLeft = new TalonFX(23);
+    private final TalonFX feedRight = new TalonFX(24);
 
 
     public ShooterIOReal(){
@@ -23,7 +23,6 @@ public class ShooterIOReal implements ShooterIO{
         shooterRight.setInverted(false);
         feedRight.setInverted(false);
         
-        configurePID(0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     public void updateInputs(ShooterIOInputs inputs) {}
@@ -53,6 +52,14 @@ public class ShooterIOReal implements ShooterIO{
     public void setLeftFeedVoltage(double velocityRadPerSec, double ffVolts) {}
 
     public void setRightFeedVoltage(double velocityRadPerSec, double ffVolts) {}
+
+    @Override
+    public void setFeedVoltage(double ffVolts) {
+        
+        feedLeft.setVoltage(ffVolts);
+        feedRight.setVoltage(ffVolts);
+        updateRPM();
+    }
 
     public void setVelocity(double velocityRadPerSec, double ffVolts) {}
 

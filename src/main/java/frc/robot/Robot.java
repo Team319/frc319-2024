@@ -48,6 +48,14 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("rightShooter rpm",0.0);
     SmartDashboard.putNumber("feed rpm",0.0);
 
+    SmartDashboard.putNumber("leftShooter velocity",0.0);
+    SmartDashboard.putNumber("rightShooter velocity",0.0);
+    SmartDashboard.putNumber("feedforward volts",0.0);
+
+    SmartDashboard.putNumber("shooter P", 0.0);
+    SmartDashboard.putNumber("shooter I", 0.0);
+    SmartDashboard.putNumber("shooter D", 0.0);
+
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);

@@ -41,9 +41,7 @@ public interface ShooterIO {
 
     public default void setRightShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
-    public default void setLeftFeedVoltage(double velocityRadPerSec, double ffVolts) {}
-
-    public default void setRightFeedVoltage(double velocityRadPerSec, double ffVolts) {}
+    public default void setFeedVoltage( double ffVolts) {}
 
     public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
 
