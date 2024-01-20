@@ -101,7 +101,14 @@ public class RobotContainer {
             );
           
         break;
-
+        
+        case PROTO:
+        drive = new Drive(new GyroIO() {});
+        shooter =
+          new Shooter(
+            new ShooterIOReal()
+          );
+         break;
 
 
       default:
@@ -177,6 +184,22 @@ public class RobotContainer {
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
                     .ignoringDisable(true));
+
+
+        controller
+            .y()
+            .onTrue(
+              Commands.runOnce(
+                      () -> {
+                        shooter.setFeedVoltage(2);
+                      } , shooter)
+            );
+        
+          /* 
+        controller.rightBumper().onFalse(Commands.runOnce(
+          () -> {
+            shooter.setFeedVoltage(0.0);
+          } , shooter));*/
         
         break;
     

@@ -59,9 +59,11 @@ public class Shooter extends SubsystemBase {
 
    // io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
     io.configurePID(shooterP, shooterI, shooterD);
-
-    io.setLeftShooterVelocity(leftShooterVelocity, feedforward);
-    io.setRightShooterVelocity(rightShooterVelocity, feedforward);
+    double shooterVelocity = leftShooterVelocity;
+    //io.setLeftShooterVelocity(leftShooterVelocity, feedforward);
+    //io.setRightShooterVelocity(rightShooterVelocity, feedforward);
+    io.setLeftShooterVelocity(shooterVelocity, feedforward);
+    io.setRightShooterVelocity(shooterVelocity, feedforward);
 
     io.setFeedVoltage(feedVolts);
 
@@ -83,6 +85,11 @@ public class Shooter extends SubsystemBase {
     io.setVoltages(leftShooterVolts,rightShooterVolts,feedVolts);
 
   }
+
+  public void setFeedVoltage(double voltage){
+    io.setFeedVoltage(voltage);
+  }
+
   public void setPercentOutput(double rightShooterPO, double leftShooterPO, double feedPO) {
 
   }
