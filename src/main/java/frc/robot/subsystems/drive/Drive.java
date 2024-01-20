@@ -30,6 +30,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -92,47 +93,64 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
-    for (var module : modules) {
-      module.periodic();
+
+    switch (Constants.currentMode) {
+      case REAL:
+      case SIM:
+      case REPLAY:
+        // if Swerve, use and update the modules
+        for (var module : modules) {
+          module.periodic();
+        }
+
+        // Stop moving when disabled
+        if (DriverStation.isDisabled()) {
+          for (var module : modules) {
+            module.stop();
+          }
+        }
+
+        // Log measured states
+        Logger.recordOutput("SwerveStates/Measured", getModuleStates());
+
+        // Log empty setpoint states when disabled
+        if (DriverStation.isDisabled()) {
+          Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[] {});
+          Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
+        }
+
+        // Update odometry
+        SwerveModulePosition[] wheelDeltas = new SwerveModulePosition[4];
+        for (int i = 0; i < 4; i++) {
+          wheelDeltas[i] = modules[i].getPositionDelta();
+        }
+        // The twist represents the motion of the robot since the last
+        // loop cycle in x, y, and theta based only on the modules,
+        // without the gyro. The gyro is always disconnected in simulation.
+        var twist = kinematics.toTwist2d(wheelDeltas);
+        if (gyroInputs.connected) {
+          // If the gyro is connected, replace the theta component of the twist
+          // with the change in angle since the last loop cycle.
+          twist =
+              new Twist2d(
+                  twist.dx, twist.dy, gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
+          lastGyroRotation = gyroInputs.yawPosition;
+        }
+        // Apply the twist (change since last loop cycle) to the current pose
+        pose = pose.exp(twist);
+        Logger.recordOutput("Odometry/RobotPose", getPose());
+        Logger.recordOutput("Odometry/RobotRotation", getRotation());
+
+        break; // End of Swerve logic
+    
+      default:
+        // Do nothing
+        break;
     }
 
-    // Stop moving when disabled
-    if (DriverStation.isDisabled()) {
-      for (var module : modules) {
-        module.stop();
-      }
-    }
+    
 
-    // Log measured states
-    Logger.recordOutput("SwerveStates/Measured", getModuleStates());
 
-    // Log empty setpoint states when disabled
-    if (DriverStation.isDisabled()) {
-      Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[] {});
-      Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
-    }
-
-    // Update odometry
-    SwerveModulePosition[] wheelDeltas = new SwerveModulePosition[4];
-    for (int i = 0; i < 4; i++) {
-      wheelDeltas[i] = modules[i].getPositionDelta();
-    }
-    // The twist represents the motion of the robot since the last
-    // loop cycle in x, y, and theta based only on the modules,
-    // without the gyro. The gyro is always disconnected in simulation.
-    var twist = kinematics.toTwist2d(wheelDeltas);
-    if (gyroInputs.connected) {
-      // If the gyro is connected, replace the theta component of the twist
-      // with the change in angle since the last loop cycle.
-      twist =
-          new Twist2d(
-              twist.dx, twist.dy, gyroInputs.yawPosition.minus(lastGyroRotation).getRadians());
-      lastGyroRotation = gyroInputs.yawPosition;
-    }
-    // Apply the twist (change since last loop cycle) to the current pose
-    pose = pose.exp(twist);
-    Logger.recordOutput("Odometry/RobotPose", getPose());
-    Logger.recordOutput("Odometry/RobotRotation", getRotation());
   }
 
   /**
@@ -247,8 +265,10 @@ public class Drive extends SubsystemBase {
   public void tankDrive(double x, double y) {
     tankIO.drive(x, y);
   }
+// ========================= Empty / No Drivetrain =========================
 
+public Drive(GyroIO gyroIO){
+  this.gyroIO = gyroIO;
 
-
-
+}
 }

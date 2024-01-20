@@ -31,6 +31,9 @@ public final class Constants {
     /** Running a real robot with a tank drive. */
     TANK,
 
+    /** Running on a real prototyping testbench */
+    PROTO,
+
     /** Running a physics simulator. */
     SIM,
 
