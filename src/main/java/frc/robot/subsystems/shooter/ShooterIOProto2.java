@@ -88,9 +88,10 @@ public class ShooterIOProto2 implements ShooterIO{
     }
 
     public void updateRPM(){
-    SmartDashboard.putNumber("leftShooter rpm",shooterTop.getVelocity().getValueAsDouble()*60);
-    SmartDashboard.putNumber("rightShooter rpm",shooterBottom.getVelocity().getValueAsDouble()*60);
-    SmartDashboard.putNumber("feed rpm",feedLeft.getVelocity().getValueAsDouble());
+        // rotations per second -> rotations per minute
+        SmartDashboard.putNumber("leftShooter rpm", shooterTop.getVelocity().getValueAsDouble()*60);
+        SmartDashboard.putNumber("rightShooter rpm", shooterBottom.getVelocity().getValueAsDouble()*60);
+        SmartDashboard.putNumber("feed rpm", feedLeft.getVelocity().getValueAsDouble()*60);
     }
 
 
