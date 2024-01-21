@@ -176,6 +176,8 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
+      case PROTO:
+      case PROTO2:
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -203,7 +205,7 @@ public class RobotContainer {
             .onTrue(
               Commands.runOnce(
                       () -> {
-                        shooter.setFeedVoltage(2);
+                        shooter.runFeedAtShooterVelocity();
                         System.err.println("Y Pressed");
                       } , shooter)
             );

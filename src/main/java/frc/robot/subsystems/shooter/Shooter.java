@@ -19,6 +19,8 @@ public class Shooter extends SubsystemBase {
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
 
+  private double shooterVelocity;
+
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
@@ -31,7 +33,7 @@ public class Shooter extends SubsystemBase {
       case REPLAY:
       case PROTO:
       case PROTO2:
-        ffModel = new SimpleMotorFeedforward(0.1, 0.05);
+        ffModel = new SimpleMotorFeedforward(0.33329, 0.00083);
         break;
       case SIM:
         ffModel = new SimpleMotorFeedforward(0.1, 0.05);
@@ -57,11 +59,11 @@ public class Shooter extends SubsystemBase {
     double shooterI = SmartDashboard.getNumber("shooter I", 0.0);
     double shooterD = SmartDashboard.getNumber("shooter D", 0.0);
     
-    double shooterVelocity = leftShooterVelocity;
+    shooterVelocity = leftShooterVelocity;
 
     configurePID(shooterP, shooterI, shooterD);
     runShooterVelocity(shooterVelocity);
-    runFeedVelocity(shooterVelocity);
+    //runFeedVelocity(shooterVelocity);
 
     //setFeedVoltage(feedVolts);
 
@@ -104,6 +106,10 @@ public class Shooter extends SubsystemBase {
 
     // Log flywheel setpoint
     Logger.recordOutput("FeedSetpointRPM", velocityRPM);
+  }
+
+  public void runFeedAtShooterVelocity(){
+    runFeedVelocity(this.shooterVelocity);
   }
 
   public void configurePID(double kP, double kI, double kD) {

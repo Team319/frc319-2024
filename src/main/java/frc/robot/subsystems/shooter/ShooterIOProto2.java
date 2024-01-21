@@ -18,9 +18,10 @@ public class ShooterIOProto2 implements ShooterIO{
 
     public ShooterIOProto2(){
 
-        shooterTop.setInverted(true);
+        shooterTop.setInverted(false);
+        shooterBottom.setInverted(true);
+
         feedLeft.setInverted(true);
-        shooterBottom.setInverted(false);
         feedRight.setInverted(false);
         
     }

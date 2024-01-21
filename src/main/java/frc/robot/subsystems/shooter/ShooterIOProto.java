@@ -106,6 +106,7 @@ public class ShooterIOProto implements ShooterIO{
         shooterRight.getConfigurator().apply(shooterConfig);
         feedLeft.getConfigurator().apply(shooterConfig);
         feedRight.getConfigurator().apply(shooterConfig);
+        //System.out.println("P: " + kP + " I: " + kI + " D: " + kD);
     }
 
     public void updateRPM(){
