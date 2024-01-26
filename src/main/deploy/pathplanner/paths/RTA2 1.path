@@ -1,0 +1,65 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7626093884666401,
+        "y": 6.852774503269805
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8618599060534402,
+        "y": 6.431784943345644
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.083749250119582,
+        "y": 5.928936302317049
+      },
+      "prevControl": {
+        "x": 3.592594763534551,
+        "y": 5.566417514605089
+      },
+      "nextControl": {
+        "x": 4.42919496386945,
+        "y": 6.183908138652325
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.376103111178026,
+        "y": 7.30884652652864
+      },
+      "prevControl": {
+        "x": 4.387797265620466,
+        "y": 6.630585568867123
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Real Test Auto Orange",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

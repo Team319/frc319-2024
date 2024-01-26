@@ -88,7 +88,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveTalon = new TalonFX(6, "Swerve Canivore");
         turnTalon = new TalonFX(7, "Swerve Canivore");
         cancoder = new CANcoder(8, "Swerve Canivore");
-        absoluteEncoderOffset = new Rotation2d(-1.84079631861); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(-2.0); // MUST BE CALIBRATED -1.84079631861
         break;
       default:
         throw new RuntimeException("Invalid module index");

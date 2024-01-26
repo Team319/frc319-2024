@@ -19,9 +19,9 @@ public class ShooterIOReal implements ShooterIO{
     public ShooterIOReal(){
 
         shooterLeft.setInverted(true);
-        feedLeft.setInverted(true);
+        feedLeft.setInverted(false); //true
         shooterRight.setInverted(false);
-        feedRight.setInverted(false);
+        feedRight.setInverted(true); //false
         
     }
 

@@ -54,8 +54,8 @@ public class RobotContainer {
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
- // private final LoggedDashboardChooser<Command> autoChooser;
-  // private final LoggedDashboardNumber flywheelSpeedInput =
+ private final LoggedDashboardChooser<Command> autoChooser;
+ //private final LoggedDashboardNumber flywheelSpeedInput =
   //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -72,7 +72,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(3));
         shooter =
           new Shooter(
-            new ShooterIOReal()
+            new ShooterIO() {}
           );
         break;
       
@@ -129,17 +129,20 @@ public class RobotContainer {
     //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
 
     // Set up auto routines
-   // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up FF characterization routines
+    autoChooser.addOption(
+        "Drive FF Characterization",
+        new FeedForwardCharacterization(
+            drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
    // autoChooser.addOption(
-     //   "Drive FF Characterization",
-     //   new FeedForwardCharacterization(
-      //      drive, drive::runCharacterizationVolts, drive::getCharacterizationVelocity));
+
+   // );
     // autoChooser.addOption(
-    //    "Flywheel FF Characterization",
-    //    new FeedForwardCharacterization(
-    //        flywheel, flywheel::runCharacterizationVolts, flywheel::getCharacterizationVelocity));
+      //  "Flywheel FF Characterization",
+      //  new FeedForwardCharacterization(
+      //    flywheel, flywheel::runCharacterizationVolts, flywheel::getCharacterizationVelocity));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -197,7 +200,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
- // public Command getAutonomousCommand() {
-  //  return autoChooser.get();
- // }
+  public Command getAutonomousCommand() {
+    return autoChooser.get();
+  }
 }

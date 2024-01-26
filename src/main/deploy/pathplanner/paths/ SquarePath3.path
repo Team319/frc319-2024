@@ -1,0 +1,57 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.862066260949626,
+        "y": 4.61
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.604309661782362,
+        "y": 4.61
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.0,
+        "y": 4.61
+      },
+      "prevControl": {
+        "x": 4.369191246696032,
+        "y": 4.590500483566288
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+<<<<<<< Updated upstream
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+=======
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Square Auto",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

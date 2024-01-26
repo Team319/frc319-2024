@@ -75,9 +75,18 @@ public class Drive extends SubsystemBase {
         () -> kinematics.toChassisSpeeds(getModuleStates()),
         this::runVelocity,
         new HolonomicPathFollowerConfig(
-            MAX_LINEAR_SPEED, DRIVE_BASE_RADIUS, new ReplanningConfig()),
-        null,  //TODO: Configure boolean supplier
-        this);
+            MAX_LINEAR_SPEED, DRIVE_BASE_RADIUS, new ReplanningConfig()), 
+
+            () -> {
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                  return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },      
+        this
+        );
+
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
         (activePath) -> {

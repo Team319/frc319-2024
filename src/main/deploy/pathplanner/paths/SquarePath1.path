@@ -1,0 +1,72 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.0,
+        "y": 7.110045901003483
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.63953820902121,
+        "y": 7.110045901003483
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.872954879812894,
+        "y": 7.110045901003483
+      },
+      "prevControl": {
+        "x": 4.551515427817181,
+        "y": 7.098351746561043
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+      "waypointRelativePos": 0.2,
+      "rotationDegrees": 0,
+      "rotateFast": true
+=======
+=======
+>>>>>>> Stashed changes
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+>>>>>>> Stashed changes
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+<<<<<<< Updated upstream
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+=======
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Square Auto",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
