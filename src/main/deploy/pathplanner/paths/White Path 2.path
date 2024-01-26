@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.862066260949626,
-        "y": 4.61
+        "x": 1.4,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.604309661782362,
-        "y": 4.61
+        "x": 3.288546748033667,
+        "y": 6.326537553360007
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 4.61
+        "x": 7.708937127275964,
+        "y": 5.765218140122891
       },
       "prevControl": {
-        "x": 4.369191246696032,
-        "y": 4.590500483566288
+        "x": 6.153614586431451,
+        "y": 6.7241388044029655
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,26 +32,18 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-<<<<<<< Updated upstream
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
-=======
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    "maxAngularVelocity": 540,
-    "maxAngularAcceleration": 720
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Square Auto",
+  "folder": "Real Test Auto Blue+White",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
