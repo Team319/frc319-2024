@@ -33,7 +33,8 @@ import frc.robot.subsystems.drive.TankIO;
 import frc.robot.subsystems.drive.TankIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.ShooterIOProto;
+import frc.robot.subsystems.shooter.ShooterIOProto2;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -64,45 +65,63 @@ public class RobotContainer {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive =
-            new Drive(
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(0),
-                new ModuleIOTalonFX(1),
-                new ModuleIOTalonFX(2),
-                new ModuleIOTalonFX(3));
+          new Drive(
+            new GyroIOPigeon2(),
+            new ModuleIOTalonFX(0),
+            new ModuleIOTalonFX(1),
+            new ModuleIOTalonFX(2),
+            new ModuleIOTalonFX(3));
+        
         shooter =
           new Shooter(
-            new ShooterIO() {}
+            new ShooterIOProto()
           );
         break;
       
         case TANK:
-        drive = 
-          new Drive(new GyroIO() {});
-        shooter =
-          new Shooter(
-            new ShooterIOReal()
-          );
-        break;
+          drive = 
+            new Drive(new GyroIO() {});
+          
+          shooter =
+            new Shooter(
+              new ShooterIOProto()
+            );
+          break;
       
         case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        drive =
+          // Sim robot, instantiate physics sim IO implementations
+          drive =
             new Drive(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        // flywheel = new Flywheel(new FlywheelIOSim());
-        shooter =
-          new Shooter(
-            new ShooterIOSim()
+
+          shooter =
+            new Shooter(
+              new ShooterIOSim()
             );
           
-        break;
+          break;
+        
+        case PROTO:
+          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
+          
+          shooter =
+            new Shooter(
+              new ShooterIOProto()
+            );
+          break;
 
-
+        case PROTO2:
+          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
+          
+          shooter =
+            new Shooter(
+              new ShooterIOProto2()
+            );
+          break;
 
       default:
         // Replayed robot, disable IO implementations
@@ -160,6 +179,8 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
+      case PROTO:
+      case PROTO2:
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -180,6 +201,33 @@ public class RobotContainer {
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
                     .ignoringDisable(true));
+
+
+        controller
+            .y()
+            .onTrue(
+              Commands.runOnce(
+                      () -> {
+                        shooter.runFeedAtShooterVelocity();
+                        System.err.println("Y Pressed");
+                      } , shooter)
+            );
+
+            controller
+            .y()
+            .onFalse(
+              Commands.runOnce(
+                      () -> {
+                        shooter.setFeedVoltage(0);
+                        System.err.println("Y released");
+                      } , shooter)
+            );
+        
+          /* 
+        controller.rightBumper().onFalse(Commands.runOnce(
+          () -> {
+            shooter.setFeedVoltage(0.0);
+          } , shooter));*/
         
         break;
     

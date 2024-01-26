@@ -34,16 +34,17 @@ public interface ShooterIO {
 
     public default void updateInputs(ShooterIOInputs inputs) {}
 
-    public default void setVoltages(double leftFlywheelVolts, double rightFlywheelVolts,
-                                    double feedVolts) {}
+    public default void setFeedVoltage( double ffVolts) {}
+
+    public default void setVoltages(double leftFlywheelVolts, double rightFlywheelVolts, double feedVolts) {}
     
     public default void setLeftShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
     public default void setRightShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
-    public default void setFeedVoltage( double ffVolts) {}
+    public default void setShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
-    public default void setVelocity(double velocityRadPerSec, double ffVolts) {}
+    public default void setFeedVelocity(double velocityRadPerSec, double ffVolts) {}
 
     public default void stop() {}
 

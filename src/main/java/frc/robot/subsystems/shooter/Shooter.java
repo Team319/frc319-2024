@@ -19,18 +19,21 @@ public class Shooter extends SubsystemBase {
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
 
+  private double shooterVelocity;
+
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
     this.io = io;
 
-   
     // Switch constants based on mode (the physics simulator is treated as a
     // separate robot with different tuning)
     switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-        ffModel = new SimpleMotorFeedforward(0.1, 0.05);
+      case PROTO:
+      case PROTO2:
+        ffModel = new SimpleMotorFeedforward(0.33329, 0.00083);
         break;
       case SIM:
         ffModel = new SimpleMotorFeedforward(0.1, 0.05);
@@ -50,47 +53,72 @@ public class Shooter extends SubsystemBase {
     
     double leftShooterVelocity = SmartDashboard.getNumber("leftShooter velocity", 0.0);
     double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
-    double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
+    //double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
 
     double shooterP = SmartDashboard.getNumber("shooter P", 0.0);
     double shooterI = SmartDashboard.getNumber("shooter I", 0.0);
     double shooterD = SmartDashboard.getNumber("shooter D", 0.0);
+    
+    shooterVelocity = leftShooterVelocity;
 
+    configurePID(shooterP, shooterI, shooterD);
+    runShooterVelocity(shooterVelocity);
+    //runFeedVelocity(shooterVelocity);
 
-   // io.setVoltages(leftShooterVolts, rightShooterVolts, feedVolts);
-    io.configurePID(shooterP, shooterI, shooterD);
+    //setFeedVoltage(feedVolts);
 
-    io.setLeftShooterVelocity(leftShooterVelocity, feedforward);
-    io.setRightShooterVelocity(rightShooterVelocity, feedforward);
-
-    io.setFeedVoltage(feedVolts);
-
-
-    ///io.updateInputs(inputs);
+    // Update advantageKit logging IO
+    //io.updateInputs(inputs);
     //Logger.processInputs("Shooter", inputs);
 
-    //Log flywheel speed in RPM
+    //Log shooter speed in RPM
     //Logger.recordOutput("LeftShooterSpeedRPM", getVelocityRPM());
   }
 
     /** Stops the flywheel. */
   public void stop() {
-    //io.stop();
+    io.stop();
   }
 
   /** Stops the flywheel. */
   public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double feedVolts) {
     io.setVoltages(leftShooterVolts,rightShooterVolts,feedVolts);
-
-  }
-  public void setPercentOutput(double rightShooterPO, double leftShooterPO, double feedPO) {
-
   }
 
+  public void setFeedVoltage(double voltage){
+    io.setFeedVoltage(voltage);
+    System.err.println("Feed Voltage: " + voltage);
+  }
+
+  /** Run closed loop at the specified velocity. */
+  public void runShooterVelocity(double velocityRPM) {
+    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
+    io.setShooterVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
+
+    // Log flywheel setpoint
+    Logger.recordOutput("ShooterSetpointRPM", velocityRPM);
+  }
+
+  /** Run closed loop at the specified velocity. */
+  public void runFeedVelocity(double velocityRPM) {
+    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
+    io.setFeedVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
+
+    // Log flywheel setpoint
+    Logger.recordOutput("FeedSetpointRPM", velocityRPM);
+  }
+
+  public void runFeedAtShooterVelocity(){
+    runFeedVelocity(this.shooterVelocity);
+  }
+
+  public void configurePID(double kP, double kI, double kD) {
+    io.configurePID(kP, kI, kD);
+  }
 
   /** Returns the current velocity in RPM. */
-  //public double getVelocityRPM() {
-    //return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
-  //}
+ // public double getVelocityRPM() {
+ //   return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
+ // }
   
 }
