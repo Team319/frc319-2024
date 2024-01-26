@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.0,
-        "y": 4.61
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.0,
-        "y": 5.313670633539653
+        "y": 5.118033988749895
       },
       "isLocked": false,
       "linkedName": null
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.0,
-        "y": 7.11
+        "y": 7.0
       },
       "prevControl": {
         "x": 2.0,
-        "y": 6.109999999999999
+        "y": 5.479309367425445
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,20 +30,44 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.5
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Square Auto",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
