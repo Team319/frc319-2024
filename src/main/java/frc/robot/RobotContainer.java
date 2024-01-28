@@ -74,7 +74,7 @@ public class RobotContainer {
         
         shooter =
           new Shooter(
-            new ShooterIOProto()
+            new ShooterIO() {}
           );
         break;
       
