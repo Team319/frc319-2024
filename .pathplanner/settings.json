@@ -2,15 +2,6 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "pathFolders": [],
-  "autoFolders": [],
-  "defaultMaxVel": 5.0,
-  "defaultMaxAccel": 5.0,
-=======
-=======
->>>>>>> Stashed changes
   "pathFolders": [
     "Real Test Auto Blue+White",
     "Real Test Auto Orange",
@@ -20,10 +11,6 @@
   "autoFolders": [],
   "defaultMaxVel": 5.0,
   "defaultMaxAccel": 3.0,
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5
