@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6807503073695607,
+      "y": 6.735832958845405
+    },
+    "rotation": 61.26
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpSide Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "White Path 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "White Path 2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
