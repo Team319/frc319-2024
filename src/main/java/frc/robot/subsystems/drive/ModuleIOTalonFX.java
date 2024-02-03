@@ -56,8 +56,8 @@ public class ModuleIOTalonFX implements ModuleIO {
 
   // Gear ratios for SDS MK4i, select ratios as necessary
   // private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (19.0 / 25.0) * (45.0 / 15.0); // L1
-  // private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0); // L2
-  private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0); // L3
+   private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0); // L2
+  //private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0); // L3
 
   private final double TURN_GEAR_RATIO = 150.0 / 7.0;
 
