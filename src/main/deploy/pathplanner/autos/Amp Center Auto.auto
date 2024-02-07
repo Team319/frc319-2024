@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7275269251393202,
+      "y": 6.572114796651245
+    },
+    "rotation": 61.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RTA 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path to Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center to Mid Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid to Note 3 Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 3 to Mid"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
