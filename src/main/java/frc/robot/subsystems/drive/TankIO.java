@@ -15,7 +15,7 @@ public interface TankIO {
 
     public default void updateInputs(TankIOInputs inputs) {}
 
-    public default void drive(double x, double y) {}
+    public default void drive(double move, double rotate) {}
 
     public default void stop() {}
 }
