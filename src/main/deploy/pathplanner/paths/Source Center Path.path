@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.2211813497261212,
-        "y": 5.547612425391122
+        "x": 2.9026396514331485,
+        "y": 4.092954054853979
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.051795662619747,
-        "y": 5.547612425391122
+        "x": 2.9026396514331485,
+        "y": 4.677778706828584
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8981397630253705,
-        "y": 5.547612425391122
+        "x": 2.9026396514331485,
+        "y": 5.5430292057165325
       },
       "prevControl": {
-        "x": 1.8939146666891915,
-        "y": 5.567111941824834
+        "x": 2.9026396514331485,
+        "y": 4.875539818245231
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Real Test Auto R",
+  "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
