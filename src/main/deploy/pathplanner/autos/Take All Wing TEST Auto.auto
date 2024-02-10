@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2211813497261212,
-      "y": 5.547612425391122
+      "x": 0.6456678440422406,
+      "y": 4.572414386994017
     },
-    "rotation": 0
+    "rotation": -61.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 1"
+            "pathName": "Source Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source Center Path"
           }
         },
         {
@@ -26,25 +32,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue Path"
+            "pathName": "Path to Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 1"
+            "pathName": "Center to Mid Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 2"
+            "pathName": "Mid to Note 3 Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 3"
+            "pathName": "Note 3 to Mid"
           }
         }
       ]

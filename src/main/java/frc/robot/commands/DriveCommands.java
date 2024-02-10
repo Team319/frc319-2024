@@ -14,6 +14,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -29,6 +31,7 @@ public class DriveCommands {
   private static final double DEADBAND = 0.2;
   private static final double JOYSTICK_GOVERNOR = 0.3; // this value must not exceed 1.0
   private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
+  private static final PIDController headingPID = new PIDController(0.01, 0.0 , 0.0);
 
   private DriveCommands() {}
 
@@ -81,12 +84,21 @@ public class DriveCommands {
                   Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
             }
 
-            // Note : we need to consider the sign as we don't have a linearDirection for the right
-            // joystick axis
-            omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
-            if (omega != 0.0 && throttle > 0.0) {
-              omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+            if ( omega != 0.0 || drive.isHeadingLocked() == false  ){
+              drive.unlockHeading();
+
+              // Note : we need to consider the sign as we don't have a linearDirection for the right
+              // joystick axis
+              omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
+              if (omega != 0.0 && throttle > 0.0) {
+                omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+              }
             }
+            else{ // Heading is locked, and joystick is not touched
+              omega = headingPID.calculate(drive.getRotation().getRotations(), 0.0);
+              //System.out.println("Heading Locked. Omega = " + omega + "setpoint = " + drive.getHeadingSetpoint() + "current Heading =  " + drive.getRotation());
+            }
+            
 
             // Calcaulate new linear velocity
             Translation2d linearVelocity =
