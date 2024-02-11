@@ -110,4 +110,12 @@ public class DriveCommands {
         drive);
     }
   }
+  public Command maintainHeading(Drive drive, double heading){
+    switch(Constants.currentMode){  
+    default:
+        return Commands.run(
+        () -> {} /* do nothing */,
+        drive);
+    }
+  }
 }
