@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.01,
-        "y": 5.78
+        "x": 2.55,
+        "y": 4.1046482092964185
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.098043049767811,
-        "y": 5.889104204764231
+        "x": 2.5401208637175103,
+        "y": 4.619191004763776
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.97,
-        "y": 6.2
+        "x": 2.5401208637175103,
+        "y": 5.589805823486292
       },
       "prevControl": {
-        "x": 6.271556106057582,
-        "y": 5.87910420476423
+        "x": 1.6279768172071953,
+        "y": 5.659970750140931
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Real Test Auto Blue+White",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

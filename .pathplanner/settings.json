@@ -3,9 +3,6 @@
   "robotLength": 0.56,
   "holonomicMode": true,
   "pathFolders": [
-    "Real Test Auto Blue+White",
-    "Real Test Auto Orange",
-    "Real Test Auto R",
     "Square Auto"
   ],
   "autoFolders": [],

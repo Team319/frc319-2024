@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6690561529271205,
-      "y": 4.209895599278378
+      "x": 1.2211813497261212,
+      "y": 5.547612425391122
     },
-    "rotation": -61.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,37 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source to Low-Center Path"
+            "pathName": "Speaker to Center piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Low-Center to Shoot Path"
+            "pathName": "Center Piece to Amp Piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot to Mid-Low Center Path"
+            "pathName": "Amp Piece to Note 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid-Low Center to Shoot Path"
+            "pathName": "Note 2 to Center "
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot to Mid Wing Note Path"
+            "pathName": "Center to Note 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid-Wing Note to Shoot Path"
+            "pathName": "Note 3 to Center"
           }
         }
       ]
