@@ -1,0 +1,39 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "RealOutputs": {
+          "open": true
+        }
+      },
+      "limelight-collect": {
+        "double[]##v_/limelight-collect/botpose": {
+          "open": true
+        },
+        "open": true
+      },
+      "limelight-shooter": {
+        "double[]##v_/limelight-shooter/camerapose_robotspace": {
+          "open": true
+        }
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto Choices": "String Chooser"
+    }
+  },
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT3)",
+    "serverTeam": "10.3.19.2"
+  }
+}

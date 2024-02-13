@@ -198,7 +198,7 @@ public class RobotContainer {
         );
         controller.b().onTrue( 
           Commands.runOnce(
-            () -> drive.setHeadingSetpoint(90),
+            () -> drive.setHeadingSetpoint(-90),
             drive
           )
         );
@@ -210,7 +210,7 @@ public class RobotContainer {
         );
         controller.x().onTrue( 
           Commands.runOnce(
-            () -> drive.setHeadingSetpoint(-90),
+            () -> drive.setHeadingSetpoint(90),
             drive
           )
         );

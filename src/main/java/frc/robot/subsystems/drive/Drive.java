@@ -23,6 +23,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -41,7 +42,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
-  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
+  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(22.0);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(22.0);
   private static final double DRIVE_BASE_RADIUS =
@@ -67,7 +68,10 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 	
+  @AutoLogOutput(key = "Drive/headingSetpoint")
   private double headingSetpoint = 0.0;
+
+  @AutoLogOutput(key = "Drive/headingLocked")
   private boolean headingLocked = false;
 
   public Drive(
@@ -274,10 +278,36 @@ public class Drive extends SubsystemBase {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 
-  public void setHeadingSetpoint(double heading) {
+    /** Resets the current odometry pose. */
+  public void setPose(Pose2d pose, Rotation2d newGyroRotation) {
+    poseEstimator.resetPosition(newGyroRotation, getModulePositions(), pose);
+  }
+
+  //TODO : NEEDS WORK - Try and always take the shortest path... 
+  //                    gets interesting when we cross the (pi/-pi radians) / (180/-180 degrees) line
+  public double optimizeHeading(double headingDegrees){
+
+    
+      var currentAngle = getRotation().getDegrees();
+      var deltaDegrees = headingDegrees - currentAngle;
+      double optimizedHeading = headingDegrees;
+
+      if (headingDegrees == 180){
+        optimizedHeading = Math.copySign(optimizedHeading, currentAngle);
+      }
+      
+  
+      // Could use further work, the simulator shows some weird behavior flipping when facing 'south' at the rollover point on occasion
+      // However, I think facing the collector south will be a rare occurance -EKM
+      // in fact, it may be more intuive to have Y and A both point 'north', 
+      // in the event Driver thinks pressing A will set the robot orientation for the speaker - EKM
+    return optimizedHeading;
+
+  }
+
+  public void setHeadingSetpoint(double headingDegrees) {
     this.headingLocked = true;
-    this.headingSetpoint = heading;
-    System.out.println("Heading Setpoint set");
+    this.headingSetpoint = Units.degreesToRadians(optimizeHeading(headingDegrees));
   }
 
   public double getHeadingSetpoint() {

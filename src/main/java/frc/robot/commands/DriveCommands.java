@@ -31,9 +31,12 @@ public class DriveCommands {
   private static final double DEADBAND = 0.2;
   private static final double JOYSTICK_GOVERNOR = 0.3; // this value must not exceed 1.0
   private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
-  private static final PIDController headingPID = new PIDController(0.01, 0.0 , 0.0);
+  private static final PIDController headingPID = new PIDController(0.25, 0.0 , 0.0);
 
-  private DriveCommands() {}
+  private DriveCommands() {
+
+    headingPID.enableContinuousInput(-Math.PI, Math.PI);
+  }
 
   /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
@@ -95,24 +98,25 @@ public class DriveCommands {
               }
             }
             else{ // Heading is locked, and joystick is not touched
-              omega = headingPID.calculate(drive.getRotation().getRotations(), 0.0);
-              //System.out.println("Heading Locked. Omega = " + omega + "setpoint = " + drive.getHeadingSetpoint() + "current Heading =  " + drive.getRotation());
+              omega = headingPID.calculate(drive.getRotation().getRadians(), drive.getHeadingSetpoint());
+              //System.out.println("Heading Locked. Omega = " + omega + " setpoint = " + drive.getHeadingSetpoint() + " current Heading =  " + drive.getRotation());
             }
             
-
             // Calcaulate new linear velocity
             Translation2d linearVelocity =
                 new Pose2d(new Translation2d(), linearDirection)
                     .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                     .getTranslation();
 
-            // Convert to field relative speeds & send command
-            drive.runVelocity(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
+            // Convert to field relative speeds
+            ChassisSpeeds fieldRelativeVelocities = ChassisSpeeds.fromFieldRelativeSpeeds(
                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                     omega * drive.getMaxAngularSpeedRadPerSec(),
-                    drive.getRotation()));
+                    drive.getRotation());
+
+             //Discretize & send command
+            drive.runVelocity( ChassisSpeeds.discretize(fieldRelativeVelocities, 0.02));
           },
           drive);
 
