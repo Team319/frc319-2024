@@ -11,10 +11,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CollectorIOReal implements CollectorIO {
   
-  private final CANSparkMax collectorLeftLead = new CANSparkMax(0, MotorType.kBrushless);
-  private final CANSparkMax collectorRightLead = new CANSparkMax(0, MotorType.kBrushless);
-  private final CANSparkMax collectorLeftFollow = new CANSparkMax(0, MotorType.kBrushless);
-  private final CANSparkMax collectorRightFollow = new CANSparkMax(0, MotorType.kBrushless);
+  private final CANSparkMax collectorLeftLead = new CANSparkMax(12, MotorType.kBrushless);
+  private final CANSparkMax collectorRightLead = new CANSparkMax(13, MotorType.kBrushless);
+  private final CANSparkMax collectorLeftFollow = new CANSparkMax(14, MotorType.kBrushless);
+  private final CANSparkMax collectorRightFollow = new CANSparkMax(15, MotorType.kBrushless);
+  
+  private final CANSparkMax tunnelLead = new CANSparkMax(21, MotorType.kBrushless);
+  private final CANSparkMax tunnelFollow = new CANSparkMax(22, MotorType.kBrushless);
 
 
   public CollectorIOReal() {
