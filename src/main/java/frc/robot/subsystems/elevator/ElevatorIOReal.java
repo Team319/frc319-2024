@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ElevatorIOReal implements ElevatorIO {
   /** Creates a new ElevatorIOReal. */
 
-  private final CANSparkMax elevatorLead = new CANSparkMax(0, MotorType.kBrushless);
-  private final CANSparkMax elevatorFollow = new CANSparkMax(0, MotorType.kBrushless);
+  private final CANSparkMax elevatorLead = new CANSparkMax(16, MotorType.kBrushless);
+  private final CANSparkMax elevatorFollow = new CANSparkMax(17, MotorType.kBrushless);
   public ElevatorIOReal() {}
 
   @Override
