@@ -1,21 +1,26 @@
 {
   "NetworkTables": {
     "transitory": {
-      "AdvantageKit": {
-        "RealOutputs": {
-          "open": true
-        }
-      },
-      "limelight-collect": {
-        "double[]##v_/limelight-collect/botpose": {
-          "open": true
+      "CameraPublisher": {
+        "limelight-collect": {
+          "open": true,
+          "string[]##v_/CameraPublisher/limelight-collect/modes": {
+            "open": true
+          },
+          "string[]##v_/CameraPublisher/limelight-collect/streams": {
+            "open": true
+          }
+        },
+        "limelight-shooter": {
+          "open": true,
+          "string[]##v_/CameraPublisher/limelight-shooter/modes": {
+            "open": true
+          },
+          "string[]##v_/CameraPublisher/limelight-shooter/streams": {
+            "open": true
+          }
         },
         "open": true
-      },
-      "limelight-shooter": {
-        "double[]##v_/limelight-shooter/camerapose_robotspace": {
-          "open": true
-        }
       }
     },
     "types": {
@@ -25,9 +30,6 @@
   },
   "NetworkTables Info": {
     "Connections": {
-      "open": true
-    },
-    "Server": {
       "open": true
     },
     "visible": true

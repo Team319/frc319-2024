@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2211813497261212,
-      "y": 5.547612425391122
+      "x": 0.7275269251393202,
+      "y": 6.572114796651245
     },
-    "rotation": 0
+    "rotation": 61.0
   },
   "command": {
     "type": "sequential",
@@ -14,37 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 1"
+            "pathName": "Amp Side to Center piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 2"
+            "pathName": "Center Piece to Amp Piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue Path"
+            "pathName": "Amp Piece to Note 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 1"
+            "pathName": "Note 2 to Center "
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 2"
+            "pathName": "Center to Note 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "White Path 3"
+            "pathName": "Note 3 to Center"
           }
         }
       ]
