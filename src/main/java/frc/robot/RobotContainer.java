@@ -32,6 +32,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.drive.TankIO;
 import frc.robot.subsystems.drive.TankIOReal;
+import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
@@ -49,14 +50,19 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  public final Shooter shooter;
-  // private final Flywheel flywheel;
+  private final Shooter shooter;
+  //private final Elevator elevator;
+  //private final Collector collector;
+  //private final Limelight limelight;
+// private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
+
+
  //private final LoggedDashboardNumber flywheelSpeedInput =
   //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 

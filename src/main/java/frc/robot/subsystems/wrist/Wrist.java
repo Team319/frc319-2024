@@ -6,6 +6,7 @@ package frc.robot.subsystems.wrist;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.math.MathUtil;
 import frc.robot.subsystems.shooter.ShooterIO;
 
 public class Wrist extends SubsystemBase {

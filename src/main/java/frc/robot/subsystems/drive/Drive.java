@@ -22,6 +22,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -179,12 +180,25 @@ public class Drive extends SubsystemBase {
 
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
+
+            // Compute the robot's field-relative position exclusively from vision measurements.
+    Pose3d visionMeasurement3d = objectToRobotPose();
+
+    // Convert robot pose from Pose3d to Pose2d needed to apply vision measurements.
+    Pose2d visionMeasurement2d = visionMeasurement3d.toPose2d();
+
         break; // End of Swerve logic
     
       default:
         // Do nothing
         break;
     }
+    
+  }
+
+  private Pose3d objectToRobotPose() {
+    return new Pose3d();
+    // TODO Auto-generated method stub
     
   }
 

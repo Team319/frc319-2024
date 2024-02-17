@@ -30,8 +30,8 @@ public class Limelight extends SubsystemBase {
   private NetworkTableEntry m_ta = m_table.getEntry("ta");
   private NetworkTableEntry m_tl = m_table.getEntry("tl");
   private NetworkTableEntry m_cl = m_table.getEntry("cl");
+  
 
- // private NetworkTableEntry m_
 
   /** Creates a new Limelight. */
   public Limelight() {
