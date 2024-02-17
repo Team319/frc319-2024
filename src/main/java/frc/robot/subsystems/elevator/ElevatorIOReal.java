@@ -34,19 +34,17 @@ public class ElevatorIOReal implements ElevatorIO {
   }
 
   public void upPID() {
-    var elevatorUpPID = new Slot0Configs();
-    elevatorUpPID.kP = kPUp;
-    elevatorUpPID.kI = kIUp;
-    elevatorUpPID.kD = kDUp;
-    elevatorUpPID.kG = kFFUp;
+    elevatorPIDController.setP(kPUp);
+    elevatorPIDController.setI(kIUp);
+    elevatorPIDController.setI(kDUp);
+    elevatorPIDController.setFF(kFFUp);
   }
 
   public void downPID() {
-    var elevatorDownPID = new Slot0Configs();
-    elevatorDownPID.kP = kPDown;
-    elevatorDownPID.kI = kIDown;
-    elevatorDownPID.kD = kDDown;
-    elevatorDownPID.kG = kFFDown;
+    elevatorPIDController.setP(kPDown);
+    elevatorPIDController.setI(kIDown);
+    elevatorPIDController.setI(kDDown);
+    elevatorPIDController.setFF(kFFDown);
   }
 
   public double getCurrentPosition() {
