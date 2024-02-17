@@ -21,6 +21,11 @@ public class ElevatorIOReal implements ElevatorIO {
   private final RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   private final SparkPIDController elevatorPIDController = elevatorLead.getPIDController();
 
+  public static class ElevatorSetpoint {
+    public static final double TOP = 0.0;
+    public static final double BOTTOM = 0.0;
+  }
+
   public ElevatorIOReal() {
     setup();
     setFollow();
@@ -89,11 +94,11 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
     elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    //elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElevatorConstants.SoftLimits.forwardSoftLimit);
-    //elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElevatorConstants.SoftLimits.reverseSoftLimit);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
 
-    //elevatorLead.setSmartCurrentLimit(30);
-    //elevatorFollow.setSmartCurrentLimit(30);
+    elevatorLead.setSmartCurrentLimit(30);
+    elevatorFollow.setSmartCurrentLimit(30);
 
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
