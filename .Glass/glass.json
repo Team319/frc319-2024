@@ -19,7 +19,9 @@
           "string[]##v_/CameraPublisher/limelight-shooter/streams": {
             "open": true
           }
-        },
+        }
+      },
+      "limelight-collect": {
         "open": true
       }
     },

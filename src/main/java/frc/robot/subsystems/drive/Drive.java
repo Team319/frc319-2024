@@ -20,18 +20,26 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -67,6 +75,14 @@ public class Drive extends SubsystemBase {
       };
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+
+  private final NetworkTable m_tableCollect = NetworkTableInstance.getDefault().getTable("limelight-collect"); // Makes the Limelight data table.
+  private NetworkTableEntry m_botPoseCollect = m_tableCollect.getEntry("botpose_wpiblue");
+  private NetworkTableEntry m_tvCollect = m_tableCollect.getEntry("tv");
+
+  private final NetworkTable m_tableShooter = NetworkTableInstance.getDefault().getTable("limelight-shooter"); // Makes the Limelight data table.
+  private NetworkTableEntry m_botPoseShooter = m_tableShooter.getEntry("botpose_wpiblue");
+  private NetworkTableEntry m_tvShooter = m_tableShooter.getEntry("tv");
 	  
 
   public Drive(
@@ -177,15 +193,27 @@ public class Drive extends SubsystemBase {
           Twist2d twist = kinematics.toTwist2d(moduleDeltas);
           rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
         }
+        
+        if(isValidTargetSeen()){
+          // Compute the robot's field-relative position exclusively from vision measurements.
+          double[] pose = m_botPoseCollect.getDoubleArray(new double[6]);
+          Pose3d visionMeasurement3d = new Pose3d(new Translation3d(pose[0], pose[1], pose[2]),new Rotation3d(pose[3], pose[4], pose[5]));
+          double latency = Timer.getFPGATimestamp() -(pose[6]/1000.0);
+          // Convert robot pose from Pose3d to Pose2d needed to apply vision measurements.
+          Pose2d visionMeasurement2d = visionMeasurement3d.toPose2d();
+          double xyStds = 10.0;
+          double degStds = 90.0;
+          poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(degStds)));
+          poseEstimator.addVisionMeasurement(visionMeasurement2d, latency);
 
-        poseEstimator.update(rawGyroRotation, modulePositions);
+         // System.out.println("AprilTag Seen");
+        }
+        else{
+          poseEstimator.update(rawGyroRotation, modulePositions);
+          //System.out.println("No AprilTag Seen");
+        } 
+
         Logger.recordOutput("Odometry/Robot", getPose());
-
-            // Compute the robot's field-relative position exclusively from vision measurements.
-    Pose3d visionMeasurement3d = objectToRobotPose();
-
-    // Convert robot pose from Pose3d to Pose2d needed to apply vision measurements.
-    Pose2d visionMeasurement2d = visionMeasurement3d.toPose2d();
 
         break; // End of Swerve logic
     
@@ -196,12 +224,16 @@ public class Drive extends SubsystemBase {
     
   }
 
-  private Pose3d objectToRobotPose() {
-    return new Pose3d();
-    // TODO Auto-generated method stub
-    
+  public boolean isValidTargetSeen () {
+    if (m_tvCollect.getDouble(0.0) == 0.0){
+      return false;
+    }
+    return true;
+   // return m_tvCollect.getBoolean(false); //Returns if a valid target is seen or not
   }
-
+  public double getPoseLatency(double[] botpose) {
+    return Timer.getFPGATimestamp() - (botpose[6]/1000.0);
+  }
   /**
    * Runs the drive at the desired velocity.
    *
