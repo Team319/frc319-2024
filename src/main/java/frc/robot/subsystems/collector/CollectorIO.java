@@ -7,6 +7,10 @@ package frc.robot.subsystems.collector;
 /** Add your docs here. */
 public interface CollectorIO {
 
+    public static final double kFF = 0.0;
+    public static final double kP = 0.0;
+    public static final int maxCurrent = 0;
+
     public default void stop() {}
 
     public default void setCollectorPO(double PO) {}

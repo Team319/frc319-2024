@@ -36,6 +36,7 @@ public class Collector extends SubsystemBase {
 
   public void setCollectorPO(double PO) {
     io.setCollectorPO(PO);
+    System.out.println("Collector PO : " + PO);
   }
 
   public double getCollectorPosition() {
