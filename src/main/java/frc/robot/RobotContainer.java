@@ -41,6 +41,8 @@ import frc.robot.subsystems.collector.CollectorIO;
 import frc.robot.subsystems.collector.CollectorIOReal;
 import frc.robot.subsystems.collector.CollectorIOSim;
 
+import java.util.Collection;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -155,6 +157,20 @@ public class RobotContainer {
             );
           break;
 
+        case PROTO3:
+          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
+          
+          shooter =
+            new Shooter(
+              new ShooterIO(){}
+            );
+
+          collector =
+            new Collector(
+              new CollectorIOReal() // Something is sadly required here
+            );
+          break;
+
       default:
         // Replayed robot, disable IO implementations
         drive =
@@ -263,7 +279,7 @@ public class RobotContainer {
 
         controller.povUp().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0.1);
+            collector.setCollectorPO(1.0);
             }
           )
         );
@@ -277,7 +293,7 @@ public class RobotContainer {
 
         controller.povDown().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-0.1);
+            collector.setCollectorPO(-1.0);
             }
           )
         );

@@ -37,6 +37,9 @@ public final class Constants {
     /** Running on a real prototyping testbench */
     PROTO2,
 
+    // collector prototype
+    PROTO3,
+
     /** Running a physics simulator. */
     SIM,
 

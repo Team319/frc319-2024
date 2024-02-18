@@ -5,17 +5,14 @@
 package frc.robot.subsystems.collector;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CollectorIOReal implements CollectorIO {
   
-  private final CANSparkMax collectorLead = new CANSparkMax(12, MotorType.kBrushless);
-  private final CANSparkMax collectorFollow = new CANSparkMax(13, MotorType.kBrushless);
+  private final CANSparkMax collectorLead = new CANSparkMax(40, MotorType.kBrushless);
+  private final CANSparkMax collectorFollow = new CANSparkMax(41, MotorType.kBrushless);
 
-  public static final int maxCurrent = 20;
+  public static final int maxCurrent = 30;
 
   //private final SparkPIDController collectorPIDController = collectorLead.getPIDController();
 
