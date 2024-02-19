@@ -76,6 +76,9 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 
+
+      
+
   private final NetworkTable m_tableCollect = NetworkTableInstance.getDefault().getTable("limelight-collect"); // Makes the Limelight data table.
   private NetworkTableEntry m_botPoseCollect = m_tableCollect.getEntry("botpose_wpiblue");
   private NetworkTableEntry m_tvCollect = m_tableCollect.getEntry("tv");
@@ -83,7 +86,7 @@ public class Drive extends SubsystemBase {
   private final NetworkTable m_tableShooter = NetworkTableInstance.getDefault().getTable("limelight-shooter"); // Makes the Limelight data table.
   private NetworkTableEntry m_botPoseShooter = m_tableShooter.getEntry("botpose_wpiblue");
   private NetworkTableEntry m_tvShooter = m_tableShooter.getEntry("tv");
-	  
+
 
   public Drive(
       GyroIO gyroIO,
@@ -201,17 +204,18 @@ public class Drive extends SubsystemBase {
           double latency = Timer.getFPGATimestamp() -(pose[6]/1000.0);
           // Convert robot pose from Pose3d to Pose2d needed to apply vision measurements.
           Pose2d visionMeasurement2d = visionMeasurement3d.toPose2d();
-          double xyStds = 10.0;
-          double degStds = 90.0;
+          double xyStds = 5.0; //was 10.0 made it super small
+          double degStds = 90.0; //was 90.0
+        
           poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(degStds)));
           poseEstimator.addVisionMeasurement(visionMeasurement2d, latency);
-
+        
          // System.out.println("AprilTag Seen");
         }
-        else{
+       // else{
           poseEstimator.update(rawGyroRotation, modulePositions);
           //System.out.println("No AprilTag Seen");
-        } 
+       // } 
 
         Logger.recordOutput("Odometry/Robot", getPose());
 
