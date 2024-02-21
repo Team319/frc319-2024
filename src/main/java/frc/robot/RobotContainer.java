@@ -185,8 +185,9 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -controller.getLeftY(),
-              () -> -controller.getLeftX(),
+              () -> -controller.getLeftY(), // Note : This is X supplier because the field's X axis is down field long
+              () -> -controller.getLeftX(), // Note this is Y supplier because the field's Y axis is across the field 
+              () -> -controller.getRightY(), 
               () -> -controller.getRightX(),
               () -> controller.getLeftTriggerAxis()));
       

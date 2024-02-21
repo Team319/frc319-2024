@@ -15,11 +15,15 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -38,6 +42,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.PolarCoordinate;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -65,6 +71,9 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
+  
+  private static final PIDController headingPID = new PIDController(0.25, 0.0 , 0.0);
+
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 	
@@ -81,6 +90,9 @@ public class Drive extends SubsystemBase {
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
+
+    headingPID.enableContinuousInput(-Math.PI, Math.PI);
+    headingPID.setTolerance(0.1, 0.1);
 
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
@@ -305,22 +317,34 @@ public class Drive extends SubsystemBase {
 
   }
 
+  //currently OBE
   public void setHeadingSetpoint(double headingDegrees) {
     this.headingLocked = true;
     this.headingSetpoint = Units.degreesToRadians(optimizeHeading(headingDegrees));
   }
-
+  //currently OBE
   public double getHeadingSetpoint() {
     return this.headingSetpoint;
   }
-
+  //currently OBE
   public boolean isHeadingLocked() {
     return this.headingLocked;
   }
 
-  public void unlockHeading(){
-    this.headingLocked = false;
-  }
+  public double snapToHeading(DoubleSupplier x, DoubleSupplier y) {
+    // ===================  Thank you 1806 for the help ! =======================
+    double[] rightJoyPolarCoordinate = PolarCoordinate.toPolarCoordinate(x,y);
+    double r = rightJoyPolarCoordinate[0];
+    double theta = rightJoyPolarCoordinate[1];
+    
+    if(r < 0.8){
+        theta = getRotation().getRadians();
+    }
+
+    theta /= (Math.PI / 4);
+    theta = Math.round(theta) * (Math.PI / 4);
+    return headingPID.calculate(getRotation().getRadians(), theta);
+}
   
   /**
    * Adds a vision measurement to the pose estimator.
@@ -384,4 +408,8 @@ public Drive(GyroIO gyroIO){
   // Configure SysId
     sysId = null;
 }
+
+
+
+
 }
