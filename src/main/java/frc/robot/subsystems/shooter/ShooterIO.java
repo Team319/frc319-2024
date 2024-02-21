@@ -10,7 +10,7 @@ public interface ShooterIO {
     public static final double kA = 0.0; // The request acceleration/acceleration value?
     public static final double kP = 0.0; // Power applied to motor
     public static final double kI = 0.0; // margin of error in motor
-    public static final double kD = 0.0; // Nico question? Ask about value later
+    public static final double kD = 0.0; // Smooths power over time
     
     @AutoLog 
     public static class ShooterIOInputs {

@@ -37,6 +37,12 @@ import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
 import frc.robot.subsystems.shooter.ShooterIOProto2;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.collector.Collector;
+import frc.robot.subsystems.collector.CollectorIO;
+import frc.robot.subsystems.collector.CollectorIOReal;
+import frc.robot.subsystems.collector.CollectorIOSim;
+
+import java.util.Collection;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -50,6 +56,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   public final Shooter shooter;
+  public final Collector collector;
   // private final Flywheel flywheel;
 
   // Controller
@@ -77,6 +84,12 @@ public class RobotContainer {
           new Shooter(
             new ShooterIO() {}
           );
+
+        collector =
+          new Collector(
+            new CollectorIOReal()
+          );
+          
         break;
       
         case TANK:
@@ -86,6 +99,11 @@ public class RobotContainer {
           shooter =
             new Shooter(
               new ShooterIOProto()
+            );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // An IO that has nothing in it so things can be happy
             );
           break;
       
@@ -104,6 +122,11 @@ public class RobotContainer {
               new ShooterIOSim()
             );
           
+          collector =
+            new Collector(
+              new CollectorIOSim()
+              );
+
           break;
         
         case PROTO:
@@ -113,6 +136,12 @@ public class RobotContainer {
             new Shooter(
               new ShooterIOProto()
             );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // An IO that has nothing in it so things can be happy
+            );
+
           break;
 
         case PROTO2:
@@ -121,6 +150,25 @@ public class RobotContainer {
           shooter =
             new Shooter(
               new ShooterIOProto2()
+            );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // Something is sadly required here
+            );
+          break;
+
+        case PROTO3:
+          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
+          
+          shooter =
+            new Shooter(
+              new ShooterIO(){}
+            );
+
+          collector =
+            new Collector(
+              new CollectorIOReal() // Something is sadly required here
             );
           break;
 
@@ -139,6 +187,11 @@ public class RobotContainer {
           new Shooter(new ShooterIO() {
             
           });
+
+      collector = 
+          new Collector(
+            new CollectorIO() {}
+          );
         break;
     }
 
@@ -192,6 +245,7 @@ public class RobotContainer {
       
       
         controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        
         controller
             .b()
             .onTrue(
@@ -213,7 +267,7 @@ public class RobotContainer {
                       } , shooter)
             );
 
-            controller
+        controller
             .y()
             .onFalse(
               Commands.runOnce(
@@ -222,7 +276,35 @@ public class RobotContainer {
                         System.err.println("Y released");
                       } , shooter)
             );
-        
+
+        controller.povUp().onTrue(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(1.0);
+            }
+          )
+        );
+
+        controller.povUp().onFalse(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(0);
+            }
+          )
+        );
+
+        controller.povDown().onTrue(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(-1.0);
+            }
+          )
+        );
+
+        controller.povDown().onFalse(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(0);
+            }
+          )
+        );
+
           /* 
         controller.rightBumper().onFalse(Commands.runOnce(
           () -> {
