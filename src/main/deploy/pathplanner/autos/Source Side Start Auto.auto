@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6456678440422406,
-      "y": 4.572414386994017
+      "x": 0.6105853807149207,
+      "y": 4.408696224799858
     },
-    "rotation": -61.0
+    "rotation": -60.06848815949215
   },
   "command": {
     "type": "sequential",
@@ -14,43 +14,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source Path"
+            "pathName": "Source Side Start Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Source Center Path"
+            "pathName": "Source Side - Note 4 Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 2"
+            "pathName": "Note 4 to Shoot Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Path to Center"
+            "pathName": "Shoot - Note 3 Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to Mid Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid to Note 3 Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 3 to Mid"
+            "pathName": "Note 3 to Shoot Path"
           }
         }
       ]

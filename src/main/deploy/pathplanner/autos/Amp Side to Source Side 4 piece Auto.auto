@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6456678440422406,
-      "y": 4.572414386994017
+      "x": 0.77430354290908,
+      "y": 6.735832958845405
     },
-    "rotation": -61.0
+    "rotation": 55.619655276155115
   },
   "command": {
     "type": "sequential",
@@ -14,48 +14,36 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source Path"
+            "pathName": "Amp Side to Upper Wing Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Source Center Path"
+            "pathName": "Amp Note to Note 3 Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 2"
+            "pathName": "Note 3 to Shoot Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Path to Center"
+            "pathName": "Shoot to Note 4 Path"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to Mid Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid to Note 3 Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 3 to Mid"
+            "pathName": "Note 4 to Shoot Path"
           }
         }
       ]
     }
   },
-  "folder": "Source Start Autos",
+  "folder": "Amp Start Autos",
   "choreoAuto": false
 }
