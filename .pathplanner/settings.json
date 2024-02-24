@@ -3,7 +3,9 @@
   "robotLength": 0.56,
   "holonomicMode": true,
   "pathFolders": [
-    "Square Auto"
+    "Amp Speaker to ___ Note",
+    "Center Speaker to ___ Note",
+    "Note ___ to Note ___"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.0,

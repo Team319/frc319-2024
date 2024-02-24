@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.83,
-        "y": 2.44
+        "x": 0.55,
+        "y": 6.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.077452787384207,
-        "y": 2.9118444561675454
+        "x": 1.55,
+        "y": 6.6
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.6627596901917445,
-        "y": 5.005098101364294
+        "x": 7.860766695405126,
+        "y": 4.124147725730131
       },
       "prevControl": {
-        "x": 4.878951752205499,
-        "y": 4.513943614781818
+        "x": 5.988813117768754,
+        "y": 3.431914892333348
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Amp Speaker to ___ Note",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 61.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
