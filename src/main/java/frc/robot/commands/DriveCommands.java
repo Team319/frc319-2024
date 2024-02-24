@@ -40,7 +40,6 @@ public class DriveCommands {
 
   private DriveCommands() {
 
-    
   }
 
   /**
@@ -98,8 +97,13 @@ public class DriveCommands {
                   Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
             }*/
 
+            
             omega = drive.snapToHeading(headingXSupplier, headingYSupplier);
             
+            if (drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET){
+              omega = drive.snapToTarget();
+            }
+
             // Calcaulate new linear velocity
             Translation2d linearVelocity =
                 new Pose2d(new Translation2d(), linearDirection)
@@ -113,21 +117,13 @@ public class DriveCommands {
                     omega * drive.getMaxAngularSpeedRadPerSec(),
                     drive.getRotation());
 
-             //Discretize & send command
+            
+            // Discretize & send command
             drive.runVelocity( ChassisSpeeds.discretize(fieldRelativeVelocities, 0.02));
           },
           drive);
 
       default:
-        return Commands.run(
-        () -> {} /* do nothing */,
-        drive);
-    }
-  }
-
-  public Command maintainHeading(Drive drive, double heading){
-    switch(Constants.currentMode){  
-    default:
         return Commands.run(
         () -> {} /* do nothing */,
         drive);

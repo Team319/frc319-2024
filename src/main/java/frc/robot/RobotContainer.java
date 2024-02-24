@@ -50,15 +50,12 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   public final Shooter shooter;
-  // private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
- //private final LoggedDashboardNumber flywheelSpeedInput =
-  //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -191,6 +188,14 @@ public class RobotContainer {
               () -> -controller.getRightX(),
               () -> controller.getLeftTriggerAxis()));
       
+        controller.rightStick().onTrue(
+          Commands.runOnce(
+          () -> drive.setHeadingTarget(Drive.HeadingTargets.SPEAKER), 
+          drive
+            )
+        );
+        
+        /* 
         controller.y().onTrue( 
           Commands.runOnce(
             () -> drive.setHeadingSetpoint(0.0),
@@ -214,7 +219,7 @@ public class RobotContainer {
             () -> drive.setHeadingSetpoint(90),
             drive
           )
-        );
+        );*/
       
         /* 
         controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
