@@ -41,5 +41,7 @@ public interface ElevatorIO {
 
     public default void setInverted() {}
 
+    public default void setPO(double PO) {}
+
     
 }

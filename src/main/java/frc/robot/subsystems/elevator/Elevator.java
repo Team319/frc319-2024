@@ -32,4 +32,8 @@ public class Elevator extends SubsystemBase {
   public void stop() {
     io.stop();
   }
+
+  public void setPO(double PO) {
+    io.setPO(PO);
+  }
 }

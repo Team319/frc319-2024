@@ -23,6 +23,9 @@ public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
     public static final double TOP = 0.0;
+    public static final double TRAP = 0.0;
+    public static final double AMP = 0.0;
+    public static final double CLIMB = 0.0;
     public static final double BOTTOM = 0.0;
   }
 
@@ -104,8 +107,8 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setOutputRange(-1.0, 1.0);
   }
 
-  public void setVoltage(double voltage) {
-    elevatorLead.set(voltage);
+  public void setPO(double PO) {
+    elevatorLead.set(PO);
   }
 
   public double getVelocity() {

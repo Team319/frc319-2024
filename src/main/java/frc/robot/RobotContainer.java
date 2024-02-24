@@ -32,6 +32,9 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.drive.TankIO;
 import frc.robot.subsystems.drive.TankIOReal;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
@@ -57,6 +60,7 @@ public class RobotContainer {
   private final Drive drive;
   public final Shooter shooter;
   public final Collector collector;
+  public final Elevator elevator;
   // private final Flywheel flywheel;
 
   // Controller
@@ -89,6 +93,11 @@ public class RobotContainer {
           new Collector(
             new CollectorIOReal()
           );
+
+        elevator =
+          new Elevator(
+            new ElevatorIOReal()
+        );
           
         break;
       
@@ -105,6 +114,12 @@ public class RobotContainer {
             new Collector(
               new CollectorIO() {} // An IO that has nothing in it so things can be happy
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+            
           break;
       
         case SIM:
@@ -127,6 +142,11 @@ public class RobotContainer {
               new CollectorIOSim()
               );
 
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
         
         case PROTO:
@@ -140,6 +160,11 @@ public class RobotContainer {
           collector =
             new Collector(
               new CollectorIO() {} // An IO that has nothing in it so things can be happy
+            );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
             );
 
           break;
@@ -156,6 +181,12 @@ public class RobotContainer {
             new Collector(
               new CollectorIO() {} // Something is sadly required here
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
         case PROTO3:
@@ -170,6 +201,12 @@ public class RobotContainer {
             new Collector(
               new CollectorIOReal() // Something is sadly required here
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
       default:
@@ -192,6 +229,12 @@ public class RobotContainer {
           new Collector(
             new CollectorIO() {}
           );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
         break;
     }
 
@@ -277,33 +320,62 @@ public class RobotContainer {
                       } , shooter)
             );
 
-        controller.povUp().onTrue(Commands.runOnce(
+        controller.rightBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setCollectorPO(1.0);
             }
           )
         );
 
-        controller.povUp().onFalse(Commands.runOnce(
+        controller.rightBumper().onFalse(Commands.runOnce(
           () -> {
             collector.setCollectorPO(0);
             }
           )
         );
 
-        controller.povDown().onTrue(Commands.runOnce(
+        controller.leftBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setCollectorPO(-1.0);
             }
           )
         );
 
-        controller.povDown().onFalse(Commands.runOnce(
+        controller.leftBumper().onFalse(Commands.runOnce(
           () -> {
             collector.setCollectorPO(0);
             }
           )
         );
+
+        controller.povUp().onFalse(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.1);
+            }
+          )
+        );
+
+        controller.povUp().onTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.1);
+            }
+          )
+        );
+
+        controller.povDown().onFalse(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.1);
+            }
+          )
+        );
+
+        controller.povDown().onTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.1);
+            }
+          )
+        );
+
 
           /* 
         controller.rightBumper().onFalse(Commands.runOnce(
