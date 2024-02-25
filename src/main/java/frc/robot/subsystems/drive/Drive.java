@@ -90,7 +90,7 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition()
       };
   
-  private static final PIDController headingPID = new PIDController(0.25, 0.0 , 0.0);
+  private static final PIDController headingPID = new PIDController(1, 0.01 , 0.0); // originally 0.25, 0.0, 0.0
 
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
