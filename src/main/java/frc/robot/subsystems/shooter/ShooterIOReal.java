@@ -25,12 +25,12 @@ public class ShooterIOReal implements ShooterIO{
     private final TalonFX shooterLeft = new TalonFX(31); 
     private final TalonFX shooterRight = new TalonFX(32);
 
-    private final CANSparkMax feed = new CANSparkMax(0, MotorType.kBrushless);
+    private final CANSparkMax feed = new CANSparkMax(34, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController feedPid = feed.getPIDController();
 
-    private final CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless);
+    private final CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController wristPid = wrist.getPIDController();
-    public RelativeEncoder wristEncoder = wrist.getEncoder();
+    private final RelativeEncoder wristEncoder = wrist.getEncoder();
 
     public static class WristConstants {
         public static class PID {
@@ -44,7 +44,7 @@ public class ShooterIOReal implements ShooterIO{
   
         public static class SetPoints {
           public static final float home = (float)0.0;
-          public static final float top = (float)0.0;
+          public static final float top = (float)1000.0;
           public static final float bottom = (float)0.0;
         }
   
@@ -70,8 +70,8 @@ public ShooterIOReal(){
     public void updateInputs(ShooterIOInputs inputs) {}
 
     private void setupShooter(){
-        shooterLeft.setInverted(false);
-        shooterRight.setInverted(true);
+        shooterLeft.setInverted(true);
+        shooterRight.setInverted(false);
         feed.setInverted(true);
     }
 
@@ -146,11 +146,11 @@ public ShooterIOReal(){
         wrist.restoreFactoryDefaults();
         wrist.clearFaults();
 
-        wrist.enableSoftLimit(SoftLimitDirection.kForward, true);
-        wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        wrist.enableSoftLimit(SoftLimitDirection.kForward, false);
+        wrist.enableSoftLimit(SoftLimitDirection.kReverse, false);
 
-        wrist.setSoftLimit(SoftLimitDirection.kForward, WristConstants.SoftLimits.forwardSoftLimit);
-        wrist.setSoftLimit(SoftLimitDirection.kReverse, WristConstants.SoftLimits.reverseSoftLimit);
+        //wrist.setSoftLimit(SoftLimitDirection.kForward, WristConstants.SoftLimits.forwardSoftLimit);
+        //wrist.setSoftLimit(SoftLimitDirection.kReverse, WristConstants.SoftLimits.reverseSoftLimit);
 
         wrist.setInverted(false);
         
@@ -180,7 +180,9 @@ public ShooterIOReal(){
         wristPid.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
     }
 
+    @Override
     public void setWristPO(double PO) {
+        System.out.println("Wrist PO" + PO);
         wrist.set(PO);
     }
 }

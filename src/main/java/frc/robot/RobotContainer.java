@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
 import frc.robot.subsystems.shooter.ShooterIOProto2;
+import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
@@ -88,7 +90,7 @@ public class RobotContainer {
         
         shooter =
           new Shooter(
-            new ShooterIO() {}
+            new ShooterIOReal() 
           );
 
         collector =
@@ -355,28 +357,28 @@ public class RobotContainer {
 
         controller.povUp().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0);
+            elevator.setPO(0.0);
             }
           )
         );
 
         controller.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.2);
+            elevator.setPO(1.0);
             }
           )
         );
 
         controller.povDown().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0);
+            elevator.setPO(0.0);
             }
           )
         );
 
         controller.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.2);
+            elevator.setPO(-1.0);
             }
           )
         );
@@ -409,6 +411,20 @@ public class RobotContainer {
             shooter.setWristPO(-0.5);
             }
           )
+        );
+
+        controller.rightTrigger().whileTrue(Commands.run(
+          ()-> {
+            shooter.setVoltages(12, 12, 12);
+            System.out.println("Trigger pulled");
+          }
+        )
+        );
+        controller.rightTrigger().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
         );
         
         break;

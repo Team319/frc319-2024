@@ -50,5 +50,5 @@ public interface ShooterIO {
 
     public default void configurePID(double kP, double kI, double kD) {}
 
-    public default void setWristPO(double PO){}
+    public default void setWristPO(double PO){ System.out.println("Default setWristPO() called"); }
 }
