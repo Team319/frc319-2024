@@ -74,7 +74,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(48)); // MUST BE CALIBRATED
             break;
         
           default:
@@ -89,7 +89,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(11, "Swerve Canivore");
          switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(100)); // MUST BE CALIBRATED
             break;
         
           default:
@@ -103,7 +103,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(5, "Swerve Canivore");
          switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(-15)); // MUST BE CALIBRATED
             break;
         
           default:
@@ -117,7 +117,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(8, "Swerve Canivore");
         switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(72)); // MUST BE CALIBRATED
             break;
         
           default:
@@ -125,7 +125,7 @@ public class ModuleIOTalonFX implements ModuleIO {
             break;
         }
         break;
-        
+
       default:
         throw new RuntimeException("Invalid module index");
     }

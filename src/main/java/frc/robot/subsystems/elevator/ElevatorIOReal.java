@@ -102,6 +102,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
+    elevatorLead.setInverted(false);
 
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
@@ -119,11 +120,12 @@ public class ElevatorIOReal implements ElevatorIO {
     return elevatorLead.getOutputCurrent();
   }
 
+  
   public void setFollow() {
-    elevatorFollow.follow(elevatorLead);
+    elevatorFollow.follow(elevatorLead, true);
   }
 
-  public void setInverted() {
+ /*  public void setInverted() {
     elevatorFollow.setInverted(false);
-  }
+  } */
 }
