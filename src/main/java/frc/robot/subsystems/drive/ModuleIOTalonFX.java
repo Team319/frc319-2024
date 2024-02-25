@@ -25,6 +25,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants;
 
 /**
  * Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and
@@ -70,26 +71,61 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveTalon = new TalonFX(0, "Swerve Canivore");
         turnTalon = new TalonFX(1, "Swerve Canivore");
         cancoder = new CANcoder(2, "Swerve Canivore");
-        absoluteEncoderOffset = new Rotation2d(-0.271520872); // MUST BE CALIBRATED
+
+        switch (Constants.currentMode) {
+          case REAL:
+            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            break;
+        
+          default:
+            absoluteEncoderOffset = new Rotation2d(-0.271520872); // MUST BE CALIBRATED BUSTER
+            break;
+        }
+
         break;
       case 1: // FR
         driveTalon = new TalonFX(9, "Swerve Canivore");
         turnTalon = new TalonFX(10, "Swerve Canivore");
         cancoder = new CANcoder(11, "Swerve Canivore");
-        absoluteEncoderOffset = new Rotation2d(1.920542856); // MUST BE CALIBRATED
+         switch (Constants.currentMode) {
+          case REAL:
+            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            break;
+        
+          default:
+            absoluteEncoderOffset = new Rotation2d(1.920542856); // MUST BE CALIBRATED BUSTER
+            break;
+        }
         break;
       case 2: // BL
         driveTalon = new TalonFX(3, "Swerve Canivore");
         turnTalon = new TalonFX(4, "Swerve Canivore");
         cancoder = new CANcoder(5, "Swerve Canivore");
-        absoluteEncoderOffset = new Rotation2d(2.734512059); // MUST BE CALIBRATED
+         switch (Constants.currentMode) {
+          case REAL:
+            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            break;
+        
+          default:
+            absoluteEncoderOffset = new Rotation2d(2.734512059); // MUST BE CALIBRATED BUSTER
+            break;
+         }
         break;
       case 3: // BR
         driveTalon = new TalonFX(6, "Swerve Canivore");
         turnTalon = new TalonFX(7, "Swerve Canivore");
         cancoder = new CANcoder(8, "Swerve Canivore");
-        absoluteEncoderOffset = new Rotation2d(-2.0); // MUST BE CALIBRATED -1.84079631861
+        switch (Constants.currentMode) {
+          case REAL:
+            absoluteEncoderOffset = new Rotation2d(0); // MUST BE CALIBRATED
+            break;
+        
+          default:
+            absoluteEncoderOffset = new Rotation2d(2.0); // MUST BE CALIBRATED BUSTER -1.84079631861
+            break;
+        }
         break;
+        
       default:
         throw new RuntimeException("Invalid module index");
     }

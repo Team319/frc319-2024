@@ -322,7 +322,7 @@ public class RobotContainer {
 
         controller.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0);
+            collector.setCollectorPO(0);
             }
           )
         );
@@ -336,7 +336,7 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0);
+            collector.setCollectorPO(0);
             }
           )
         );
@@ -348,30 +348,30 @@ public class RobotContainer {
           )
         );
 
-        controller.povUp().onFalse(Commands.runOnce(
+        controller.povUp().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.1);
+            elevator.setPO(0);
             }
           )
         );
 
-        controller.povUp().onTrue(Commands.runOnce(
+        controller.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.1);
+            elevator.setPO(1.0);
             }
           )
         );
 
-        controller.povDown().onFalse(Commands.runOnce(
+        controller.povDown().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.1);
+            elevator.setPO(0);
             }
           )
         );
 
-        controller.povDown().onTrue(Commands.runOnce(
+        controller.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.1);
+            elevator.setPO(-1.0);
             }
           )
         );

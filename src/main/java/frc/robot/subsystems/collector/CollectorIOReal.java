@@ -9,8 +9,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class CollectorIOReal implements CollectorIO {
   
-  private final CANSparkMax collectorLead = new CANSparkMax(40, MotorType.kBrushless);
-  private final CANSparkMax collectorFollow = new CANSparkMax(41, MotorType.kBrushless);
+  private final CANSparkMax collectorLead = new CANSparkMax(20, MotorType.kBrushless);
+  private final CANSparkMax collectorFollow = new CANSparkMax(21, MotorType.kBrushless);
 
   public static final int maxCurrent = 30;
 

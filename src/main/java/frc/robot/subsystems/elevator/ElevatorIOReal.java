@@ -15,8 +15,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ElevatorIOReal implements ElevatorIO {
   /** Creates a new ElevatorIOReal. */
 
-  private final CANSparkMax elevatorLead = new CANSparkMax(16, MotorType.kBrushless);
-  private final CANSparkMax elevatorFollow = new CANSparkMax(17, MotorType.kBrushless);
+  private final CANSparkMax elevatorLead = new CANSparkMax(40, MotorType.kBrushless);
+  private final CANSparkMax elevatorFollow = new CANSparkMax(41, MotorType.kBrushless);
 
   private final RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   private final SparkPIDController elevatorPIDController = elevatorLead.getPIDController();
@@ -94,11 +94,11 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorLead.clearFaults();
     elevatorFollow.clearFaults();
 
-    elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+   // elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
+   // elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
-    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
+   // elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
+    //elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
@@ -124,6 +124,6 @@ public class ElevatorIOReal implements ElevatorIO {
   }
 
   public void setInverted() {
-    elevatorLead.setInverted(false);
+    elevatorFollow.setInverted(false);
   }
 }
