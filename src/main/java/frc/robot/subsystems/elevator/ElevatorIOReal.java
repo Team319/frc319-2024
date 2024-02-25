@@ -5,6 +5,8 @@
 
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 //import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -32,8 +34,6 @@ public class ElevatorIOReal implements ElevatorIO {
   public ElevatorIOReal() {
     setup();
     setFollow();
-    setInverted();
-    setSmartMotionParams();
   }
 
   @Override
@@ -64,18 +64,6 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
 
-  public void setSmartMotionPosition(double targetPosition) {
-    manageMotion(targetPosition);
-    elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
-  }
-
-  private void setSmartMotionParams() {
-    elevatorPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    elevatorPIDController.setSmartMotionAllowedClosedLoopError(maxErr, smartMotionSlot);
-  }
-
   private void manageMotion(double targetPosition) {
     double currentPosition = getCurrentPosition();
       if (currentPosition > targetPosition) {
@@ -94,6 +82,8 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorLead.clearFaults();
     elevatorFollow.clearFaults();
 
+    elevatorLead.setInverted(false);
+
    // elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
    // elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
@@ -102,7 +92,6 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
-    elevatorLead.setInverted(false);
 
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
@@ -112,20 +101,18 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorLead.set(PO);
   }
 
+  @AutoLogOutput(key = "Elevator/leadVelocity")
   public double getVelocity() {
     return elevatorLead.getEncoder().getVelocity();
   }
 
+  @AutoLogOutput(key = "Elevator/leadAmps")
   public double getElevatorCurrent() {
     return elevatorLead.getOutputCurrent();
   }
 
-  
   public void setFollow() {
     elevatorFollow.follow(elevatorLead, true);
   }
 
- /*  public void setInverted() {
-    elevatorFollow.setInverted(false);
-  } */
 }

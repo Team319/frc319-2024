@@ -320,6 +320,8 @@ public class RobotContainer {
                       } , shooter)
             );
 
+        // ============================= Collector Debugging ============================= 
+
         controller.rightBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setCollectorPO(1.0);
@@ -347,6 +349,8 @@ public class RobotContainer {
             }
           )
         );
+
+        // ============================= Elevator Debugging ============================= 
 
         controller.povUp().whileFalse(Commands.runOnce(
           () -> {
@@ -376,12 +380,35 @@ public class RobotContainer {
           )
         );
 
+        // ============================= Wrist Debugging ============================= 
 
-          /* 
-        controller.rightBumper().onFalse(Commands.runOnce(
+        controller.povRight().whileFalse(Commands.runOnce(
           () -> {
-            shooter.setFeedVoltage(0.0);
-          } , shooter));*/
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        controller.povRight().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.5);
+            }
+          )
+        );
+
+        controller.povLeft().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        controller.povLeft().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(-0.5);
+            }
+          )
+        );
         
         break;
     
@@ -389,12 +416,6 @@ public class RobotContainer {
       /* Do nothing */
         break;
     }
-    
-    // controller
-    //    .a()
-    //    .whileTrue(
-    //        Commands.startEnd(
-    //            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
   }
 
   /**
