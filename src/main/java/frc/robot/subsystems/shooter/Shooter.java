@@ -116,6 +116,10 @@ public class Shooter extends SubsystemBase {
     io.configurePID(kP, kI, kD);
   }
 
+  public void setWristPO(double PO){
+    io.setWristPO(PO);
+  }
+
   /** Returns the current velocity in RPM. */
  // public double getVelocityRPM() {
  //   return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
