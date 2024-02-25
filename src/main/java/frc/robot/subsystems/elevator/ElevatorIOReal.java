@@ -5,7 +5,7 @@
 
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
+//import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;

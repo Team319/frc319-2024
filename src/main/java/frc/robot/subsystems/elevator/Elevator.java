@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.elevator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,6 +28,12 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    double elevatorPosition = SmartDashboard.getNumber("Elevator Position", 0.0); //put or get?
+
+    double elevatorP = SmartDashboard.getNumber("Elevator P", 0.0);
+    double elevatorI = SmartDashboard.getNumber("Elevator I", 0.0);
+    double elevatorD = SmartDashboard.getNumber("Elevator D", 0.0);
+
   }
 
   public void stop() {
