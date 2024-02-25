@@ -14,6 +14,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -240,9 +242,8 @@ public class RobotContainer {
 
     // Set up named commands for PathPlanner
     // NamedCommands.registerCommand(
-    //    "Run Flywheel",
-    //    Commands.startEnd(
-    //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+    //    "exampleCommand",
+    //     exampleSubsystem.exampleCommand());
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
