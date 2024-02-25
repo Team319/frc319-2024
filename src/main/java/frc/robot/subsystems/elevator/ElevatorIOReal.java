@@ -33,7 +33,6 @@ public class ElevatorIOReal implements ElevatorIO {
     setup();
     setFollow();
     setInverted();
-    setSmartMotionParams();
   }
 
   @Override
