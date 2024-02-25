@@ -8,7 +8,12 @@
     "Real Test Auto R",
     "Square Auto"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Amp Side Start",
+    "Center Start",
+    "Misc.",
+    "Source Side Start"
+  ],
   "defaultMaxVel": 5.0,
   "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
