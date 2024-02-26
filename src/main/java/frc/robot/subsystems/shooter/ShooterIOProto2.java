@@ -34,7 +34,6 @@ public class ShooterIOProto2 implements ShooterIO{
         feedLeft.setVoltage(ffVolts);
         feedRight.setVoltage(ffVolts);
         updateRPM();
-        System.err.println("ff voltage: " + ffVolts);
     }
 
     @Override

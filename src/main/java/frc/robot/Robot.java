@@ -16,6 +16,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.shooter.ShooterIOReal;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -60,7 +63,8 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("Elevator I", 0.0);
     SmartDashboard.putNumber("Elevator D", 0.0);
 
-    SmartDashboard.putNumber("Elevator Position", 0.0);
+    SmartDashboard.putNumber("Elevator Position", ElevatorIOReal.getCurrentPosition());
+    SmartDashboard.putNumber("Wrist Position", ShooterIOReal.getCurrentPosition());
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);

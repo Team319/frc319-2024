@@ -17,10 +17,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ElevatorIOReal implements ElevatorIO {
   /** Creates a new ElevatorIOReal. */
 
-  private final CANSparkMax elevatorLead = new CANSparkMax(40, MotorType.kBrushless);
+  private final static CANSparkMax elevatorLead = new CANSparkMax(40, MotorType.kBrushless);
   private final CANSparkMax elevatorFollow = new CANSparkMax(41, MotorType.kBrushless);
 
-  private final RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
+
+  private final static RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   private final SparkPIDController elevatorPIDController = elevatorLead.getPIDController();
 
   public static class ElevatorSetpoint {
@@ -55,8 +56,8 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setFF(kFFDown);
   }
 
-  public double getCurrentPosition() {
-    return this.elevatorEncoder.getPosition();
+  public static double getCurrentPosition() {
+    return elevatorEncoder.getPosition();
   }
 
   public void setPosition(double targetPosition) {

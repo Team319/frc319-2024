@@ -61,11 +61,12 @@ public class Shooter extends SubsystemBase {
     
     shooterVelocity = leftShooterVelocity;
 
+
     configurePID(shooterP, shooterI, shooterD);
     runShooterVelocity(shooterVelocity);
     //runFeedVelocity(shooterVelocity);
 
-    //setFeedVoltage(feedVolts);
+    setFeedVoltage(feedVolts);
 
     // Update advantageKit logging IO
     //io.updateInputs(inputs);
@@ -87,7 +88,6 @@ public class Shooter extends SubsystemBase {
 
   public void setFeedVoltage(double voltage){
     io.setFeedVoltage(voltage);
-    System.err.println("Feed Voltage: " + voltage);
   }
 
   /** Run closed loop at the specified velocity. */

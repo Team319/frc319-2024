@@ -28,9 +28,9 @@ public class ShooterIOReal implements ShooterIO{
     private final CANSparkMax feed = new CANSparkMax(34, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController feedPid = feed.getPIDController();
 
-    private final CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless); // when merging use this value
+    private final static CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController wristPid = wrist.getPIDController();
-    private final RelativeEncoder wristEncoder = wrist.getEncoder();
+    private final static RelativeEncoder wristEncoder = wrist.getEncoder();
 
     public static class WristConstants {
         public static class PID {
@@ -79,8 +79,11 @@ public ShooterIOReal(){
     public void setFeedVoltage(double ffVolts) {
         feed.setVoltage(ffVolts);
         updateRPM();
-        System.err.println("ff voltage: " + ffVolts);
     }
+
+    public static double getCurrentPosition() {
+        return wristEncoder.getPosition();
+      }
     
     @Override
     public void setVoltages(double leftShooterVolts, double rightShooterVolts, double feedVolts) {

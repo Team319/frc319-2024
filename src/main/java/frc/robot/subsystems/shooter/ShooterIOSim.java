@@ -93,7 +93,6 @@ public class ShooterIOSim implements ShooterIO {
         this.ffVolts = ffVolts;
         leftFeedSim.setInputVoltage(ffVolts);
         rightFeedSim.setInputVoltage(ffVolts);
-        System.err.println("ff voltage: " + ffVolts);
     }
 
     @Override

@@ -18,9 +18,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -203,7 +203,7 @@ public class RobotContainer {
 
           collector =
             new Collector(
-              new CollectorIOReal() // Something is sadly required here
+              new CollectorIO() {}
             );
 
           elevator =
@@ -303,13 +303,12 @@ public class RobotContainer {
                     .ignoringDisable(true));
 
 
-        controller
+/*       controller
             .y()
             .onTrue(
               Commands.runOnce(
                       () -> {
                         shooter.runFeedAtShooterVelocity();
-                        System.err.println("Y Pressed");
                       } , shooter)
             );
 
@@ -319,15 +318,15 @@ public class RobotContainer {
               Commands.runOnce(
                       () -> {
                         shooter.setFeedVoltage(0);
-                        System.err.println("Y released");
                       } , shooter)
             );
+*/
 
         // ============================= Collector Debugging ============================= 
 
         controller.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(.2);
+            collector.setCollectorPO(.5);
             }
           )
         );
@@ -341,7 +340,7 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-0.2);
+            collector.setCollectorPO(-0.5);
             }
           )
         );
@@ -416,7 +415,6 @@ public class RobotContainer {
         controller.rightTrigger().whileTrue(Commands.run(
           ()-> {
             shooter.setVoltages(12, 12, 12);
-            System.out.println("Trigger pulled");
           }
         )
         );
