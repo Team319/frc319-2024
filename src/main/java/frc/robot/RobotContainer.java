@@ -309,7 +309,6 @@ public class RobotContainer {
               Commands.runOnce(
                       () -> {
                         shooter.runFeedAtShooterVelocity();
-                        System.err.println("Y Pressed");
                       } , shooter)
             );
 
@@ -319,8 +318,21 @@ public class RobotContainer {
               Commands.runOnce(
                       () -> {
                         shooter.setFeedVoltage(0);
-                        System.err.println("Y released");
                       } , shooter)
+            );
+
+        controller.a().onTrue(Commands.runOnce(
+          () -> {
+            shooter.runShooterVelocity(0);
+            shooter.runFeedVelocity(0);
+          } , shooter)
+            );
+
+        controller.a().onFalse(Commands.runOnce(
+          () -> {
+            shooter.runShooterVelocity(0);
+            shooter.runFeedVelocity(0);
+          } , shooter)
             );
 
         // ============================= Collector Debugging ============================= 
