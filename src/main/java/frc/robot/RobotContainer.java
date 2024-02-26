@@ -327,7 +327,7 @@ public class RobotContainer {
 
         controller.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0);
+            collector.setCollectorPO(.2);
             }
           )
         );
@@ -341,7 +341,7 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0);
+            collector.setCollectorPO(-0.2);
             }
           )
         );
