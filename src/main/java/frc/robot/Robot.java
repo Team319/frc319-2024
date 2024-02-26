@@ -23,6 +23,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import frc.robot.subsystems.wrist;
+import frc.robot.subsystems.wrist.WristIOReal;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -55,12 +58,6 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("shooter P", 0.0);
     SmartDashboard.putNumber("shooter I", 0.0);
     SmartDashboard.putNumber("shooter D", 0.0);
-
-    SmartDashboard.putNumber("Elevator P", 0.0);
-    SmartDashboard.putNumber("Elevator I", 0.0);
-    SmartDashboard.putNumber("Elevator D", 0.0);
-
-    SmartDashboard.putNumber("Elevator Position", 0.0);
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
