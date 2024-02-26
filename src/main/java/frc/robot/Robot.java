@@ -63,8 +63,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumber("Elevator I", 0.0);
     SmartDashboard.putNumber("Elevator D", 0.0);
 
-    SmartDashboard.putNumber("Elevator Position", ElevatorIOReal.getCurrentPosition());
-    SmartDashboard.putNumber("Wrist Position", ShooterIOReal.getCurrentPosition());
+    SmartDashboard.putNumber("Elevator Position", 0.0);
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);

@@ -2,27 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.elevator;
-<<<<<<< HEAD
-
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-=======
->>>>>>> 35178361624d3a63997d0a5e9b73f35fa4817a0d
+package frc.robot.subsystems.wrist;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.shooter.ShooterIO;
 
-public class Elevator extends SubsystemBase {
-  private final ElevatorIO io;
+public class Wrist extends SubsystemBase {
+  private final WristIO io;
   /** Creates a new Wrist. */
-<<<<<<< HEAD
-
-=======
->>>>>>> 35178361624d3a63997d0a5e9b73f35fa4817a0d
-  public Elevator(ElevatorIO io) {
+  public Wrist(WristIO io) {
     this.io = io;
 
     switch (Constants.currentMode) {
@@ -44,7 +33,6 @@ public class Elevator extends SubsystemBase {
     io.stop();
   }
 
-
   public void configurePID(double kP, double kI, double kD) {
     io.configurePID(kP, kI, kD);
   }
@@ -56,6 +44,8 @@ public class Elevator extends SubsystemBase {
   public void setPO(double PO) {
     io.setPO(PO);
   }
+
+  public void getPosition() {}
 
   
 }
