@@ -11,6 +11,8 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,6 +20,7 @@ public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
+  private double velocity = 0.0;
 
   private double shooterVelocity;
 
@@ -89,14 +92,25 @@ public class Shooter extends SubsystemBase {
     io.setFeedVoltage(voltage);
     System.err.println("Feed Voltage: " + voltage);
   }
-
   /** Run closed loop at the specified velocity. */
   public void runShooterVelocity(double velocityRPM) {
     var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
     io.setShooterVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
+    
 
     // Log flywheel setpoint
     Logger.recordOutput("ShooterSetpointRPM", velocityRPM);
+  }
+
+  public Command setShooterVelocity(double velocity) {
+    this.velocity = velocity;
+        switch(Constants.currentMode){  
+    default:
+        return Commands.run(
+        () -> {} /* do nothing */
+        );
+        }
+
   }
 
   /** Run closed loop at the specified velocity. */

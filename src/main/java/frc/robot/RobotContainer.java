@@ -247,6 +247,10 @@ public class RobotContainer {
     //    "exampleCommand",
     //     exampleSubsystem.exampleCommand());
 
+    NamedCommands.registerCommand(
+      "Shoot",
+        shooter.setShooterVelocity(3000));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -321,6 +325,7 @@ public class RobotContainer {
                       } , shooter)
             );
 
+        // Shoot Command
         controller.a().onTrue(Commands.runOnce(
           () -> {
             shooter.runShooterVelocity(0);
