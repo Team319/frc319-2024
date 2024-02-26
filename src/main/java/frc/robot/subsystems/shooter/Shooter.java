@@ -6,7 +6,7 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+//import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
@@ -114,6 +114,10 @@ public class Shooter extends SubsystemBase {
 
   public void configurePID(double kP, double kI, double kD) {
     io.configurePID(kP, kI, kD);
+  }
+
+  public void setWristPO(double PO){
+    io.setWristPO(PO);
   }
 
   /** Returns the current velocity in RPM. */

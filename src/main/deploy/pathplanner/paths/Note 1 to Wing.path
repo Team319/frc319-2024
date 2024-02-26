@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7626093884666401,
-        "y": 6.852774503269805
+        "x": 8.01,
+        "y": 5.78
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8618599060534402,
-        "y": 6.431784943345644
+        "x": 7.098043049767811,
+        "y": 5.889104204764231
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.083749250119582,
-        "y": 5.928936302317049
+        "x": 4.97,
+        "y": 6.2
       },
       "prevControl": {
-        "x": 3.592594763534551,
-        "y": 5.566417514605089
-      },
-      "nextControl": {
-        "x": 4.42919496386945,
-        "y": 6.183908138652325
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.376103111178026,
-        "y": 7.30884652652864
-      },
-      "prevControl": {
-        "x": 4.387797265620466,
-        "y": 6.630585568867123
+        "x": 6.271556106057582,
+        "y": 5.87910420476423
       },
       "nextControl": null,
       "isLocked": false,
@@ -59,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Real Test Auto Orange",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

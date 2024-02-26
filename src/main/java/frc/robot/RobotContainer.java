@@ -14,8 +14,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,13 +33,23 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.drive.TankIO;
-import frc.robot.subsystems.drive.TankIOReal;
+//import frc.robot.subsystems.drive.TankIO;
+//import frc.robot.subsystems.drive.TankIOReal;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
 import frc.robot.subsystems.shooter.ShooterIOProto2;
+import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.collector.Collector;
+import frc.robot.subsystems.collector.CollectorIO;
+import frc.robot.subsystems.collector.CollectorIOReal;
+import frc.robot.subsystems.collector.CollectorIOSim;
+
+//import java.util.Collection;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -50,6 +63,8 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   public final Shooter shooter;
+  public final Collector collector;
+  public final Elevator elevator;
   // private final Flywheel flywheel;
 
   // Controller
@@ -75,8 +90,19 @@ public class RobotContainer {
         
         shooter =
           new Shooter(
-            new ShooterIO() {}
+            new ShooterIOReal() 
           );
+
+        collector =
+          new Collector(
+            new CollectorIOReal()
+          );
+
+        elevator =
+          new Elevator(
+            new ElevatorIOReal()
+        );
+          
         break;
       
         case TANK:
@@ -87,6 +113,17 @@ public class RobotContainer {
             new Shooter(
               new ShooterIOProto()
             );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // An IO that has nothing in it so things can be happy
+            );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+            
           break;
       
         case SIM:
@@ -104,6 +141,16 @@ public class RobotContainer {
               new ShooterIOSim()
             );
           
+          collector =
+            new Collector(
+              new CollectorIOSim()
+              );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
         
         case PROTO:
@@ -113,6 +160,17 @@ public class RobotContainer {
             new Shooter(
               new ShooterIOProto()
             );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // An IO that has nothing in it so things can be happy
+            );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
         case PROTO2:
@@ -122,6 +180,37 @@ public class RobotContainer {
             new Shooter(
               new ShooterIOProto2()
             );
+
+          collector =
+            new Collector(
+              new CollectorIO() {} // Something is sadly required here
+            );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
+          break;
+
+        case PROTO3:
+          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
+          
+          shooter =
+            new Shooter(
+              new ShooterIO(){}
+            );
+
+          collector =
+            new Collector(
+              new CollectorIOReal() // Something is sadly required here
+            );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
       default:
@@ -139,14 +228,24 @@ public class RobotContainer {
           new Shooter(new ShooterIO() {
             
           });
+
+      collector = 
+          new Collector(
+            new CollectorIO() {}
+          );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
         break;
     }
 
     // Set up named commands for PathPlanner
     // NamedCommands.registerCommand(
-    //    "Run Flywheel",
-    //    Commands.startEnd(
-    //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+    //    "exampleCommand",
+    //     exampleSubsystem.exampleCommand());
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -192,6 +291,7 @@ public class RobotContainer {
       
       
         controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        
         controller
             .b()
             .onTrue(
@@ -213,7 +313,7 @@ public class RobotContainer {
                       } , shooter)
             );
 
-            controller
+        controller
             .y()
             .onFalse(
               Commands.runOnce(
@@ -222,12 +322,110 @@ public class RobotContainer {
                         System.err.println("Y released");
                       } , shooter)
             );
-        
-          /* 
+
+        // ============================= Collector Debugging ============================= 
+
+        controller.rightBumper().onTrue(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(1.0);
+            }
+          )
+        );
+
         controller.rightBumper().onFalse(Commands.runOnce(
           () -> {
-            shooter.setFeedVoltage(0.0);
-          } , shooter));*/
+            collector.setCollectorPO(0);
+            }
+          )
+        );
+
+        controller.leftBumper().onTrue(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(-1.0);
+            }
+          )
+        );
+
+        controller.leftBumper().onFalse(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(0);
+            }
+          )
+        );
+
+        // ============================= Elevator Debugging ============================= 
+
+        controller.povUp().whileFalse(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.0);
+            }
+          )
+        );
+
+        controller.povUp().whileTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(1.0);
+            }
+          )
+        );
+
+        controller.povDown().whileFalse(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.0);
+            }
+          )
+        );
+
+        controller.povDown().whileTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(-1.0);
+            }
+          )
+        );
+
+        // ============================= Wrist Debugging ============================= 
+
+        controller.povRight().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        controller.povRight().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.5);
+            }
+          )
+        );
+
+        controller.povLeft().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        controller.povLeft().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(-0.5);
+            }
+          )
+        );
+
+        controller.rightTrigger().whileTrue(Commands.run(
+          ()-> {
+            shooter.setVoltages(12, 12, 12);
+            System.out.println("Trigger pulled");
+          }
+        )
+        );
+        controller.rightTrigger().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
+        );
         
         break;
     
@@ -235,12 +433,6 @@ public class RobotContainer {
       /* Do nothing */
         break;
     }
-    
-    // controller
-    //    .a()
-    //    .whileTrue(
-    //        Commands.startEnd(
-    //            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
   }
 
   /**

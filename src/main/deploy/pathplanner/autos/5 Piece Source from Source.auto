@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6456678440422406,
-      "y": 4.572414386994017
+      "x": 0.6690561529271205,
+      "y": 4.209895599278378
     },
     "rotation": -61.0
   },
@@ -14,43 +14,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source Path"
+            "pathName": "Speaker to Note 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Source Center Path"
+            "pathName": "Note 4 to Podium Note"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 2"
+            "pathName": "Podium Note to Center Note"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Path to Center"
+            "pathName": "Center Piece to Note 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to Mid Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid to Note 3 Path"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 3 to Mid"
+            "pathName": "Note 3 to Center"
           }
         }
       ]

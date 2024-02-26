@@ -14,37 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 1"
+            "pathName": "Speaker to Center piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RTA 2"
+            "pathName": "Center Piece to Amp Piece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Path to Center"
+            "pathName": "Amp Piece to Note 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to Mid Path"
+            "pathName": "Note 2 to Center "
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid to Note 3 Path"
+            "pathName": "Center to Note 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Note 3 to Mid"
+            "pathName": "Note 3 to Center"
           }
         }
       ]

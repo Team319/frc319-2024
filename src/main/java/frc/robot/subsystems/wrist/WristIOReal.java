@@ -32,6 +32,10 @@ public class WristIOReal implements WristIO {
     setSoftLimits();
   }
 
+  public double getPosition() {
+    return wristEncoder.getPosition();
+  }
+
   @Override
   public void stop() {
     wrist.stopMotor();
@@ -47,11 +51,6 @@ public class WristIOReal implements WristIO {
   @Override
   public void setPosition(double position) {
     wristEncoder.setPosition(position);
-  }
-
-  
-  public double getPosition() {
-    return wristEncoder.getPosition();
   }
 
   @Override
