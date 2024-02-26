@@ -5,15 +5,32 @@
 package frc.robot.subsystems.wrist;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class WristIOReal implements WristIO {
 
-  private final TalonFX wrist = new TalonFX(23);
+  private final CANSparkMax wrist = new CANSparkMax(0, MotorType.kBrushless);
+  private final RelativeEncoder wristEncoder = wrist.getEncoder();
+  private final SparkPIDController wristPIDController = wrist.getPIDController();
+
+  private class WristPID {
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+  }
 
   /** Creates a new WristIOReal. */
-  public WristIOReal() {}
+  public WristIOReal() {
+    setSoftLimits();
+  }
 
   @Override
   public void stop() {
@@ -21,13 +38,29 @@ public class WristIOReal implements WristIO {
   }
 
   @Override
-  public void configurePID(double kP, double kI, double kD) {}
-
-  @Override
-  public void setPosition(double position) {
-    wrist.setPosition(position);
+  public void configurePID(double kP, double kI, double kD) {
+    wristPIDController.setP(WristPID.kP);
+    wristPIDController.setI(WristPID.kI);
+    wristPIDController.setD(WristPID.kD);
   }
 
   @Override
-  public void setPO(double PO) {}
+  public void setPosition(double position) {
+    wristEncoder.setPosition(position);
+  }
+
+  
+  public double getPosition() {
+    return wristEncoder.getPosition();
+  }
+
+  @Override
+  public void setPO(double PO) {
+    wrist.set(PO);
+  }
+
+  public void setSoftLimits() {
+    wrist.setSoftLimit(SoftLimitDirection.kForward, 0);
+    wrist.setSoftLimit(SoftLimitDirection.kReverse, 0);
+  }
 }

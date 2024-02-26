@@ -45,5 +45,7 @@ public class Wrist extends SubsystemBase {
     io.setPO(PO);
   }
 
+  public void getPosition() {}
+
   
 }
