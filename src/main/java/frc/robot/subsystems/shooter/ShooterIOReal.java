@@ -67,7 +67,15 @@ public ShooterIOReal(){
 }
 
 @Override
-    public void updateInputs(ShooterIOInputs inputs) {}
+    public void updateInputs(ShooterIOInputs inputs) {
+        inputs.feedRollerAmps = feed.getOutputCurrent();
+        inputs.leftFlywheelAmps = shooterLeft.getTorqueCurrent().getValueAsDouble();
+        inputs.rightFlywheelAmps = shooterRight.getTorqueCurrent().getValueAsDouble();
+        inputs.leftFlywheelVelocityRadPerSec = shooterLeft.getVelocity().getValueAsDouble();
+        inputs.rightFlywheelVelocityRadPerSec = shooterRight.getVelocity().getValueAsDouble();
+        inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
+        inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
+    }
 
     private void setupShooter(){
         shooterLeft.setInverted(true);

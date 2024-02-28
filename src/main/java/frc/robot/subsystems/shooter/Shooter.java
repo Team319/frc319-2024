@@ -47,6 +47,8 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    io.updateInputs(inputs);
+
     double leftShooterVolts = SmartDashboard.getNumber("leftShooter volts", 0.0);
     double rightShooterVolts = SmartDashboard.getNumber("rightShooter volts", 0.0);
     double feedVolts = SmartDashboard.getNumber("feed volts", 0.0);

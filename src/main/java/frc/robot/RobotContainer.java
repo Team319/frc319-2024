@@ -38,6 +38,7 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
@@ -148,7 +149,7 @@ public class RobotContainer {
 
           elevator =
             new Elevator(
-              new ElevatorIO() {}
+              new ElevatorIOSim() {}
             );
 
           break;

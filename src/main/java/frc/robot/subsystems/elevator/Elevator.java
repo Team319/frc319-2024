@@ -9,7 +9,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
+  
   private final ElevatorIO io;
+  private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
+
   /** Creates a new Elevator. */
   public Elevator(ElevatorIO io) {
     this.io = io;
@@ -28,6 +31,13 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    io.updateInputs(inputs);
+
+    // since we update inputs, we can read these values from AdvantageScope
+
+    //System.out.println("Elevator Position: " + getPosition());
+
     double elevatorPosition = SmartDashboard.getNumber("Elevator Position", 0.0); //put or get?
 
     double elevatorP = SmartDashboard.getNumber("Elevator P", 0.0);
@@ -42,5 +52,25 @@ public class Elevator extends SubsystemBase {
 
   public void setPO(double PO) {
     io.setPO(PO);
+  }
+
+  public void setPosition(double position) {
+    io.setPosition(position);
+  }
+
+  public void setVoltage(double voltage) {
+    io.setVoltage(voltage);
+  }
+
+  public void configurePID(double kP, double kI, double kD, double kFF) {
+    io.configurePID(kP, kI, kD, kFF);
+  }
+
+  public double getPosition() {
+    return io.getPosition();
+  }
+
+  public double getVelocity() {
+    return io.getVelocity();
   }
 }
