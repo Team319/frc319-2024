@@ -19,17 +19,19 @@ public interface ShooterIO {
         public double leftShooterAppliedVolts = 0.0;
         public double rightShooterAppliedVolts = 0.0;
 
-        public double leftFeedAppliedVolts = 0.0;
-        public double rightFeedAppliedVolts = 0.0;
+        public double feedRollerAppliedVolts = 0.0;
 
-        public double[] currentAmps = new double[] {};
-        
-        public double leftFlywheelVelocityRadPerSec;
-        public double rightFlywheelVelocityRadPerSec;
-        public double[] leftFlywheelCurrentAmps;
-        public double[] rightFlywheelCurrentAmps;
-        public double[] leftFeedCurrentAmps;
-        public double[] rightFeedCurrentAmps;
+        public double leftFlywheelAmps = 0.0;
+        public double rightFlywheelAmps = 0.0;
+        public double feedRollerAmps = 0.0;
+
+        public double leftFlywheelVelocityRadPerSec = 0.0;
+        public double rightFlywheelVelocityRadPerSec = 0.0;
+
+        public double leftFlywheelVelocitySetpointRadPerSec = 0.0;
+        public double rightFlywheelVelocitySetpointRadPerSec = 0.0;
+
+
     }
 
     public default void updateInputs(ShooterIOInputs inputs) {}

@@ -12,9 +12,9 @@ public class CollectorIOReal implements CollectorIO {
   private final CANSparkMax collectorLead = new CANSparkMax(20, MotorType.kBrushless);
   private final CANSparkMax collectorFollow = new CANSparkMax(21, MotorType.kBrushless);
 
-  public static final int maxCurrent = 30;
-
-  //private final SparkPIDController collectorPIDController = collectorLead.getPIDController();
+  private int currentLimitAmps = 30;
+  private double rollerPercentOutputSetpoint = 0.0;
+  private boolean isLeadMotorInverted = false;
 
   public CollectorIOReal() {
     setCollectorFollow();
@@ -23,12 +23,21 @@ public class CollectorIOReal implements CollectorIO {
   }
 
   @Override
+  public void updateInputs(CollectorIOInputs inputs) {
+    inputs.maxCurrentAmps = this.currentLimitAmps;
+    inputs.outputCurrentAmps = getCollectorCurrent();
+    inputs.appliedPercentOutput = this.rollerPercentOutputSetpoint;
+    inputs.isLeadMotorInverted = this.isLeadMotorInverted;
+  }
+
+  @Override
   public void setCollectorPO(double PO) {
-    collectorLead.set(PO);
+    this.rollerPercentOutputSetpoint = PO;
+    collectorLead.set(this.rollerPercentOutputSetpoint);
   }
   
   public void setCollectorInversions() {
-    collectorLead.setInverted(false);
+    collectorLead.setInverted(isLeadMotorInverted);
    
   }
 
@@ -54,7 +63,7 @@ public class CollectorIOReal implements CollectorIO {
     collectorLead.setClosedLoopRampRate(0.125);
     collectorLead.setOpenLoopRampRate(0.125);
     
-    collectorLead.setSmartCurrentLimit(maxCurrent);
+    collectorLead.setSmartCurrentLimit(currentLimitAmps);
   }
 }
 

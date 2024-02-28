@@ -4,12 +4,20 @@
 
 package frc.robot.subsystems.collector;
 
+import org.littletonrobotics.junction.AutoLog;
+
 /** Add your docs here. */
 public interface CollectorIO {
 
-    public static final double kFF = 0.0;
-    public static final double kP = 0.0;
-    public static final int maxCurrent = 0;
+    @AutoLog
+    public static class CollectorIOInputs {
+        public int maxCurrentAmps = 0;
+        public double appliedPercentOutput = 0.0;
+        public boolean isLeadMotorInverted = false;
+        public double outputCurrentAmps = 0.0;
+    }
+
+    public default void updateInputs(CollectorIOInputs inputs) {}
 
     public default void stop() {}
 

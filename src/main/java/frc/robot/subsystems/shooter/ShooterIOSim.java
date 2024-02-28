@@ -46,14 +46,14 @@ public class ShooterIOSim implements ShooterIO {
         
         inputs.leftShooterAppliedVolts = leftShooterAppliedVolts;
         inputs.rightShooterAppliedVolts = rightShooterAppliedVolts;
-        inputs.leftFeedAppliedVolts = leftFeedAppliedVolts;
-        inputs.rightFeedAppliedVolts = rightFeedAppliedVolts;
+        //inputs.leftFeedAppliedVolts = leftFeedAppliedVolts;
+        //inputs.rightFeedAppliedVolts = rightFeedAppliedVolts;
         
-        inputs.leftFlywheelCurrentAmps = new double[] {leftShooterSim.getCurrentDrawAmps()};
-        inputs.rightFlywheelCurrentAmps = new double[] {rightShooterSim.getCurrentDrawAmps()};
+        //inputs.leftFlywheelCurrentAmps = new double[] {leftShooterSim.getCurrentDrawAmps()};
+        //inputs.rightFlywheelCurrentAmps = new double[] {rightShooterSim.getCurrentDrawAmps()};
 
-        inputs.leftFeedCurrentAmps = new double[] {leftFeedSim.getCurrentDrawAmps()};
-        inputs.rightFeedCurrentAmps = new double[] {rightFeedSim.getCurrentDrawAmps()};
+        //inputs.leftFeedCurrentAmps = new double[] {leftFeedSim.getCurrentDrawAmps()};
+        //inputs.rightFeedCurrentAmps = new double[] {rightFeedSim.getCurrentDrawAmps()};
     }
 
     @Override
