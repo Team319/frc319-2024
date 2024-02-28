@@ -31,6 +31,9 @@ public interface ShooterIO {
         public double leftFlywheelVelocitySetpointRadPerSec = 0.0;
         public double rightFlywheelVelocitySetpointRadPerSec = 0.0;
 
+        public double wristPosition = 0.0;
+        
+
 
     }
 
@@ -52,5 +55,12 @@ public interface ShooterIO {
 
     public default void configurePID(double kP, double kI, double kD) {}
 
-    public default void setWristPO(double PO){ System.out.println("Default setWristPO() called"); }
+    public default void setShooterPO(double PO){}
+
+    public default void setFeedPO(double PO){}
+
+    public default double getPosition() {return 0.0;}
+
+    public default void setWristPO(double PO){}
+
 }

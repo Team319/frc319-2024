@@ -17,11 +17,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
-      public static final double TOP = 0.0;
+      public static final double TOP = 130.0;
       public static final double TRAP = 0.0;
       public static final double AMP = 0.0;
       public static final double CLIMB = 0.0;
-      public static final double BOTTOM = 0.0;
+      public static final double BOTTOM = 1.0;
   }
 
   public static class ElevatorPIDGains {
@@ -61,11 +61,11 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorLead.setInverted(false);
 
-   // elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
-   // elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+   elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
+   elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-   // elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
-    //elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
+   elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
+   elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);

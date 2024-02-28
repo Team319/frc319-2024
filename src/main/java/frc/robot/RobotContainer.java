@@ -303,25 +303,26 @@ public class RobotContainer {
                     .ignoringDisable(true));
 
 
-        controller
-            .y()
-            .onTrue(
-              Commands.runOnce(
-                      () -> {
-                        shooter.runFeedAtShooterVelocity();
-                        System.err.println("Y Pressed");
-                      } , shooter)
-            );
+   /*      controller
+        .y()
+        .onTrue(
+          Commands.runOnce(
+          () -> {
+            Shooter.setFeedPO(0.2);
 
-        controller
-            .y()
-            .onFalse(
-              Commands.runOnce(
-                      () -> {
-                        shooter.setFeedVoltage(0);
-                        System.err.println("Y released");
-                      } , shooter)
-            );
+            }
+          )
+        ); */
+
+  /*       controller
+        .y()
+        .onFalse(Commands.runOnce(
+          () -> {
+            Shooter.setFeedPO(0.0);
+            }
+          )
+        );*/
+      
 
         // ============================= Collector Debugging ============================= 
 
@@ -353,7 +354,7 @@ public class RobotContainer {
           )
         );
 
-        // ============================= Elevator Debugging ============================= 
+        /*  ============================= Elevator Debugging ============================= */
 
         controller.povUp().whileFalse(Commands.runOnce(
           () -> {
@@ -364,7 +365,7 @@ public class RobotContainer {
 
         controller.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(1.0);
+            elevator.setPO(0.1);
             }
           )
         );
@@ -378,7 +379,7 @@ public class RobotContainer {
 
         controller.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-1.0);
+            elevator.setPO(-0.1);
             }
           )
         );
@@ -394,7 +395,7 @@ public class RobotContainer {
 
         controller.povRight().whileTrue(Commands.runOnce(
           () -> {
-            shooter.setWristPO(0.5);
+            shooter.setWristPO(0.9);
             }
           )
         );
@@ -408,12 +409,12 @@ public class RobotContainer {
 
         controller.povLeft().whileTrue(Commands.runOnce(
           () -> {
-            shooter.setWristPO(-0.5);
+            shooter.setWristPO(-0.9);
             }
           )
         );
 
-        controller.rightTrigger().whileTrue(Commands.run(
+/*  controller.rightTrigger().whileTrue(Commands.run(
           ()-> {
             shooter.setVoltages(12, 12, 12);
             System.out.println("Trigger pulled");
@@ -428,7 +429,7 @@ public class RobotContainer {
         );
         
         break;
-    
+    */
       default:
       /* Do nothing */
         break;

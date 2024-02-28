@@ -39,12 +39,12 @@ public class ShooterIOReal implements ShooterIO{
           public static final double kD = 0;
   
           public static final int iZone = 0;
-          public static final double fGain = 0.00019231;
+          public static final double fGain = 0.0019231;
         }
   
         public static class SetPoints {
           public static final float home = (float)0.0;
-          public static final float top = (float)1000.0;
+          public static final float top = (float)0.0; //1000
           public static final float bottom = (float)0.0;
         }
   
@@ -75,6 +75,9 @@ public ShooterIOReal(){
         inputs.rightFlywheelVelocityRadPerSec = shooterRight.getVelocity().getValueAsDouble();
         inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
         inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
+
+        inputs.wristPosition = wristEncoder.getPosition();
+  
     }
 
     private void setupShooter(){
@@ -190,7 +193,6 @@ public ShooterIOReal(){
 
     @Override
     public void setWristPO(double PO) {
-        System.out.println("Wrist PO" + PO);
         wrist.set(PO);
     }
 }
