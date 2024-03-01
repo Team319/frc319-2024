@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.559,
-  "robotLength": 0.559,
+  "robotWidth": 0.698,
+  "robotLength": 0.7,
   "holonomicMode": true,
   "pathFolders": [
     "Real Test Auto Blue+White",
