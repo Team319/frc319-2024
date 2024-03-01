@@ -68,7 +68,9 @@ public class RobotContainer {
   // private final Flywheel flywheel;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController drivercontroller = new CommandXboxController(0);
+    private final CommandXboxController operatorcontroller = new CommandXboxController(1);
+
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
@@ -284,15 +286,15 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -controller.getLeftY(),
-              () -> -controller.getLeftX(),
-              () -> -controller.getRightX(),
-              () -> controller.getLeftTriggerAxis()));
+              () -> -drivercontroller.getLeftY(),
+              () -> -drivercontroller.getLeftX(),
+              () -> -drivercontroller.getRightX(),
+              () -> drivercontroller.getLeftTriggerAxis()));
       
       
-        controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        drivercontroller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
         
-        controller
+        drivercontroller
             .b()
             .onTrue(
                 Commands.runOnce(
@@ -303,7 +305,7 @@ public class RobotContainer {
                     .ignoringDisable(true));
 
 
-        controller
+        drivercontroller
             .y()
             .onTrue(
               Commands.runOnce(
@@ -313,7 +315,7 @@ public class RobotContainer {
                       } , shooter)
             );
 
-        controller
+        drivercontroller
             .y()
             .onFalse(
               Commands.runOnce(
@@ -325,28 +327,28 @@ public class RobotContainer {
 
         // ============================= Collector Debugging ============================= 
 
-        controller.rightBumper().onTrue(Commands.runOnce(
+        operatorcontroller.rightBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setCollectorPO(1.0);
             }
           )
         );
 
-        controller.rightBumper().onFalse(Commands.runOnce(
+        operatorcontroller.rightBumper().onFalse(Commands.runOnce(
           () -> {
             collector.setCollectorPO(0);
             }
           )
         );
 
-        controller.leftBumper().onTrue(Commands.runOnce(
+        operatorcontroller.leftBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setCollectorPO(-1.0);
             }
           )
         );
 
-        controller.leftBumper().onFalse(Commands.runOnce(
+        operatorcontroller.leftBumper().onFalse(Commands.runOnce(
           () -> {
             collector.setCollectorPO(0);
             }
@@ -355,28 +357,28 @@ public class RobotContainer {
 
         // ============================= Elevator Debugging ============================= 
 
-        controller.povUp().whileFalse(Commands.runOnce(
+        operatorcontroller.povUp().whileFalse(Commands.runOnce(
           () -> {
             elevator.setPO(0.0);
             }
           )
         );
 
-        controller.povUp().whileTrue(Commands.runOnce(
+        operatorcontroller.povUp().whileTrue(Commands.runOnce(
           () -> {
             elevator.setPO(1.0);
             }
           )
         );
 
-        controller.povDown().whileFalse(Commands.runOnce(
+        operatorcontroller.povDown().whileFalse(Commands.runOnce(
           () -> {
             elevator.setPO(0.0);
             }
           )
         );
 
-        controller.povDown().whileTrue(Commands.runOnce(
+        operatorcontroller.povDown().whileTrue(Commands.runOnce(
           () -> {
             elevator.setPO(-1.0);
             }
@@ -385,42 +387,42 @@ public class RobotContainer {
 
         // ============================= Wrist Debugging ============================= 
 
-        controller.povRight().whileFalse(Commands.runOnce(
+        operatorcontroller.povRight().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
             }
           )
         );
 
-        controller.povRight().whileTrue(Commands.runOnce(
+        operatorcontroller.povRight().whileTrue(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.5);
             }
           )
         );
 
-        controller.povLeft().whileFalse(Commands.runOnce(
+        operatorcontroller.povLeft().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
             }
           )
         );
 
-        controller.povLeft().whileTrue(Commands.runOnce(
+        operatorcontroller.povLeft().whileTrue(Commands.runOnce(
           () -> {
             shooter.setWristPO(-0.5);
             }
           )
         );
 
-        controller.rightTrigger().whileTrue(Commands.run(
+        drivercontroller.rightTrigger().whileTrue(Commands.run(
           ()-> {
-            shooter.setVoltages(12, 12, 12);
+            shooter.setVoltages(12, 12, 6);
             System.out.println("Trigger pulled");
           }
         )
         );
-        controller.rightTrigger().whileFalse(Commands.runOnce(
+        drivercontroller.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }
