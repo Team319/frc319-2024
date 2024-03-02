@@ -10,14 +10,11 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.DriverStation;
-import java.util.function.DoubleSupplier;
-import org.littletonrobotics.junction.AutoLogOutput;
+import frc.robot.util.LoggedTunableNumber;
 
 public class Shooter extends SubsystemBase {
   private static final double leftShooterVelocity = 0.0;
@@ -28,6 +25,15 @@ public class Shooter extends SubsystemBase {
 
   private double shooterVelocity;
 
+  private static final LoggedTunableNumber wrist_kP = new LoggedTunableNumber("Wrist/kP", 0.0);
+  private static final LoggedTunableNumber wrist_kI = new LoggedTunableNumber("Wrist/kI", 0.0);
+  private static final LoggedTunableNumber wrist_kD = new LoggedTunableNumber("Wrist/kD", 0.0);
+  private static final LoggedTunableNumber wrist_kFF = new LoggedTunableNumber("Wrist/kFF", 0.0);
+
+
+  private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", 0.0);
+  private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", 0.0);
+  private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", 0.0);
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
@@ -38,8 +44,6 @@ public class Shooter extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-      case PROTO:
-      case PROTO2:
         ffModel = new SimpleMotorFeedforward(0.33329, 0.00083);
         break;
       case SIM:
@@ -62,16 +66,12 @@ public class Shooter extends SubsystemBase {
     //double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
     //double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
 
-    double shooterP = SmartDashboard.getNumber("shooter P", 0.0);
-    double shooterI = SmartDashboard.getNumber("shooter I", 0.0);
-    double shooterD = SmartDashboard.getNumber("shooter D", 0.0);
-    double wristPosition = SmartDashboard.getNumber("Wrist Position", 0.0);
-
-    //System.out.println(wristPosition + getPosition());
-    System.out.println("Beam Break" + isBeamBreakTripped());
     shooterVelocity = leftShooterVelocity;
 
-    configurePID(shooterP, shooterI, shooterD);
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , wrist_kP, wrist_kI, wrist_kD);
+
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
+
     runShooterVelocity(shooterVelocity);
     getWristPosition();
 
@@ -80,17 +80,19 @@ public class Shooter extends SubsystemBase {
     //setFeedVoltage(feedVolts);
 
     // Update advantageKit logging IO
-    //io.updateInputs(inputs);
-    //Logger.processInputs("Shooter", inputs);
+    io.updateInputs(inputs);
+    Logger.processInputs("Shooter", inputs);
 
     //Log shooter speed in RPM
-    //Logger.recordOutput("LeftShooterSpeedRPM", getVelocityRPM());
+    Logger.recordOutput("LeftShooterSpeedRPM", getVelocityRPM());
   }
 
-    /** Stops the flywheel. */
+    /** Stops all motors. */
   public void stop() {
     io.stop();
   }
+
+// ====== Flywheel =========
 
   /** Stops the flywheel. */
   public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double feedVolts) {
@@ -98,8 +100,8 @@ public class Shooter extends SubsystemBase {
   }
 
   //public void setFeedVoltage(double voltage){
-    //io.setFeedVoltage(voltage);
-  //}
+ //  io.setFeedVoltage(voltage);
+ // }
 
   /** Run closed loop at the specified velocity. */
   public void runShooterVelocity(double velocityRPM) {
@@ -107,7 +109,7 @@ public class Shooter extends SubsystemBase {
     io.setShooterVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
 
     // Log flywheel setpoint
-    Logger.recordOutput("ShooterSetpointRPM", velocityRPM);
+    Logger.recordOutput("Shooter/SetpointRPM", velocityRPM);
   }
 
   
@@ -117,18 +119,22 @@ public class Shooter extends SubsystemBase {
     io.setFeedVelocity(velocityRadPerSec, ffModel.calculate(velocityRadPerSec));
 
     // Log flywheel setpoint
-    Logger.recordOutput("FeedSetpointRPM", velocityRPM);
+    Logger.recordOutput("Shooter/Feed/SetpointRPM", velocityRPM);
   }
 
   public void runFeedAtShooterVelocity(){
     runFeedVelocity(this.shooterVelocity);
   }
 
-
-  public void configurePID(double kP, double kI, double kD) {
-    io.configurePID(kP, kI, kD);
+  public void configureFlywheelPID(double kP, double kI, double kD) {
+    io.configureFlywheelPID(kP, kI, kD);
   }
 
+  public void configureWristPID(double kP, double kI, double kD, double kFF) {
+    io.configureWristPID(kP, kI, kD, kFF);
+  }
+
+// ====== Wrist =========
 
   public void setWristPO(double PO){
     io.setWristPO(PO);
@@ -140,34 +146,39 @@ public class Shooter extends SubsystemBase {
 
   public void getWristPosition() {
     io.getWristPosition();
-}
+  }
 
-
-
-//  public static void setFeedPO(double PO){
- //   io.setFeedPO(PO);
- // }
+  public void setFeedPO(double PO){
+    io.setFeedPO(PO);
+  }
 
  public double getPosition() {
   return io.getPosition();
 }
   /** Returns the current velocity in RPM. */
- // public double getVelocityRPM() {
- //   return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
- // }
-
- public void runShooter(double shooterVelocity, double feedVelocity) {
-    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(shooterVelocity);
-    io.setFeedVelocity(velocityRadPerSec, ffModel.calculate(shooterVelocity));
-
-    var velocityRadPerSec2 = Units.rotationsPerMinuteToRadiansPerSecond(feedVelocity);
-    io.setFeedVelocity(velocityRadPerSec2, ffModel.calculate(feedVelocity));
- }
+  public double getVelocityRPM() {
+    return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
+  }
 
  public boolean isBeamBreakTripped() {
   return io.isBeamBreakTripped();
  }
 
+   public Command shootCommand(double rpm) {
+    return Commands.runOnce(
+      () -> {
+        runShooterVelocity(3000); // TODO : Generic number
 
-  
+      },
+      this
+    );
+  }
+
+     public Command feedCommand() {
+    return Commands.runOnce(
+      () -> {
+        runFeedVelocity(2000);
+      }
+    );
+  }
 }

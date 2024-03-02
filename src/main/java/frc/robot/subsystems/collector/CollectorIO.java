@@ -23,14 +23,18 @@ public interface CollectorIO {
 
     public default void stop() {}
 
-    public default void setCollectorPO(double collectorPO, double feedPO) {}
+    public default void setRollersPO(double collectorPO) {}
+
+    public default void setTunnelPO(double collectorPO) {}
+
+    public default void setLowerPO(double collectorPO) {}
 
     public default void detectGamePiece() {}
 
-    public default void setCollectorPosition(double position) {}
-
-    public default void setTunnelPO(double PO) {}
+    public default void setRollersPOsition(double position) {}
 
     public default void setFeedVoltage(double ffVolts) {}
+
+    public default boolean isBeamBreakTripped() { return false; }
 
 }
