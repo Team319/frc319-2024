@@ -11,6 +11,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.util.LoggedTunableNumber;
@@ -43,8 +44,6 @@ public class Shooter extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-      case PROTO:
-      case PROTO2:
         ffModel = new SimpleMotorFeedforward(0.33329, 0.00083);
         break;
       case SIM:
@@ -67,8 +66,6 @@ public class Shooter extends SubsystemBase {
     //double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
     //double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
 
-   // LoggedTunableNumber.ifChanged(hashCode(), kP -> System.out.println(kP), kP);
-
     shooterVelocity = leftShooterVelocity;
 
     LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , wrist_kP, wrist_kI, wrist_kD);
@@ -87,13 +84,15 @@ public class Shooter extends SubsystemBase {
     Logger.processInputs("Shooter", inputs);
 
     //Log shooter speed in RPM
-    //Logger.recordOutput("LeftShooterSpeedRPM", getVelocityRPM());
+    Logger.recordOutput("LeftShooterSpeedRPM", getVelocityRPM());
   }
 
-    /** Stops the flywheel. */
+    /** Stops all motors. */
   public void stop() {
     io.stop();
   }
+
+// ====== Flywheel =========
 
   /** Stops the flywheel. */
   public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double feedVolts) {
@@ -135,6 +134,7 @@ public class Shooter extends SubsystemBase {
     io.configureWristPID(kP, kI, kD, kFF);
   }
 
+// ====== Wrist =========
 
   public void setWristPO(double PO){
     io.setWristPO(PO);
@@ -148,7 +148,7 @@ public class Shooter extends SubsystemBase {
     io.getWristPosition();
   }
 
-  public static void setFeedPO(double PO){
+  public void setFeedPO(double PO){
     io.setFeedPO(PO);
   }
 
@@ -160,24 +160,25 @@ public class Shooter extends SubsystemBase {
     return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
   }
 
- public void runShooter(double shooterVelocity, double feedVelocity) {
-    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(shooterVelocity);
-    io.setFeedVelocity(velocityRadPerSec, ffModel.calculate(shooterVelocity));
-
-    var velocityRadPerSec2 = Units.rotationsPerMinuteToRadiansPerSecond(feedVelocity);
-    io.setFeedVelocity(velocityRadPerSec2, ffModel.calculate(feedVelocity));
- }
-
  public boolean isBeamBreakTripped() {
   return io.isBeamBreakTripped();
  }
 
+   public Command shootCommand(double rpm) {
+    return Commands.runOnce(
+      () -> {
+        runShooterVelocity(3000); // TODO : Generic number
 
- /*  public Command shootCommand() {
-    return ;
-  }*/
+      },
+      this
+    );
+  }
 
-   /*  public Command feedCommand() {
-    return ;
-  }*/
+     public Command feedCommand() {
+    return Commands.runOnce(
+      () -> {
+        runFeedVelocity(2000);
+      }
+    );
+  }
 }

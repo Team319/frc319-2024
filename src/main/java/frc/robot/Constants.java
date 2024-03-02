@@ -34,19 +34,40 @@ public final class Constants {
     /** Running a real robot with a tank drive. */
     TANK,
 
-    /** Running on a real prototyping testbench */
-    PROTO,
-
-    /** Running on a real prototyping testbench */
-    PROTO2,
-
-    // collector prototype
-    PROTO3,
-
     /** Running a physics simulator. */
     SIM,
 
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static class WristConstants {
+        public static class PID {
+          public static final double kP = 0.096155;
+          public static final double kI = 0;
+          public static final double kD = 0;
+  
+          public static final int iZone = 0;
+          public static final double kFF = 0.0019231;
+        }
+  
+        public static class Setpoints {
+          public static final float home = (float)0.0;
+          public static final float top = (float)0.0; //1000
+          public static final float bottom = (float)-24.8; // should this be Zero?
+          public static final float shoot = (float)0.0;
+        }
+  
+        public static class SoftLimits {
+          public static final float forwardSoftLimit = Setpoints.top;
+          public static final float reverseSoftLimit = Setpoints.bottom;
+        }
+  
+        public static class Currents {
+          public static final int currentMax = 20;
+          public static final int currentThreshold = 0;
+        }
+      }
+
+      
 }

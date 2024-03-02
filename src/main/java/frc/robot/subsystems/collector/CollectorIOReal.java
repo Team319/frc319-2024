@@ -12,8 +12,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class CollectorIOReal implements CollectorIO {
   
-  private final CANSparkMax collectorLead = new CANSparkMax(20, MotorType.kBrushless);
-  private final CANSparkMax collectorFollow = new CANSparkMax(21, MotorType.kBrushless);
+  private final CANSparkMax lowerRollerMotor = new CANSparkMax(20, MotorType.kBrushless);
+  private final CANSparkMax tunnelRollerMotor = new CANSparkMax(21, MotorType.kBrushless);
 
   private DigitalInput beamBreak = new DigitalInput(1);
 
@@ -26,7 +26,6 @@ public class CollectorIOReal implements CollectorIO {
 
 
   public CollectorIOReal() {
-    setCollectorFollow();
     setCollectorInversions();
     setup();
   }
@@ -40,39 +39,53 @@ public class CollectorIOReal implements CollectorIO {
   }
 
   @Override
-  public void setCollectorPO(double collectorPO) {
-    collectorLead.set(collectorPO);
+  public void setRollersPO(double PO) {
+    lowerRollerMotor.set(PO);
+    tunnelRollerMotor.set(PO);
+
+  }
+
+  @Override
+  public void setLowerPO(double PO) {
+    lowerRollerMotor.set(PO);
+  }
+
+  @Override
+  public void setTunnelPO(double PO) {
+    tunnelRollerMotor.set(PO);
   }
   
   public void setCollectorInversions() {
-    collectorLead.setInverted(isLeadMotorInverted);
+    lowerRollerMotor.setInverted(isLeadMotorInverted);
    
   }
 
-  public void setCollectorFollow() {
-    collectorFollow.follow(collectorLead);
-  }
-
   public double getCollectorCurrent() {
-    return collectorLead.getOutputCurrent();
+    return lowerRollerMotor.getOutputCurrent();
   }
 
   public void setup() {
-    collectorLead.restoreFactoryDefaults();
-    collectorLead.clearFaults();
+    lowerRollerMotor.restoreFactoryDefaults();
+    lowerRollerMotor.clearFaults();
 
-    //collectorLead.setInverted(true);
+    //lowerRollerMotor.setInverted(true);
 
     //pidController.setFeedbackDevice(collectorEncoder);
     /*collectorPIDController.setFF(kFF);
     collectorPIDController.setP(kP);
     collectorPIDController.setOutputRange(-1, 1);*/
 
-    collectorLead.setClosedLoopRampRate(0.125);
-    collectorLead.setOpenLoopRampRate(0.125);
+    lowerRollerMotor.setClosedLoopRampRate(0.125);
+    lowerRollerMotor.setOpenLoopRampRate(0.125);
     
-    collectorLead.setSmartCurrentLimit(currentLimitAmps);
+    lowerRollerMotor.setSmartCurrentLimit(currentLimitAmps);
   }
+
+    @Override
+    public boolean isBeamBreakTripped(){
+        return beamBreak.get();
+    }
+
 }
 
  

@@ -5,7 +5,7 @@
 
 package frc.robot.subsystems.elevator;
 
-import org.littletonrobotics.junction.AutoLogOutput;
+//import org.littletonrobotics.junction.AutoLogOutput;
 
 //import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;

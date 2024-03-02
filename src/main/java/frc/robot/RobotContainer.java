@@ -14,7 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -173,66 +173,6 @@ public class RobotContainer {
 
           break;
         
-        case PROTO:
-          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
-          
-          shooter =
-            new Shooter(
-            new ShooterIO() {}
-            );
-
-          collector =
-            new Collector(
-              new CollectorIO() {} // An IO that has nothing in it so things can be happy
-            );
-
-          elevator =
-            new Elevator(
-              new ElevatorIO() {}
-            );
-
-          break;
-
-        case PROTO2:
-          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
-          
-          shooter =
-            new Shooter(
-              new ShooterIO() {}
-            );
-
-          collector =
-            new Collector(
-              new CollectorIO() {}
-            );
-
-          elevator =
-            new Elevator(
-              new ElevatorIO() {}
-            );
-
-          break;
-
-        case PROTO3:
-          drive = new Drive(new GyroIO() {}); /* There is no drivetrain... only Zuul */
-          
-          shooter =
-            new Shooter(
-              new ShooterIO(){}
-            );
-
-          collector =
-            new Collector(
-              new CollectorIOReal() // Something is sadly required here
-            );
-
-          elevator =
-            new Elevator(
-              new ElevatorIO() {}
-            );
-
-          break;
-
       default:
         // Replayed robot, disable IO implementations
         drive =
@@ -298,8 +238,6 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
-      case PROTO:
-      case PROTO2:
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -322,23 +260,17 @@ public class RobotContainer {
                         drive)
                     .ignoringDisable(true)); */
 
-
-         driverController
-        .y()
-        .onTrue(
-          Commands.runOnce(
+         driverController.y().onTrue(Commands.runOnce(
           () -> {
-            Shooter.setFeedPO(0.2);
+            shooter.setFeedPO(0.2);
 
             }
           )
         ); 
 
-         driverController
-        .y()
-        .onFalse(Commands.runOnce(
+         driverController.y().onFalse(Commands.runOnce(
           () -> {
-            Shooter.setFeedPO(0.0);
+            shooter.setFeedPO(0.0);
             }
           )
         );
@@ -348,28 +280,28 @@ public class RobotContainer {
 
         operatorController.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0);
+            collector.setRollersPO(1.0);
             }
           )
         );
 
         operatorController.rightBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setRollersPO(0);
             }
           )
         );
 
         operatorController.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0);
+            collector.setRollersPO(-1.0);
             }
           )
         );
 
         operatorController.leftBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setRollersPO(0);
             }
           )
         );

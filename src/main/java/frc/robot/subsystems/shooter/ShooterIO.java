@@ -14,7 +14,6 @@ public interface ShooterIO {
     
     @AutoLog 
     public static class ShooterIOInputs {
-
         public double velocityRadPerSec = 0.0;
         public double leftShooterAppliedVolts = 0.0;
         public double rightShooterAppliedVolts = 0.0;
@@ -32,9 +31,6 @@ public interface ShooterIO {
         public double rightFlywheelVelocitySetpointRadPerSec = 0.0;
 
         public double wristPosition = 0.0;
-        
-
-
     }
 
     public default void updateInputs(ShooterIOInputs inputs) {}
@@ -57,7 +53,7 @@ public interface ShooterIO {
 
     public default void setShooterPO(double PO){}
 
-    public default void setFeedPO(double PO){}
+    public default void setFeedPO(double PO) {}
 
     public default double getPosition() {return 0.0;}
 

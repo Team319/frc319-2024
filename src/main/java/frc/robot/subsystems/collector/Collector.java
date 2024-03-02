@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems.collector;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,8 +23,6 @@ public class Collector extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-      case PROTO:
-      case PROTO2:
       case SIM:
       default:
     }
@@ -29,27 +31,36 @@ public class Collector extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    Logger.processInputs("Collector",inputs);
   }
 
   public void stop() {
     io.stop();
   }
 
-  public void setCollectorPO(double collectorPO) {
-    io.setCollectorPO(collectorPO);
+  public void setRollersPO(double collectorPO) {
+    io.setRollersPO(collectorPO);
   }
 
-  public void setTunnelPO(double PO) {
-    io.setTunnelPO(PO);
+  public void setLowerRollersPO(double collectorPO) {
+    io.setLowerPO(collectorPO);
   }
 
-   /*  public Command intakeCommand() {
-    return ;
-  }*/
+  public void setTunnelRollersPO(double collectorPO) {
+    io.setTunnelPO(collectorPO);
+  }
 
-   /*  public Command ejectCommand() {
-    return ;
-  }*/
+  public Command setCollector(double PO) {
+    return Commands.runOnce(
+      () -> {
+        setRollersPO(PO);
+      },
+      this
+      ); 
+  }
 
+  public boolean isBeamBreakTripped(){
+    return io.isBeamBreakTripped();
+  }
 
 }

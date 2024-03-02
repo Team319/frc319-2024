@@ -13,15 +13,16 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
+//import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkPIDController.ArbFFUnits;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.WristConstants;
 
-public class ShooterIOReal implements ShooterIO{
+public class ShooterIOReal implements ShooterIO {
 
     private final TalonFX shooterLeft = new TalonFX(31); 
     private final TalonFX shooterRight = new TalonFX(32);
@@ -34,51 +35,21 @@ public class ShooterIOReal implements ShooterIO{
     private final RelativeEncoder wristEncoder = wrist.getEncoder();
     private final DigitalInput beamBreak = new DigitalInput(0);
 
-    public static class WristConstants {
-        public static class PID {
-          public static final double kP = 0.096155;
-          public static final double kI = 0;
-          public static final double kD = 0;
-  
-          public static final int iZone = 0;
-          public static final double kFF = 0.0019231;
-        }
-  
-        public static class SetPoints {
-          public static final float home = (float)0.0;
-          public static final float top = (float)0.0; //1000
-          public static final float bottom = (float)-24.8;
-        }
-  
-        public static class SoftLimits {
-          public static final float forwardSoftLimit = SetPoints.top;
-          public static final float reverseSoftLimit = SetPoints.bottom;
-        }
-  
-        public static class Currents {
-          public static final int currentMax = 20;
-          public static final int currentThreshold = 0;
-        }
-      }
+  public ShooterIOReal() {
+      setupShooter();
+      setupWrist();
+      configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
+  }
 
-
-public ShooterIOReal(){
-    setupShooter();
-    setupWrist();
-    configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
-}
-
-@Override
-    public void updateInputs(ShooterIOInputs inputs) {
-        inputs.leftFlywheelAmps = shooterLeft.getTorqueCurrent().getValueAsDouble();
-        inputs.rightFlywheelAmps = shooterRight.getTorqueCurrent().getValueAsDouble();
-        inputs.leftFlywheelVelocityRadPerSec = shooterLeft.getVelocity().getValueAsDouble();
-        inputs.rightFlywheelVelocityRadPerSec = shooterRight.getVelocity().getValueAsDouble();
-        inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
-        inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
-
-        inputs.wristPosition = wristEncoder.getPosition();
-  
+  @Override
+  public void updateInputs(ShooterIOInputs inputs) {
+      inputs.leftFlywheelAmps = shooterLeft.getTorqueCurrent().getValueAsDouble();
+      inputs.rightFlywheelAmps = shooterRight.getTorqueCurrent().getValueAsDouble();
+      inputs.leftFlywheelVelocityRadPerSec = shooterLeft.getVelocity().getValueAsDouble();
+      inputs.rightFlywheelVelocityRadPerSec = shooterRight.getVelocity().getValueAsDouble();
+      inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
+      inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
+      inputs.wristPosition = wristEncoder.getPosition();
     }
 
     private void setupShooter() {
@@ -108,8 +79,8 @@ public ShooterIOReal(){
         updateRPM();
     }
 
-  public void setFeedVelocity(double velocityRadPerSec, double ffVolts) {
-    feedPid.setReference(
+    public void setFeedVelocity(double velocityRadPerSec, double ffVolts) {
+      feedPid.setReference(
         Units.radiansPerSecondToRotationsPerMinute(velocityRadPerSec) * 60,
         ControlType.kVelocity,
         0,
@@ -121,7 +92,7 @@ public ShooterIOReal(){
     public void stop() {
         shooterLeft.stopMotor();
         shooterRight.stopMotor();
-        //feed.stopMotor();
+        wrist.stopMotor();
     }
 
     @Override
@@ -190,16 +161,15 @@ public ShooterIOReal(){
         return beamBreak.get();
     }
 
-      // Feed motor stuff
-  @Override
-  public void setFeedPO(double PO) {
-    feed.set(PO);
-  }
+    @Override
+    public void setFeedPO(double PO) {
+      feed.set(PO);
+    }
 
-  public void configureFeedPID(double kP, double kI, double kD) {
-    feedPid.setP(kP, 0);
-    feedPid.setI(kI, 0);
-    feedPid.setD(kD, 0);
-    feedPid.setFF(0, 0);
-  }
+    public void configureFeedPID(double kP, double kI, double kD) {
+      feedPid.setP(kP, 0);
+      feedPid.setI(kI, 0);
+      feedPid.setD(kD, 0);
+      feedPid.setFF(0, 0);
+    }
 }
