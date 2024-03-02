@@ -6,16 +6,23 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+//import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DriverStation;
+import java.util.function.DoubleSupplier;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class Shooter extends SubsystemBase {
-  private final ShooterIO io;
+  private static final double leftShooterVelocity = 0.0;
+  private static final double feedVolts = 0.0;
+  private static ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;
 
@@ -24,7 +31,7 @@ public class Shooter extends SubsystemBase {
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
-    this.io = io;
+    Shooter.io = io;
 
     // Switch constants based on mode (the physics simulator is treated as a
     // separate robot with different tuning)
@@ -47,22 +54,27 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double leftShooterVolts = SmartDashboard.getNumber("leftShooter volts", 0.0);
-    double rightShooterVolts = SmartDashboard.getNumber("rightShooter volts", 0.0);
-    double feedVolts = SmartDashboard.getNumber("feed volts", 0.0);
+    //double leftShooterVolts = SmartDashboard.getNumber("leftShooter volts", 0.0);
+    //double rightShooterVolts = SmartDashboard.getNumber("rightShooter volts", 0.0);
+    //double feedVolts = SmartDashboard.getNumber("feed volts", 0.0);
     
-    double leftShooterVelocity = SmartDashboard.getNumber("leftShooter velocity", 0.0);
-    double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
+    //double leftShooterVelocity = SmartDashboard.getNumber("leftShooter velocity", 0);
+    //double rightShooterVelocity = SmartDashboard.getNumber("rightShooter velocity", 0.0);
     //double feedforward = SmartDashboard.getNumber("feedforward volts", 0.0);
 
     double shooterP = SmartDashboard.getNumber("shooter P", 0.0);
     double shooterI = SmartDashboard.getNumber("shooter I", 0.0);
     double shooterD = SmartDashboard.getNumber("shooter D", 0.0);
-    
+    double wristPosition = SmartDashboard.getNumber("Wrist Position", 0.0);
+
+    //System.out.println(wristPosition + getPosition());
+    System.out.println("Beam Break" + isBeamBreakTripped());
     shooterVelocity = leftShooterVelocity;
 
     configurePID(shooterP, shooterI, shooterD);
     runShooterVelocity(shooterVelocity);
+    getWristPosition();
+
     //runFeedVelocity(shooterVelocity);
 
     //setFeedVoltage(feedVolts);
@@ -85,10 +97,9 @@ public class Shooter extends SubsystemBase {
     io.setVoltages(leftShooterVolts,rightShooterVolts,feedVolts);
   }
 
-  public void setFeedVoltage(double voltage){
-    io.setFeedVoltage(voltage);
-    System.err.println("Feed Voltage: " + voltage);
-  }
+  //public void setFeedVoltage(double voltage){
+    //io.setFeedVoltage(voltage);
+  //}
 
   /** Run closed loop at the specified velocity. */
   public void runShooterVelocity(double velocityRPM) {
@@ -99,6 +110,7 @@ public class Shooter extends SubsystemBase {
     Logger.recordOutput("ShooterSetpointRPM", velocityRPM);
   }
 
+  
   /** Run closed loop at the specified velocity. */
   public void runFeedVelocity(double velocityRPM) {
     var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
@@ -112,13 +124,50 @@ public class Shooter extends SubsystemBase {
     runFeedVelocity(this.shooterVelocity);
   }
 
+
   public void configurePID(double kP, double kI, double kD) {
     io.configurePID(kP, kI, kD);
   }
 
+
+  public void setWristPO(double PO){
+    io.setWristPO(PO);
+  }
+
+  public void setWristPosition(double position){
+    io.setWristPosition(position);
+  }
+
+  public void getWristPosition() {
+    io.getWristPosition();
+}
+
+
+
+//  public static void setFeedPO(double PO){
+ //   io.setFeedPO(PO);
+ // }
+
+ public double getPosition() {
+  return io.getPosition();
+}
   /** Returns the current velocity in RPM. */
  // public double getVelocityRPM() {
  //   return Units.radiansPerSecondToRotationsPerMinute(inputs.velocityRadPerSec);
  // }
+
+ public void runShooter(double shooterVelocity, double feedVelocity) {
+    var velocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(shooterVelocity);
+    io.setFeedVelocity(velocityRadPerSec, ffModel.calculate(shooterVelocity));
+
+    var velocityRadPerSec2 = Units.rotationsPerMinuteToRadiansPerSecond(feedVelocity);
+    io.setFeedVelocity(velocityRadPerSec2, ffModel.calculate(feedVelocity));
+ }
+
+ public boolean isBeamBreakTripped() {
+  return io.isBeamBreakTripped();
+ }
+
+
   
 }

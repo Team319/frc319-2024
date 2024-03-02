@@ -29,19 +29,18 @@ public class ShooterIOProto2 implements ShooterIO{
     @Override
     public void updateInputs(ShooterIOInputs inputs) {}
 
-    @Override
-    public void setFeedVoltage(double ffVolts) {
+/*    @Override
+     public void setFeedVoltage(double ffVolts) {
         feedLeft.setVoltage(ffVolts);
         feedRight.setVoltage(ffVolts);
         updateRPM();
-        System.err.println("ff voltage: " + ffVolts);
-    }
+    } */
 
     @Override
     public void setVoltages(double leftShooterVolts, double rightShooterVolts, double feedVolts) {
         shooterTop.setVoltage(leftShooterVolts);
         shooterBottom.setVoltage(rightShooterVolts);
-        setFeedVoltage(feedVolts);
+        //setFeedVoltage(feedVolts);
         updateRPM();
     }
 

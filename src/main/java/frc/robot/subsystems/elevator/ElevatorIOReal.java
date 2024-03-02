@@ -5,7 +5,9 @@
 
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
+import org.littletonrobotics.junction.AutoLogOutput;
+
+//import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -13,74 +15,40 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ElevatorIOReal implements ElevatorIO {
-  /** Creates a new ElevatorIOReal. */
 
-  private final CANSparkMax elevatorLead = new CANSparkMax(16, MotorType.kBrushless);
-  private final CANSparkMax elevatorFollow = new CANSparkMax(17, MotorType.kBrushless);
+  public static class ElevatorSetpoint {
+      public static final double TOP = 130.0;
+      public static final double TRAP = 0.0;
+      public static final double AMP = 0.0;
+      public static final double CLIMB = 0.0;
+      public static final double BOTTOM = 5.0;
+  }
+
+  public static class ElevatorPIDGains {
+    public final double kPUp = 0.0;
+    public final double kIUp = 0.0;
+    public final double kDUp = 0.0;
+    public final double kFFUp = 0.0;
+
+    public final double kPDown = kPUp;
+    public final double kIDown = kIUp;
+    public final double kDDown = kDUp;
+    public final double kFFDown = kFFUp;
+
+  }
+
+  private final CANSparkMax elevatorLead = new CANSparkMax(40, MotorType.kBrushless);
+  private final CANSparkMax elevatorFollow = new CANSparkMax(41, MotorType.kBrushless);
 
   private final RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   private final SparkPIDController elevatorPIDController = elevatorLead.getPIDController();
 
-  public static class ElevatorSetpoint {
-    public static final double TOP = 0.0;
-    public static final double BOTTOM = 0.0;
-  }
+  private final ElevatorPIDGains elevatorPIDGains = new ElevatorPIDGains();
+  private double positionTargetSetpoint;
 
   public ElevatorIOReal() {
     setup();
     setFollow();
-    setInverted();
-    setSmartMotionParams();
-  }
-
-  @Override
-  public void stop() {
-    elevatorLead.stopMotor();
-  }
-
-  public void upPID() {
-    elevatorPIDController.setP(kPUp);
-    elevatorPIDController.setI(kIUp);
-    elevatorPIDController.setI(kDUp);
-    elevatorPIDController.setFF(kFFUp);
-  }
-
-  public void downPID() {
-    elevatorPIDController.setP(kPDown);
-    elevatorPIDController.setI(kIDown);
-    elevatorPIDController.setI(kDDown);
-    elevatorPIDController.setFF(kFFDown);
-  }
-
-  public double getCurrentPosition() {
-    return this.elevatorEncoder.getPosition();
-  }
-
-  public void setPosition(double targetPosition) {
-    manageMotion(targetPosition);
-    elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
-  }
-
-  public void setSmartMotionPosition(double targetPosition) {
-    manageMotion(targetPosition);
-    elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
-  }
-
-  private void setSmartMotionParams() {
-    elevatorPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    elevatorPIDController.setSmartMotionAllowedClosedLoopError(maxErr, smartMotionSlot);
-  }
-
-  private void manageMotion(double targetPosition) {
-    double currentPosition = getCurrentPosition();
-      if (currentPosition > targetPosition) {
-        upPID();
-      }
-      else {
-        downPID();
-      }
   }
 
   public void setup() {
@@ -91,11 +59,13 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorLead.clearFaults();
     elevatorFollow.clearFaults();
 
-    elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elevatorLead.setInverted(false);
 
-    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
-    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
+   elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
+   elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+   elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
+   elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
@@ -104,23 +74,82 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setOutputRange(-1.0, 1.0);
   }
 
-  public void setVoltage(double voltage) {
-    elevatorLead.set(voltage);
+  public void setFollow() {
+    elevatorFollow.follow(elevatorLead, true);
   }
 
+  @Override
+  public void updateInputs(ElevatorIOInputs inputs){
+    inputs.kPUp = this.elevatorPIDGains.kPUp;
+    inputs.kIUp = this.elevatorPIDGains.kIUp;
+    inputs.kDUp = this.elevatorPIDGains.kDUp;
+    inputs.kFFUp = this.elevatorPIDGains.kFFUp;
+    
+    inputs.kPDown = this.elevatorPIDGains.kPDown;
+    inputs.kIDown = this.elevatorPIDGains.kIDown;
+    inputs.kDDown = this.elevatorPIDGains.kDDown;
+    inputs.kFFDown = this.elevatorPIDGains.kFFDown;
+
+    inputs.targetPosition = this.positionTargetSetpoint;
+    inputs.appliedVoltage = elevatorLead.getAppliedOutput();
+    inputs.outputCurrentAmps = getCurrent();
+    inputs.position = getPosition();
+    inputs.velocity = getVelocity();
+
+  }
+
+  @Override
+  public void stop() {
+    elevatorLead.stopMotor();
+  }
+
+  @Override
+  public void configurePID(double kP, double kI, double kD, double kFF) {
+    elevatorPIDController.setP(kP);
+    elevatorPIDController.setI(kI);
+    elevatorPIDController.setI(kD);
+    elevatorPIDController.setFF(kFF);
+  }
+
+  @Override
+  public double getPosition() {
+    return this.elevatorEncoder.getPosition();
+  }
+
+  @Override
+  public void setPosition(double targetPosition) {
+    this.positionTargetSetpoint = targetPosition;
+    manageMotion(targetPosition);
+    elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  private void manageMotion(double targetPosition) {
+    double currentPosition = getPosition();
+      if (currentPosition > targetPosition) {
+        configurePID(this.elevatorPIDGains.kPUp, this.elevatorPIDGains.kIUp, this.elevatorPIDGains.kDUp, this.elevatorPIDGains.kFFUp);
+      }
+      else {
+        configurePID( this.elevatorPIDGains.kPDown, this.elevatorPIDGains.kIDown, this.elevatorPIDGains.kDDown, this.elevatorPIDGains.kFFDown);
+      }
+  }
+
+  @Override
+  public void setPO(double PO) {
+    elevatorLead.set(PO);
+  }
+
+  @Override
   public double getVelocity() {
     return elevatorLead.getEncoder().getVelocity();
   }
 
-  public double getElevatorCurrent() {
+  @Override
+  public double getCurrent() {
     return elevatorLead.getOutputCurrent();
   }
 
-  public void setFollow() {
-    elevatorFollow.follow(elevatorLead);
-  }
 
-  public void setInverted() {
-    elevatorLead.setInverted(false);
-  }
+
+
+
 }

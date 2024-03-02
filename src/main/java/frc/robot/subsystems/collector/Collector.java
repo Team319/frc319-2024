@@ -10,6 +10,7 @@ import frc.robot.Constants;
 public class Collector extends SubsystemBase {
 
   private final CollectorIO io;
+  private final CollectorIOInputsAutoLogged inputs = new CollectorIOInputsAutoLogged();
 
   /** Creates a new Collector. */
   public Collector(CollectorIO io) {
@@ -27,25 +28,15 @@ public class Collector extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    io.updateInputs(inputs);
   }
 
   public void stop() {
     io.stop();
   }
 
-  public void setCollectorPO(double PO) {
-    io.setCollectorPO(PO);
-    System.out.println("Collector PO : " + PO);
-  }
-
-  public double getCollectorPosition() {
-  // TODO: return a collector motors position, no motor = no method
-    return 0;
-  }
-
-  public void setCollectorPosition(double position) {
-    io.setCollectorPosition(position);
+  public void setCollectorPO(double collectorPO, double feedPO) {
+    io.setCollectorPO(collectorPO, feedPO);
   }
 
   public void setTunnelPO(double PO) {

@@ -14,8 +14,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,19 +33,23 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.drive.TankIO;
-import frc.robot.subsystems.drive.TankIOReal;
+//import frc.robot.subsystems.drive.TankIO;
+//import frc.robot.subsystems.drive.TankIOReal;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOProto;
 import frc.robot.subsystems.shooter.ShooterIOProto2;
+import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
 import frc.robot.subsystems.collector.CollectorIOReal;
 import frc.robot.subsystems.collector.CollectorIOSim;
 
-import java.util.Collection;
+//import java.util.Collection;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -57,10 +64,12 @@ public class RobotContainer {
   private final Drive drive;
   public final Shooter shooter;
   public final Collector collector;
+  public final Elevator elevator;
   // private final Flywheel flywheel;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driverController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
@@ -82,13 +91,18 @@ public class RobotContainer {
         
         shooter =
           new Shooter(
-            new ShooterIO() {}
+            new ShooterIOReal() 
           );
 
         collector =
           new Collector(
             new CollectorIOReal()
           );
+
+        elevator =
+          new Elevator(
+            new ElevatorIOReal()
+        );
           
         break;
       
@@ -103,8 +117,14 @@ public class RobotContainer {
 
           collector =
             new Collector(
-              new CollectorIO() {} // An IO that has nothing in it so things can be happy
+              new CollectorIO() {}
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+            
           break;
       
         case SIM:
@@ -127,6 +147,11 @@ public class RobotContainer {
               new CollectorIOSim()
               );
 
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
         
         case PROTO:
@@ -142,6 +167,11 @@ public class RobotContainer {
               new CollectorIO() {} // An IO that has nothing in it so things can be happy
             );
 
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
         case PROTO2:
@@ -154,8 +184,14 @@ public class RobotContainer {
 
           collector =
             new Collector(
-              new CollectorIO() {} // Something is sadly required here
+              new CollectorIO() {}
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
         case PROTO3:
@@ -170,6 +206,12 @@ public class RobotContainer {
             new Collector(
               new CollectorIOReal() // Something is sadly required here
             );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
           break;
 
       default:
@@ -192,14 +234,19 @@ public class RobotContainer {
           new Collector(
             new CollectorIO() {}
           );
+
+          elevator =
+            new Elevator(
+              new ElevatorIO() {}
+            );
+
         break;
     }
 
     // Set up named commands for PathPlanner
     // NamedCommands.registerCommand(
-    //    "Run Flywheel",
-    //    Commands.startEnd(
-    //       () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+    //    "exampleCommand",
+    //     exampleSubsystem.exampleCommand());
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -238,15 +285,15 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -controller.getLeftY(),
-              () -> -controller.getLeftX(),
-              () -> -controller.getRightX(),
-              () -> controller.getLeftTriggerAxis()));
+              () -> -driverController.getLeftY(),
+              () -> -driverController.getLeftX(),
+              () -> -driverController.getRightX(),
+              () -> driverController.getLeftTriggerAxis()));
       
       
-        controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
         
-        controller
+    /*    driverController
             .b()
             .onTrue(
                 Commands.runOnce(
@@ -254,62 +301,149 @@ public class RobotContainer {
                             drive.setPose(
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
-                    .ignoringDisable(true));
+                    .ignoringDisable(true)); 
 
 
-        controller
-            .y()
-            .onTrue(
-              Commands.runOnce(
-                      () -> {
-                        shooter.runFeedAtShooterVelocity();
-                        System.err.println("Y Pressed");
-                      } , shooter)
-            );
-
-        controller
-            .y()
-            .onFalse(
-              Commands.runOnce(
-                      () -> {
-                        shooter.setFeedVoltage(0);
-                        System.err.println("Y released");
-                      } , shooter)
-            );
-
-        controller.povUp().onTrue(Commands.runOnce(
+   /*      controller
+        .y()
+        .onTrue(
+          Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0);
+            Shooter.setFeedPO(0.2);
+
+            }
+          )
+        ); */
+
+  /*       controller
+        .y()
+        .onFalse(Commands.runOnce(
+          () -> {
+            Shooter.setFeedPO(0.0);
+            }
+          )
+        );*/
+      
+
+        // ============================= Collector Debugging ============================= 
+
+        operatorController.rightBumper().onTrue(Commands.runOnce(
+          () -> {
+            collector.setCollectorPO(1.0, 1.0);
             }
           )
         );
 
-        controller.povUp().onFalse(Commands.runOnce(
+        operatorController.rightBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setCollectorPO(0,0);
             }
           )
         );
 
-        controller.povDown().onTrue(Commands.runOnce(
+        operatorController.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0);
+            collector.setCollectorPO(-1.0, -1.0);
             }
           )
         );
 
-        controller.povDown().onFalse(Commands.runOnce(
+        operatorController.leftBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setCollectorPO(0, 0);
             }
           )
         );
 
-          /* 
-        controller.rightBumper().onFalse(Commands.runOnce(
+        /*  ============================= Elevator Debugging ============================= */
+
+        operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
-            shooter.setFeedVoltage(0.0);
-          } , shooter));*/
+            elevator.setPO(0.0);
+            }
+          )
+        );
+
+        operatorController.povUp().whileTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(1.0);
+            }
+          )
+        );
+
+        operatorController.povDown().whileFalse(Commands.runOnce(
+          () -> {
+            elevator.setPO(0.0);
+            }
+          )
+        );
+
+        operatorController.povDown().whileTrue(Commands.runOnce(
+          () -> {
+            elevator.setPO(-1.0);
+            }
+          )
+        );
+
+        // ============================= Wrist Debugging ============================= 
+
+        // Hot keys, motors are not happy tho :(
+          /*      operatorController.a().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPosition(0.0);
+            }
+          )
+        );
+
+        operatorController.y().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPosition(-24.8);
+            }
+          )  */
+        
+        operatorController.a().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        operatorController.a().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPO(0.1);
+            }
+          )
+        );
+
+        operatorController.y().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        operatorController.y().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPO(-0.1);
+            }
+          )
+        );
+
+         driverController.rightTrigger().whileTrue(Commands.run(
+          ()-> {
+            shooter.setVoltages(12, 12, 3);
+          }
+        )
+        );
+
+        driverController.rightTrigger().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
+        ); 
+
+
         
         break;
     
@@ -317,12 +451,6 @@ public class RobotContainer {
       /* Do nothing */
         break;
     }
-    
-    // controller
-    //    .a()
-    //    .whileTrue(
-    //        Commands.startEnd(
-    //            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
   }
 
   /**
