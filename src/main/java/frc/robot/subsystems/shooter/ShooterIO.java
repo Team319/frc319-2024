@@ -39,15 +39,13 @@ public interface ShooterIO {
 
     public default void updateInputs(ShooterIOInputs inputs) {}
 
-    public default void setFeedVoltage( double ffVolts) {}
-
     public default void setVoltages(double leftFlywheelVolts, double rightFlywheelVolts, double feedVolts) {}
     
     public default void setLeftShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
     public default void setRightShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
-    public default void setShooterVelocity(double velocityRadPerSec, double ffVolts) {}
+    public default void setShooterVelocity(double shooterVelocity, double ffVolts) {}
 
     public default void setFeedVelocity(double velocityRadPerSec, double ffVolts) {}
 
@@ -61,6 +59,11 @@ public interface ShooterIO {
 
     public default double getPosition() {return 0.0;}
 
-    public default void setWristPO(double PO){}
+    public default void getWristPosition() {}
 
+    public default void setWristPosition(double position) {}
+
+    public default void setWristPO(double PO) {}
+
+    public default boolean isBeamBreakTripped() { return false;}
 }

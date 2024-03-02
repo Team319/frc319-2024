@@ -74,7 +74,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(48)); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(42)); // MUST BE CALIBRATED
             break;
         
           default:
@@ -117,7 +117,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(8, "Swerve Canivore");
         switch (Constants.currentMode) {
           case REAL:
-            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(72)); // MUST BE CALIBRATED
+            absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(60)); // MUST BE CALIBRATED
             break;
         
           default:

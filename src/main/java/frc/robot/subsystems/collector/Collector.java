@@ -35,8 +35,8 @@ public class Collector extends SubsystemBase {
     io.stop();
   }
 
-  public void setCollectorPO(double PO) {
-    io.setCollectorPO(PO);
+  public void setCollectorPO(double collectorPO, double feedPO) {
+    io.setCollectorPO(collectorPO, feedPO);
   }
 
   public void setTunnelPO(double PO) {

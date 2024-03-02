@@ -68,7 +68,8 @@ public class RobotContainer {
   // private final Flywheel flywheel;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driverController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
@@ -116,7 +117,7 @@ public class RobotContainer {
 
           collector =
             new Collector(
-              new CollectorIO() {} // An IO that has nothing in it so things can be happy
+              new CollectorIO() {}
             );
 
           elevator =
@@ -183,7 +184,7 @@ public class RobotContainer {
 
           collector =
             new Collector(
-              new CollectorIO() {} // Something is sadly required here
+              new CollectorIO() {}
             );
 
           elevator =
@@ -284,15 +285,15 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -controller.getLeftY(),
-              () -> -controller.getLeftX(),
-              () -> -controller.getRightX(),
-              () -> controller.getLeftTriggerAxis()));
+              () -> -driverController.getLeftY(),
+              () -> -driverController.getLeftX(),
+              () -> -driverController.getRightX(),
+              () -> driverController.getLeftTriggerAxis()));
       
       
-        controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
         
-        controller
+    /*    driverController
             .b()
             .onTrue(
                 Commands.runOnce(
@@ -300,7 +301,7 @@ public class RobotContainer {
                             drive.setPose(
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
-                    .ignoringDisable(true));
+                    .ignoringDisable(true)); 
 
 
    /*      controller
@@ -326,110 +327,126 @@ public class RobotContainer {
 
         // ============================= Collector Debugging ============================= 
 
-        controller.rightBumper().onTrue(Commands.runOnce(
+        operatorController.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0);
+            collector.setCollectorPO(1.0, 1.0);
             }
           )
         );
 
-        controller.rightBumper().onFalse(Commands.runOnce(
+        operatorController.rightBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setCollectorPO(0,0);
             }
           )
         );
 
-        controller.leftBumper().onTrue(Commands.runOnce(
+        operatorController.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0);
+            collector.setCollectorPO(-1.0, -1.0);
             }
           )
         );
 
-        controller.leftBumper().onFalse(Commands.runOnce(
+        operatorController.leftBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0);
+            collector.setCollectorPO(0, 0);
             }
           )
         );
 
         /*  ============================= Elevator Debugging ============================= */
 
-        controller.povUp().whileFalse(Commands.runOnce(
+        operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
             elevator.setPO(0.0);
             }
           )
         );
 
-        controller.povUp().whileTrue(Commands.runOnce(
+        operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.1);
+            elevator.setPO(1.0);
             }
           )
         );
 
-        controller.povDown().whileFalse(Commands.runOnce(
+        operatorController.povDown().whileFalse(Commands.runOnce(
           () -> {
             elevator.setPO(0.0);
             }
           )
         );
 
-        controller.povDown().whileTrue(Commands.runOnce(
+        operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.1);
+            elevator.setPO(-1.0);
             }
           )
         );
 
         // ============================= Wrist Debugging ============================= 
 
-        controller.povRight().whileFalse(Commands.runOnce(
+        // Hot keys, motors are not happy tho :(
+          /*      operatorController.a().whileTrue(Commands.runOnce(
+          () -> {
+            shooter.setWristPosition(0.0);
+            }
+          )
+        );
+
+        operatorController.y().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPosition(-24.8);
+            }
+          )  */
+        
+        operatorController.a().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
             }
           )
         );
 
-        controller.povRight().whileTrue(Commands.runOnce(
+        operatorController.a().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(0.9);
+            shooter.setWristPO(0.1);
             }
           )
         );
 
-        controller.povLeft().whileFalse(Commands.runOnce(
+        operatorController.y().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
             }
           )
         );
 
-        controller.povLeft().whileTrue(Commands.runOnce(
+        operatorController.y().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(-0.9);
+            shooter.setWristPO(-0.1);
             }
           )
         );
 
-/*  controller.rightTrigger().whileTrue(Commands.run(
+         driverController.rightTrigger().whileTrue(Commands.run(
           ()-> {
-            shooter.setVoltages(12, 12, 12);
-            System.out.println("Trigger pulled");
+            shooter.setVoltages(12, 12, 3);
           }
         )
         );
-        controller.rightTrigger().whileFalse(Commands.runOnce(
+
+        driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }
         )
-        );
+        ); 
+
+
         
         break;
-    */
+    
       default:
       /* Do nothing */
         break;

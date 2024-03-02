@@ -87,14 +87,13 @@ public class ShooterIOSim implements ShooterIO {
         this.ffVolts = ffVolts;
     }
 
-    @Override
-    public void setFeedVoltage(double ffVolts) {
+/*    @Override
+     public void setFeedVoltage(double ffVolts) {
         closedLoop = true;
         this.ffVolts = ffVolts;
         leftFeedSim.setInputVoltage(ffVolts);
         rightFeedSim.setInputVoltage(ffVolts);
-        System.err.println("ff voltage: " + ffVolts);
-    }
+    } */
 
     @Override
     public void setShooterVelocity(double velocityRadPerSec, double ffVolts) {

@@ -15,18 +15,22 @@ public interface CollectorIO {
         public double appliedPercentOutput = 0.0;
         public boolean isLeadMotorInverted = false;
         public double outputCurrentAmps = 0.0;
+
+        public double feedRollerAmps = 0.0;
     }
 
     public default void updateInputs(CollectorIOInputs inputs) {}
 
     public default void stop() {}
 
-    public default void setCollectorPO(double PO) {}
+    public default void setCollectorPO(double collectorPO, double feedPO) {}
 
     public default void detectGamePiece() {}
 
     public default void setCollectorPosition(double position) {}
 
     public default void setTunnelPO(double PO) {}
+
+    public default void setFeedVoltage(double ffVolts) {}
 
 }

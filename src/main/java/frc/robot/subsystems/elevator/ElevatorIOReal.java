@@ -21,7 +21,7 @@ public class ElevatorIOReal implements ElevatorIO {
       public static final double TRAP = 0.0;
       public static final double AMP = 0.0;
       public static final double CLIMB = 0.0;
-      public static final double BOTTOM = 1.0;
+      public static final double BOTTOM = 5.0;
   }
 
   public static class ElevatorPIDGains {
