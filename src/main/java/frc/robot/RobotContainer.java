@@ -16,9 +16,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,8 +37,6 @@ import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.shooter.ShooterIOProto;
-import frc.robot.subsystems.shooter.ShooterIOProto2;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.collector.Collector;
@@ -106,13 +101,37 @@ public class RobotContainer {
           
         break;
       
+        case BUSTER:
+          drive=
+            new Drive(
+            new GyroIOPigeon2(),
+            new ModuleIOTalonFX(0),
+            new ModuleIOTalonFX(1),
+            new ModuleIOTalonFX(2),
+            new ModuleIOTalonFX(3));
+        
+        shooter =
+          new Shooter(
+            new ShooterIO() {}
+          );
+
+        collector =
+          new Collector(
+            new CollectorIO() {}
+          );
+
+        elevator =
+          new Elevator(
+            new ElevatorIO() {}
+        );
+        break;
         case TANK:
           drive = 
             new Drive(new GyroIO() {});
           
           shooter =
             new Shooter(
-              new ShooterIOProto()
+              new ShooterIO() {}
             );
 
           collector =
@@ -159,7 +178,7 @@ public class RobotContainer {
           
           shooter =
             new Shooter(
-              new ShooterIOProto()
+            new ShooterIO() {}
             );
 
           collector =
@@ -179,7 +198,7 @@ public class RobotContainer {
           
           shooter =
             new Shooter(
-              new ShooterIOProto2()
+              new ShooterIO() {}
             );
 
           collector =
@@ -301,10 +320,10 @@ public class RobotContainer {
                             drive.setPose(
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
-                    .ignoringDisable(true)); 
+                    .ignoringDisable(true)); */
 
 
-   /*      controller
+         driverController
         .y()
         .onTrue(
           Commands.runOnce(
@@ -313,44 +332,44 @@ public class RobotContainer {
 
             }
           )
-        ); */
+        ); 
 
-  /*       controller
+         driverController
         .y()
         .onFalse(Commands.runOnce(
           () -> {
             Shooter.setFeedPO(0.0);
             }
           )
-        );*/
+        );
       
 
         // ============================= Collector Debugging ============================= 
 
         operatorController.rightBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(1.0, 1.0);
+            collector.setCollectorPO(1.0);
             }
           )
         );
 
         operatorController.rightBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0,0);
+            collector.setCollectorPO(0);
             }
           )
         );
 
         operatorController.leftBumper().onTrue(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(-1.0, -1.0);
+            collector.setCollectorPO(-1.0);
             }
           )
         );
 
         operatorController.leftBumper().onFalse(Commands.runOnce(
           () -> {
-            collector.setCollectorPO(0, 0);
+            collector.setCollectorPO(0);
             }
           )
         );
@@ -428,6 +447,7 @@ public class RobotContainer {
             }
           )
         );
+        /*  ============================= Shooter Debugging ============================= */
 
          driverController.rightTrigger().whileTrue(Commands.run(
           ()-> {

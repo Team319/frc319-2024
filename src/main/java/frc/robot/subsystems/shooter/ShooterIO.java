@@ -51,7 +51,9 @@ public interface ShooterIO {
 
     public default void stop() {}
 
-    public default void configurePID(double kP, double kI, double kD) {}
+    public default void configureFlywheelPID(double kP, double kI, double kD) {}
+
+    public default void configureWristPID(double kP, double kI, double kD, double kFF) {}
 
     public default void setShooterPO(double PO){}
 

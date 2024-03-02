@@ -23,7 +23,7 @@ public interface CollectorIO {
 
     public default void stop() {}
 
-    public default void setCollectorPO(double collectorPO, double feedPO) {}
+    public default void setCollectorPO(double collectorPO) {}
 
     public default void detectGamePiece() {}
 

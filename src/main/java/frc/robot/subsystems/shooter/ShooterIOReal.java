@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.shooter;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -12,9 +11,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
@@ -30,13 +26,13 @@ public class ShooterIOReal implements ShooterIO{
     private final TalonFX shooterLeft = new TalonFX(31); 
     private final TalonFX shooterRight = new TalonFX(32);
 
-     // when merging use this value
+    private final CANSparkMax feed = new CANSparkMax(34, MotorType.kBrushless);
+    private final SparkPIDController feedPid = feed.getPIDController();
 
     private final CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController wristPid = wrist.getPIDController();
     private final RelativeEncoder wristEncoder = wrist.getEncoder();
     private final DigitalInput beamBreak = new DigitalInput(0);
-
 
     public static class WristConstants {
         public static class PID {
@@ -45,7 +41,7 @@ public class ShooterIOReal implements ShooterIO{
           public static final double kD = 0;
   
           public static final int iZone = 0;
-          public static final double fGain = 0.0019231;
+          public static final double kFF = 0.0019231;
         }
   
         public static class SetPoints {
@@ -69,7 +65,7 @@ public class ShooterIOReal implements ShooterIO{
 public ShooterIOReal(){
     setupShooter();
     setupWrist();
-    setWristPid();
+    configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
 }
 
 @Override
@@ -88,6 +84,7 @@ public ShooterIOReal(){
     private void setupShooter() {
         shooterLeft.setInverted(true);
         shooterRight.setInverted(false);
+        feed.setInverted(false);
     }
 
     
@@ -95,7 +92,7 @@ public ShooterIOReal(){
     public void setVoltages(double leftShooterVolts, double rightShooterVolts, double feedVolts) {
         shooterLeft.setVoltage(leftShooterVolts);
         shooterRight.setVoltage(rightShooterVolts);
-        //setFeedVoltage(feedVolts);
+        feed.setVoltage(feedVolts);
         updateRPM();
     }
 
@@ -111,15 +108,14 @@ public ShooterIOReal(){
         updateRPM();
     }
 
-    
-/*  public void setFeedVelocity(double velocityRadPerSec, double ffVolts) {
+  public void setFeedVelocity(double velocityRadPerSec, double ffVolts) {
     feedPid.setReference(
         Units.radiansPerSecondToRotationsPerMinute(velocityRadPerSec) * 60,
         ControlType.kVelocity,
         0,
         ffVolts,
         ArbFFUnits.kVoltage);
-    } */ 
+    } 
 
     @Override
     public void stop() {
@@ -129,7 +125,7 @@ public ShooterIOReal(){
     }
 
     @Override
-    public void configurePID(double kP, double kI, double kD) { 
+    public void configureFlywheelPID(double kP, double kI, double kD) { 
         var shooterConfig = new Slot0Configs();
         shooterConfig.kP = kP;
         shooterConfig.kI = kI;
@@ -161,18 +157,19 @@ public ShooterIOReal(){
         wristPid.setOutputRange(-1.0, 1.0);
     }
 
-    private void setWristPid() {
+    @Override
+    public void configureWristPID(double kP, double kI, double kD, double kFF) {
         wristPid.setIZone(WristConstants.PID.iZone);
-        wristPid.setP(WristConstants.PID.kP);
-        wristPid.setI(WristConstants.PID.kI);
-        wristPid.setD(WristConstants.PID.kD);
-        wristPid.setFF(WristConstants.PID.fGain);
+        wristPid.setP(kP);
+        wristPid.setI(kI);
+        wristPid.setD(kD);
+        wristPid.setFF(kFF);
     }
     
     @Override
     public void getWristPosition() {
         var wristPosition = wristEncoder.getPosition();
-     System.out.println("Wrist Position" + wristPosition);
+     //System.out.println("Wrist Position" + wristPosition);
     }
 
     public double getWristVelocity() {
@@ -192,4 +189,17 @@ public ShooterIOReal(){
     public boolean isBeamBreakTripped(){
         return beamBreak.get();
     }
+
+      // Feed motor stuff
+  @Override
+  public void setFeedPO(double PO) {
+    feed.set(PO);
+  }
+
+  public void configureFeedPID(double kP, double kI, double kD) {
+    feedPid.setP(kP, 0);
+    feedPid.setI(kI, 0);
+    feedPid.setD(kD, 0);
+    feedPid.setFF(0, 0);
+  }
 }

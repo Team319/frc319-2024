@@ -108,7 +108,7 @@ public class ShooterIOSim implements ShooterIO {
     }
 
     @Override
-    public void configurePID(double kP, double kI, double kD) {
+    public void configureFlywheelPID(double kP, double kI, double kD) {
         pid.setPID(kP, kI, kD);
     }
     

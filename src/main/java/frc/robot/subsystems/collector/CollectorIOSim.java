@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.collector;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 public class CollectorIOSim implements CollectorIO {
   /** Creates a new CollectorIOSim. */
   public CollectorIOSim() {}
