@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.Fire;
+import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
 import frc.robot.subsystems.drive.GyroIO;
@@ -251,7 +253,9 @@ public class RobotContainer {
       
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-        driverController.a().onTrue(new Collect(this.shooter, this.collector) );
+        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+
+        operatorController.rightBumper().whileTrue(new Spit(shooter, collector));
         
     /*    driverController
             .b()
@@ -384,12 +388,7 @@ public class RobotContainer {
         );
         /*  ============================= Shooter Debugging ============================= */
 
-         driverController.rightTrigger().whileTrue(Commands.run(
-          ()-> {
-            shooter.setVoltages(12, 12, 3);
-          }
-        )
-        );
+         driverController.rightTrigger().whileTrue(new Fire(shooter, collector,4000)); //3500
 
         driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {

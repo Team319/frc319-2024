@@ -27,7 +27,7 @@ public class Aim extends Command {
     // Drivetrain : Begin Tracking a Target
 
     // Pre-spin the Shooter Flywheels to some speed
-    m_shooter.runShooterVelocity(0); //TODO Find optimal speed
+    m_shooter.setShooterVelocity(0); //TODO Find optimal speed
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,7 +37,7 @@ public class Aim extends Command {
     // 1. If I'm within some Distance to the Target
 
       // Update the Shooter Flywheel Velocity 
-      m_shooter.runShooterVelocity(0); //TODO Find optimal speed
+      m_shooter.setShooterVelocity(0); //TODO Find optimal speed
 
       // Update the Shooter Wrist Position
       m_shooter.setWristPosition(WristConstants.Setpoints.shoot);

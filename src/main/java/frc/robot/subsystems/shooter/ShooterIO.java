@@ -30,6 +30,12 @@ public interface ShooterIO {
         public double leftFlywheelVelocitySetpointRadPerSec = 0.0;
         public double rightFlywheelVelocitySetpointRadPerSec = 0.0;
 
+        public double leftFlywheelVelocityRotationsPerSec = 0.0;
+        public double rightFlywheelVelocityRotationsPerSec = 0.0;
+
+        public double leftFlywheelVelocitySetpointRotationsPerSec = 0.0;
+        public double rightFlywheelVelocitySetpointRotationsPerSec = 0.0;
+
         public double wristPosition = 0.0;
     }
 
@@ -42,6 +48,10 @@ public interface ShooterIO {
     public default void setRightShooterVelocity(double velocityRadPerSec, double ffVolts) {}
 
     public default void setShooterVelocity(double shooterVelocity, double ffVolts) {}
+
+    public default double getLeftShooterVelocityRPM(){return 0.0;}
+
+    public default double getRightShooterVelocityRPM(){return 0.0;}
 
     public default void setFeedVelocity(double velocityRadPerSec, double ffVolts) {}
 

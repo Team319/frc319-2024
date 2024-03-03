@@ -43,6 +43,7 @@ public class ShooterIOReal implements ShooterIO {
       setupShooter();
       setupWrist();
       configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
+      configureFlywheelPID(0.6,0.4,0.0);
   }
 
   @Override
@@ -53,6 +54,10 @@ public class ShooterIOReal implements ShooterIO {
       inputs.rightFlywheelVelocityRadPerSec = shooterRight.getVelocity().getValueAsDouble();
       inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
       inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
+      inputs.leftFlywheelVelocityRotationsPerSec = shooterLeft.getVelocity().getValueAsDouble()*60;
+      inputs.rightFlywheelVelocityRotationsPerSec = shooterRight.getVelocity().getValueAsDouble()*60;
+      inputs.leftFlywheelVelocitySetpointRotationsPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
+      inputs.rightFlywheelVelocitySetpointRotationsPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
       inputs.wristPosition = wristEncoder.getPosition();
       
     }
@@ -82,6 +87,14 @@ public class ShooterIOReal implements ShooterIO {
                 Units.radiansToRotations(velocityRadPerSec), 0.0, true, 0, 0, false, false, false));
         //feed.setVoltage(ffVolts);
         updateRPM();
+    }
+    @Override
+    public double getLeftShooterVelocityRPM(){
+        return shooterLeft.getVelocity().getValueAsDouble()*60;
+    }
+    @Override
+    public double getRightShooterVelocityRPM(){
+        return shooterRight.getVelocity().getValueAsDouble()*60;
     }
 
     public void setFeedVelocity(double velocityRadPerSec, double ffVolts) {
