@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 
@@ -249,6 +250,8 @@ public class RobotContainer {
       
       
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+        driverController.a().onTrue(new Collect(this.shooter, this.collector) );
         
     /*    driverController
             .b()
@@ -317,7 +320,7 @@ public class RobotContainer {
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(1.0);
+            elevator.setPO(0.5);
             }
           )
         );
@@ -331,7 +334,7 @@ public class RobotContainer {
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-1.0);
+            elevator.setPO(-0.5);
             }
           )
         );
@@ -354,28 +357,28 @@ public class RobotContainer {
         
         operatorController.a().whileFalse(Commands.runOnce(
           () -> {
-            shooter.setWristPO(0.0);
+            //shooter.setWristPO(0.0);
             }
           )
         );
 
         operatorController.a().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(0.1);
+            shooter.setWristPO(-0.1);
             }
           )
         );
 
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
-            shooter.setWristPO(0.0);
+            //shooter.setWristPO(0.0);
             }
           )
         );
 
         operatorController.y().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(-0.1);
+            shooter.setWristPO(0.1);
             }
           )
         );

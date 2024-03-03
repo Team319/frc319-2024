@@ -13,6 +13,8 @@ public class Collect extends Command {
 
   Shooter m_shooter;
   Collector m_collector;
+  int passedCycles = 0;
+  boolean firstDetectionOccured = false;
 
   /** Creates a new Collect. */
   public Collect(Shooter shooter , Collector collector) {
@@ -32,6 +34,9 @@ public class Collect extends Command {
     // 2. Shooter should go to a Preload position
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
 
+    passedCycles = 0;
+    System.out.println("init");
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,33 +44,45 @@ public class Collect extends Command {
   public void execute() {
 
     // 1. If the note is detected by the first beam break
-    if(m_collector.isBeamBreakTripped() == false) {
+    if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
+      System.out.println("1. Not tripped");
 
-      // NO - We need to collect the note. 'Collector' and 'Tunnel' Rollers can now Intake
-      m_collector.setRollersPO(1.0);
+      // NO - We need to collect the note. 'Lower' and 'Tunnel' Rollers can now Intake
+      m_collector.setRollersPO(0.3);
     } else {
-      // YES - We have the note at the end of the tunnel. 'Collector' and 'Tunnel' rollers should stop 
-      m_collector.setRollersPO(0.0);
+      System.out.println(" 1. tripped!");
+      firstDetectionOccured = true;
+      // YES - We have the note at the end of the tunnel. 'Lower' rollers should stop 
+      m_collector.setLowerRollersPO(0.0);
       
     }
     // until ...
+
     // If the note is detected by the first beam break, and the Shooter is in the right position  
-    if(m_collector.isBeamBreakTripped() ) {
+
+    if(firstDetectionOccured){
+      if(m_collector.isBeamBreakTripped() ) {
       // True : The passoff can be completed. 'Tunnel' and 'Feed' Rollers 
-      m_collector.setTunnelRollersPO(1.0);
-      m_shooter.setFeedPO(1.0);
+
+      System.out.println("2. still tripped... trying to pass off");
+      m_collector.setTunnelRollersPO(0.3);
+      m_shooter.setFeedPO(0.5);
 
     }else {
       // False : We need to do nothing while we wait for the shooter wrist to move
-      m_collector.setRollersPO(0.0);
-      m_shooter.setFeedPO(0.0);
+      System.out.println("2. beam break not tripped ... incrementing cycles" + passedCycles );
+
+      passedCycles++;
     }
+    }
+    
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println(" end!");
     // Collector should stop
     m_collector.setRollersPO(0.0);
     // Feed should stop
@@ -81,6 +98,6 @@ public class Collect extends Command {
   public boolean isFinished() {
 
     // This command is finished when the note is detected by the second beam break 
-    return m_shooter.isBeamBreakTripped();
+    return passedCycles > 10;
   }
 }

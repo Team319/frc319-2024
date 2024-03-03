@@ -22,7 +22,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.BUSTER;
+  public static final Mode currentMode = Mode.REAL;
   public static final boolean tuningMode = true;
 
   public static enum Mode {
@@ -52,10 +52,10 @@ public final class Constants {
         }
   
         public static class Setpoints {
-          public static final float home = (float)0.0;
-          public static final float top = (float)0.0; //1000
-          public static final float bottom = (float)-24.8; // should this be Zero?
-          public static final float shoot = (float)0.0;
+          public static final float top = (float)0.40; 
+          public static final float shoot = (float)0.3;
+          public static final float home = (float)0.025;
+          public static final float bottom = (float)0.025; 
         }
   
         public static class SoftLimits {

@@ -25,6 +25,8 @@ public class Shooter extends SubsystemBase {
 
   private double shooterVelocity;
 
+    private static final LoggedTunableNumber wrist_setpoint = new LoggedTunableNumber("Wrist/setpoint", 0.0);
+
   private static final LoggedTunableNumber wrist_kP = new LoggedTunableNumber("Wrist/kP", 0.0);
   private static final LoggedTunableNumber wrist_kI = new LoggedTunableNumber("Wrist/kI", 0.0);
   private static final LoggedTunableNumber wrist_kD = new LoggedTunableNumber("Wrist/kD", 0.0);
@@ -68,9 +70,11 @@ public class Shooter extends SubsystemBase {
 
     shooterVelocity = leftShooterVelocity;
 
-    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , wrist_kP, wrist_kI, wrist_kD);
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , flywheel_kP, flywheel_kI, flywheel_kD);
 
     LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
+
+    LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setWristPosition(setpoint[0]) , wrist_setpoint);
 
     runShooterVelocity(shooterVelocity);
     getWristPosition();

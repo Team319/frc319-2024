@@ -9,10 +9,12 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 //import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkPIDController.ArbFFUnits;
@@ -32,8 +34,10 @@ public class ShooterIOReal implements ShooterIO {
 
     private final CANSparkMax wrist = new CANSparkMax(33, MotorType.kBrushless); // when merging use this value
     private final SparkPIDController wristPid = wrist.getPIDController();
-    private final RelativeEncoder wristEncoder = wrist.getEncoder();
-    private final DigitalInput beamBreak = new DigitalInput(0);
+
+    private final RelativeEncoder wristEncoder = wrist.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+    
+    //private final DigitalInput beamBreak = new DigitalInput(1); // Doesn't exist!
 
   public ShooterIOReal() {
       setupShooter();
@@ -50,12 +54,13 @@ public class ShooterIOReal implements ShooterIO {
       inputs.leftFlywheelVelocitySetpointRadPerSec = shooterLeft.getClosedLoopReference().getValueAsDouble();
       inputs.rightFlywheelVelocitySetpointRadPerSec = shooterRight.getClosedLoopReference().getValueAsDouble();
       inputs.wristPosition = wristEncoder.getPosition();
+      
     }
 
     private void setupShooter() {
         shooterLeft.setInverted(true);
         shooterRight.setInverted(false);
-        feed.setInverted(false);
+        feed.setInverted(true);
     }
 
     
@@ -116,13 +121,16 @@ public class ShooterIOReal implements ShooterIO {
         wrist.restoreFactoryDefaults();
         wrist.clearFaults();
 
+        wrist.setIdleMode(IdleMode.kBrake);
+
         wrist.enableSoftLimit(SoftLimitDirection.kForward, true);
         wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
         wrist.setSoftLimit(SoftLimitDirection.kForward, WristConstants.SoftLimits.forwardSoftLimit);
-        wrist.setSoftLimit(SoftLimitDirection.kReverse, WristConstants.SoftLimits.reverseSoftLimit);
+        wrist.setSoftLimit(SoftLimitDirection.kReverse, WristConstants.SoftLimits.reverseSoftLimit );
 
-        wrist.setInverted(true);
+        wristEncoder.setInverted(true);
+        wrist.setInverted(false);
         
         wristPid.setFeedbackDevice(wristEncoder);
         wristPid.setOutputRange(-1.0, 1.0);
@@ -156,10 +164,11 @@ public class ShooterIOReal implements ShooterIO {
         wrist.set(PO);
     }
 
+    /* 
     @Override
     public boolean isBeamBreakTripped(){
         return beamBreak.get();
-    }
+    }*/
 
     @Override
     public void setFeedPO(double PO) {
