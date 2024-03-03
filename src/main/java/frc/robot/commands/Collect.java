@@ -21,6 +21,8 @@ public class Collect extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
+    passedCycles = 0;
+    firstDetectionOccured = false;
     addRequirements(shooter, collector);
   }
 
@@ -35,6 +37,7 @@ public class Collect extends Command {
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
 
     passedCycles = 0;
+    firstDetectionOccured = false;
     System.out.println("init");
 
   }
@@ -48,7 +51,7 @@ public class Collect extends Command {
       System.out.println("1. Not tripped");
 
       // NO - We need to collect the note. 'Lower' and 'Tunnel' Rollers can now Intake
-      m_collector.setRollersPO(0.3);
+      m_collector.setRollersPO(1.0);
     } else {
       System.out.println(" 1. tripped!");
       firstDetectionOccured = true;
@@ -65,8 +68,8 @@ public class Collect extends Command {
       // True : The passoff can be completed. 'Tunnel' and 'Feed' Rollers 
 
       System.out.println("2. still tripped... trying to pass off");
-      m_collector.setTunnelRollersPO(0.3);
-      m_shooter.setFeedPO(0.5);
+      m_collector.setTunnelRollersPO(0.4);
+      m_shooter.setFeedPO(0.35);
 
     }else {
       // False : We need to do nothing while we wait for the shooter wrist to move
@@ -89,7 +92,7 @@ public class Collect extends Command {
     m_shooter.setFeedPO(0.0);
 
     // Shooter should go to the default / furthest shot position
-    m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
+   // m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
 
   }
 
@@ -98,6 +101,6 @@ public class Collect extends Command {
   public boolean isFinished() {
 
     // This command is finished when the note is detected by the second beam break 
-    return passedCycles > 10;
+    return passedCycles > 2;
   }
 }

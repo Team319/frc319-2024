@@ -357,7 +357,7 @@ public class RobotContainer {
         
         operatorController.a().whileFalse(Commands.runOnce(
           () -> {
-            //shooter.setWristPO(0.0);
+            shooter.setWristPO(0.0);
             }
           )
         );
@@ -371,7 +371,7 @@ public class RobotContainer {
 
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
-            //shooter.setWristPO(0.0);
+            shooter.setWristPO(0.0);
             }
           )
         );
