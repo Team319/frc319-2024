@@ -67,7 +67,7 @@ public interface ShooterIO {
 
     public default double getPosition() {return 0.0;}
 
-    public default void getWristPosition() {}
+    public default double getWristPosition() {return 0.0;}
 
     public default void setWristPosition(double position) {}
 

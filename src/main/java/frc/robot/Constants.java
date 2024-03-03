@@ -43,18 +43,20 @@ public final class Constants {
 
   public static class WristConstants {
         public static class PID {
-          public static final double kP = 0.096155;
+          public static final double kP = 1.750; //0.096155
           public static final double kI = 0;
           public static final double kD = 0;
   
           public static final int iZone = 0;
-          public static final double kFF = 0.0019231;
+          public static final double kFF = 0.0;
         }
   
         public static class Setpoints {
-          public static final float top = (float)0.40; 
+          public static final float top = (float)0.625; //.4
           public static final float shoot = (float)0.3;
-          public static final float home = (float)0.025;
+          public static final float home = (float)0.232; //0.025
+          public static final float podium = (float)0.375;
+          public static final float amp =(float)0.671;
           public static final float bottom = (float)0.025; 
         }
   

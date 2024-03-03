@@ -43,7 +43,7 @@ public class ShooterIOReal implements ShooterIO {
       setupShooter();
       setupWrist();
       configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
-      configureFlywheelPID(0.6,0.4,0.0);
+      configureFlywheelPID(0.6,0.5,0.0); // P 0.6,I 0.4, D 0.0
   }
 
   @Override
@@ -81,11 +81,11 @@ public class ShooterIOReal implements ShooterIO {
     public void setShooterVelocity(double velocityRadPerSec, double ffVolts) {
         shooterLeft.setControl(
             new VelocityVoltage(
-                Units.radiansToRotations(velocityRadPerSec), 0.0, true, 0, 0, false, false, false));
+                Units.radiansToRotations(velocityRadPerSec), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
             new VelocityVoltage(
-                Units.radiansToRotations(velocityRadPerSec), 0.0, true, 0, 0, false, false, false));
-        //feed.setVoltage(ffVolts);
+                Units.radiansToRotations(velocityRadPerSec*0.6), 0.0, false, 0, 0, false, false, false));
+        //feed.setVoltage(ffVolts);                    // 0.6 was ok
         updateRPM();
     }
     @Override
@@ -160,8 +160,8 @@ public class ShooterIOReal implements ShooterIO {
     }
     
     @Override
-    public void getWristPosition() {
-        var wristPosition = wristEncoder.getPosition();
+    public double getWristPosition() {
+        return  wristEncoder.getPosition();
      //System.out.println("Wrist Position" + wristPosition);
     }
 

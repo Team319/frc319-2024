@@ -14,7 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.Fire;
+import frc.robot.commands.FirePod;
+import frc.robot.commands.FireSub;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -206,14 +207,23 @@ public class RobotContainer {
     }
 
     // Set up named commands for PathPlanner
-    // NamedCommands.registerCommand(
-    //    "exampleCommand",
-    //     exampleSubsystem.exampleCommand());
+     NamedCommands.registerCommand(
+        "Collect",
+         new Collect(shooter, collector));
+
+     NamedCommands.registerCommand(
+        "ShootSub",
+         new FireSub(shooter, collector, 4000));
+
+     NamedCommands.registerCommand(
+        "ShootPod",
+         new FirePod(shooter, collector, 6000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up FF characterization routines
+    /* 
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -224,7 +234,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
+    */
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -255,7 +265,7 @@ public class RobotContainer {
 
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
-        operatorController.rightBumper().whileTrue(new Spit(shooter, collector));
+        operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector));
         
     /*    driverController
             .b()
@@ -388,7 +398,8 @@ public class RobotContainer {
         );
         /*  ============================= Shooter Debugging ============================= */
 
-         driverController.rightTrigger().whileTrue(new Fire(shooter, collector,4000)); //3500
+         driverController.rightTrigger().whileTrue(new FireSub(shooter, collector,4000)); 
+         driverController.rightBumper().whileTrue(new FirePod(shooter, collector, 6000));
 
         driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {

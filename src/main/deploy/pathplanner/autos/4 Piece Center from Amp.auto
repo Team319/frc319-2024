@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp Side to Center piece"
+            "pathName": "Amp Side to Amp piece"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to Note 3"
+            "pathName": "Center to Note 2"
           }
         },
         {

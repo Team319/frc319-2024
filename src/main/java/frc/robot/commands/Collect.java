@@ -15,6 +15,7 @@ public class Collect extends Command {
   Collector m_collector;
   int passedCycles = 0;
   boolean firstDetectionOccured = false;
+  double wristThreshold;
 
   /** Creates a new Collect. */
   public Collect(Shooter shooter , Collector collector) {
@@ -23,6 +24,7 @@ public class Collect extends Command {
     m_collector = collector;
     passedCycles = 0;
     firstDetectionOccured = false;
+    wristThreshold = 0.1;
     addRequirements(shooter, collector);
   }
 
@@ -47,7 +49,9 @@ public class Collect extends Command {
   public void execute() {
 
     // 1. If the note is detected by the first beam break
-    if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
+   //System.out.println("Wrist "+m_shooter.getWristPosition());
+    if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
+      if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
       //System.out.println("1. Not tripped");
 
       // NO - We need to collect the note. 'Lower' and 'Tunnel' Rollers can now Intake
@@ -68,17 +72,17 @@ public class Collect extends Command {
       // True : The passoff can be completed. 'Tunnel' and 'Feed' Rollers 
 
       //System.out.println("2. still tripped... trying to pass off");
-      m_collector.setTunnelRollersPO(0.4);
-      m_shooter.setFeedPO(0.35);
+      m_collector.setTunnelRollersPO(0.4); //0.4
+      m_shooter.setFeedPO(0.25); //0.35
 
     }else {
       // False : We need to do nothing while we wait for the shooter wrist to move
       //System.out.println("2. beam break not tripped ... incrementing cycles" + passedCycles );
 
       passedCycles++;
+     }
     }
-    }
-    
+  }
 
   }
 

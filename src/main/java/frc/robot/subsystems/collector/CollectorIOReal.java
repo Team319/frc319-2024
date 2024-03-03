@@ -51,7 +51,7 @@ public class CollectorIOReal implements CollectorIO {
   }
   
   public void setInversions() {
-    lowerRollerMotor.setInverted(true);
+    lowerRollerMotor.setInverted(true); // both was true
     tunnelRollerMotor.setInverted(true);
   }
 

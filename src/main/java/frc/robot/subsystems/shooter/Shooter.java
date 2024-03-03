@@ -153,8 +153,8 @@ public class Shooter extends SubsystemBase {
     io.setWristPosition(position);
   }
 
-  public void getWristPosition() {
-    io.getWristPosition();
+  public double getWristPosition() {
+    return io.getWristPosition();
   }
 
   public void setFeedPO(double PO){
