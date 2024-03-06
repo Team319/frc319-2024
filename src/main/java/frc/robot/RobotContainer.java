@@ -72,8 +72,6 @@ public class RobotContainer {
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
- //private final LoggedDashboardNumber flywheelSpeedInput =
-  //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -255,12 +253,46 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -driverController.getLeftY(),
-              () -> -driverController.getLeftX(),
+              () -> -driverController.getLeftY(), // Note : This is X supplier because the field's X axis is down field long
+              () -> -driverController.getLeftX(), // Note this is Y supplier because the field's Y axis is across the field 
+              () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
               () -> driverController.getLeftTriggerAxis()));
       
+        driverController.rightStick().onTrue(
+          Commands.runOnce(
+          () -> drive.setHeadingTarget(Drive.HeadingTargets.SPEAKER), 
+          drive
+            )
+        );
+        
+        /* 
+        controller.y().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(0.0),
+            drive
+          )
+        );
+        controller.b().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(-90),
+            drive
+          )
+        );
+        controller.a().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(180),
+            drive
+          )
+        );
+        controller.x().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(90),
+            drive
+          )
+        );*/
       
+        
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );

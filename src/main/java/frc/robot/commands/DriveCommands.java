@@ -14,23 +14,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.PolarCoordinate;
+
 import java.util.function.DoubleSupplier;
+
+import org.littletonrobotics.junction.Logger;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.2;
-  private static final double JOYSTICK_GOVERNOR = 0.3; // this value must not exceed 1.0
+  private static final double HEADING_DEADBAND = DEADBAND;
+  private static final double JOYSTICK_GOVERNOR = 0.5; // this value must not exceed 1.0
   private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
 
-  private DriveCommands() {}
+  private DriveCommands() {
+
+  }
 
   /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
@@ -39,13 +49,14 @@ public class DriveCommands {
       Drive drive,
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
-      DoubleSupplier omegaSupplier,
+      DoubleSupplier headingXSupplier,
+      DoubleSupplier headingYSupplier,
       DoubleSupplier throttleSupplier) {
 
     switch(Constants.currentMode){
       case TANK:
         return Commands.run(
-        () -> {  drive.tankDrive( ySupplier.getAsDouble(), omegaSupplier.getAsDouble()); },
+        () -> {  drive.tankDrive( ySupplier.getAsDouble(), headingXSupplier.getAsDouble()); },
          drive);
 
       case REAL:
@@ -62,30 +73,35 @@ public class DriveCommands {
             Rotation2d linearDirection =
                 new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
-            double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+            double omega = MathUtil.applyDeadband(headingXSupplier.getAsDouble(), HEADING_DEADBAND); 
 
             double throttle = MathUtil.applyDeadband(throttleSupplier.getAsDouble(), DEADBAND);
 
-            //  Old implementation : just square values
-            // linearMagnitude = linearMagnitude * linearMagnitude;
-            // omega = Math.copySign(omega * omega, omega);
 
-            // New implementation : square values and apply relative throttle
+            // Square values and apply relative throttle
             // Note : we don't care about the magnitude of the throttle, as we have the
             // linearDirection to apply later
             // Note : only apply throttle if we have provided a linear magnitude
 
-            linearMagnitude = (linearMagnitude * linearMagnitude * JOYSTICK_GOVERNOR);
+            if (throttle > 0.25) {
+              linearMagnitude *= THROTTLE_GOVERNOR;
+            }
+            
+            linearMagnitude = (linearMagnitude * linearMagnitude);
+
+            /* 
+            // Old way. Trigger implemented as throttle, instead of a slow mode 
+            // We swapped because it hurts the driver's wrist to hold the trigger the majority of the time
             if (linearMagnitude > 0.0 && throttle > 0.0) {
               linearMagnitude +=
                   Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
-            }
+            }*/
 
-            // Note : we need to consider the sign as we don't have a linearDirection for the right
-            // joystick axis
-            omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
-            if (omega != 0.0 && throttle > 0.0) {
-              omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+            
+            omega = drive.snapToHeading(headingXSupplier, headingYSupplier);
+            
+            if (drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET){
+              omega = drive.snapToTarget();
             }
 
             // Calcaulate new linear velocity
@@ -94,25 +110,20 @@ public class DriveCommands {
                     .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                     .getTranslation();
 
-            // Convert to field relative speeds & send command
-            drive.runVelocity(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
+            // Convert to field relative speeds
+            ChassisSpeeds fieldRelativeVelocities = ChassisSpeeds.fromFieldRelativeSpeeds(
                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                     omega * drive.getMaxAngularSpeedRadPerSec(),
-                    drive.getRotation()));
+                    drive.getRotation());
+
+            
+            // Discretize & send command
+            drive.runVelocity( ChassisSpeeds.discretize(fieldRelativeVelocities, 0.02));
           },
           drive);
 
       default:
-        return Commands.run(
-        () -> {} /* do nothing */,
-        drive);
-    }
-  }
-  public Command maintainHeading(Drive drive, double heading){
-    switch(Constants.currentMode){  
-    default:
         return Commands.run(
         () -> {} /* do nothing */,
         drive);

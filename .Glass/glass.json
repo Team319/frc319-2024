@@ -3,7 +3,6 @@
     "transitory": {
       "CameraPublisher": {
         "limelight-collect": {
-          "open": true,
           "string[]##v_/CameraPublisher/limelight-collect/modes": {
             "open": true
           },
@@ -12,14 +11,18 @@
           }
         },
         "limelight-shooter": {
-          "open": true,
           "string[]##v_/CameraPublisher/limelight-shooter/modes": {
             "open": true
           },
           "string[]##v_/CameraPublisher/limelight-shooter/streams": {
             "open": true
           }
-        },
+        }
+      },
+      "limelight-collect": {
+        "open": true
+      },
+      "limelight-shooter": {
         "open": true
       }
     },

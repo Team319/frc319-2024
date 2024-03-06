@@ -15,14 +15,19 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -36,12 +41,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.subsystems.drive.Drive.TargetLocations;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.PolarCoordinate;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
-  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
+
+  public static enum HeadingTargets{
+    NO_TARGET,
+    SPEAKER,
+    SOURCE
+  }
+
+  public static class TargetLocations{
+    public static Translation2d ORIGIN = new Translation2d();
+    public static Translation2d RED_SPEAKER = new Translation2d(16.5,5.5);
+    public static Translation2d BLUE_SPEAKER = new Translation2d(0.0,5.5);
+    public static Translation2d RED_SOURCE = new Translation2d(0.0,-0.5);
+    public static Translation2d BLUE_SOURCE = new Translation2d(16.15,-0.5);
+  }
+
+  private HeadingTargets headingTarget = HeadingTargets.NO_TARGET;
+
+  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(22.0);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(22.0);
   private static final double DRIVE_BASE_RADIUS =
@@ -64,9 +89,17 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
+  
+  private static final PIDController headingPID = new PIDController(1, 0.01 , 0.0); // originally 0.25, 0.0, 0.0
+
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
-	  
+	
+  @AutoLogOutput(key = "Drive/headingSetpoint")
+  private double headingSetpoint = 0.0;
+
+  @AutoLogOutput(key = "Drive/headingLocked")
+  private boolean headingLocked = false;
 
   public Drive(
       GyroIO gyroIO,
@@ -75,6 +108,9 @@ public class Drive extends SubsystemBase {
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
+
+    headingPID.enableContinuousInput(-Math.PI, Math.PI);
+    headingPID.setTolerance(0.1, 0.1);
 
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
@@ -271,6 +307,106 @@ public class Drive extends SubsystemBase {
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
+
+    /** Resets the current odometry pose. */
+  public void setPose(Pose2d pose, Rotation2d newGyroRotation) {
+    poseEstimator.resetPosition(newGyroRotation, getModulePositions(), pose);
+  }
+
+  // OBE
+  public double optimizeHeading(double headingDegrees){
+
+    
+      var currentAngle = getRotation().getDegrees();
+      var deltaDegrees = headingDegrees - currentAngle;
+      double optimizedHeading = headingDegrees;
+
+      if (headingDegrees == 180){
+        optimizedHeading = Math.copySign(optimizedHeading, currentAngle);
+      }
+      
+  
+      // Could use further work, the simulator shows some weird behavior flipping when facing 'south' at the rollover point on occasion
+      // However, I think facing the collector south will be a rare occurance -EKM
+      // in fact, it may be more intuive to have Y and A both point 'north', 
+      // in the event Driver thinks pressing A will set the robot orientation for the speaker - EKM
+    return optimizedHeading;
+
+  }
+
+  public double snapToHeading(DoubleSupplier x, DoubleSupplier y) {
+    
+    // ===================  Thank you 1806 for the help ! =======================
+    double[] rightJoyPolarCoordinate = PolarCoordinate.toPolarCoordinate(x,y);
+    double r = rightJoyPolarCoordinate[0];
+    double theta = rightJoyPolarCoordinate[1];
+    
+    if(r < 0.8){
+        theta = getRotation().getRadians();
+    }
+    else{ // Valid Driver input
+      this.headingTarget = HeadingTargets.NO_TARGET;
+    }
+
+    theta /= (Math.PI / 4);
+    theta = Math.round(theta) * (Math.PI / 4);
+    return headingPID.calculate(getRotation().getRadians(), theta);
+  }
+
+  public Translation2d getCurrentTargetLocation(){
+    Translation2d retVal = TargetLocations.ORIGIN;
+
+    switch (this.headingTarget) {
+      case SPEAKER:
+        switch (DriverStation.getAlliance().get()) {
+          case Red:
+            retVal = TargetLocations.RED_SPEAKER;
+            break;
+        
+          default: // Blue
+            retVal = TargetLocations.BLUE_SPEAKER;
+            break;
+        }
+        break;// Escape Speaker Case
+
+      case SOURCE:
+        switch (DriverStation.getAlliance().get()) {
+          case Red:
+            retVal = TargetLocations.RED_SOURCE;
+            break;
+        
+          default: // Blue
+            retVal = TargetLocations.BLUE_SOURCE;
+            break;
+        }
+        break; // Escape Source Case
+    
+      default:
+        retVal = TargetLocations.ORIGIN;
+        break; // Escape Default Case
+    }
+    return retVal;
+  }
+
+  public void setHeadingTarget(HeadingTargets target){
+    this.headingTarget = target;
+  }
+
+  public HeadingTargets getHeadingTarget(){
+    return this.headingTarget ;
+  }
+
+  public double snapToTarget() {
+    // ===================  Thank you 4481 for the help ! =======================
+    double theta = 0.0;
+    // Target - Robot 
+
+    //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
+    Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
+    theta = difference.getAngle().getRadians();
+
+    return headingPID.calculate(getRotation().getRadians(), theta);
+  }
   
   /**
    * Adds a vision measurement to the pose estimator.
@@ -334,4 +470,8 @@ public Drive(GyroIO gyroIO){
   // Configure SysId
     sysId = null;
 }
+
+
+
+
 }

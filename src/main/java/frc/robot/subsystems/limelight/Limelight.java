@@ -39,27 +39,27 @@ public class Limelight extends SubsystemBase {
   }
 
   public double getLatency() {
-    return m_tl.getDouble(getDistance()); //Returns latency
+    return m_tl.getDouble(0.0); //Returns latency
 
   }
   public double getTotalLatency() {
-    return m_cl.getDouble(getDistance()); //Returns total latency
+    return m_cl.getDouble(0.0); //Returns total latency
 
    }
    public double getTargetArea(){
-    return m_ta.getDouble(getDistance()); // Returns the size of a valid target (how close you are to the target)
+    return m_ta.getDouble(0.0); // Returns the size of a valid target (how close you are to the target)
   }
 
   public double getHorizontalOffset() {
-    return m_tx.getDouble(getDistance()); // Returns the horizontal offset from valid target
+    return m_tx.getDouble(0.0); // Returns the horizontal offset from valid target
   }
 
   public double getVerticalOffset() {
-    return m_ty.getDouble(getDistance()); // Returns the vertical offset from valid target
+    return m_ty.getDouble(0.0); // Returns the vertical offset from valid target
   }
 
   public double getDistance() {
-    return m_botPose.getDouble(getDistance()); // Returns the current distance.
+    return m_botPose.getDouble(0.0); // TODO: Returns the current distance.
   }
 
   public boolean isValidTargetSeen () {
@@ -71,7 +71,8 @@ public class Limelight extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {  
+  public void periodic() {
+    // Do nothing at this time  
   }
 }
 
