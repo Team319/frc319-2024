@@ -52,12 +52,12 @@ public final class Constants {
         }
   
         public static class Setpoints {
-          public static final float top = (float)0.625; //.4
+          public static final float top = (float)0.479; //.4
           public static final float shoot = (float)0.3;
-          public static final float home = (float)0.232; //0.025
-          public static final float podium = (float)0.375;
-          public static final float amp =(float)0.671;
-          public static final float bottom = (float)0.025; 
+          public static final float home = (float)0.0083; //0.025
+          public static final float podium = (float)0.164;
+          public static final float amp =(float)0.475;
+          public static final float bottom = (float)0.0083; 
         }
   
         public static class SoftLimits {

@@ -22,9 +22,10 @@ public class FireSub extends Command {
     m_shooter = shooter;
     m_collector = collector;
     setpoint = RPM;
-    threshold = 500;
+    threshold = 750;
     wristThreshold = 0.015;
     addRequirements(shooter, collector);
+
   }
 
   // Called when the command is initially scheduled.
@@ -59,6 +60,8 @@ public class FireSub extends Command {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
     System.out.println("end");
+    m_shooter.setWristPosition(WristConstants.Setpoints.home);
+
 
   }
 

@@ -17,7 +17,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
-      public static final double TOP = 125.0; // 130.0
+      public static final double TOP = 134.0; // 130.0
       public static final double TRAP = TOP;
       public static final double AMP = 47.785;
       public static final double CLIMB = 5.0;

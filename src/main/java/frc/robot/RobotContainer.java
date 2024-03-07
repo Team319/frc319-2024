@@ -24,8 +24,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
+import frc.robot.commands.GoHome;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -209,15 +211,19 @@ public class RobotContainer {
     // Set up named commands for PathPlanner
      NamedCommands.registerCommand(
         "Collect",
-         new Collect(shooter, collector));
+         new Collect(this.shooter, this.collector));
 
      NamedCommands.registerCommand(
         "ShootSub",
-         new FireSub(shooter, collector, 4000));
+         new FireSub(this.shooter, this.collector, 4000));
 
      NamedCommands.registerCommand(
         "ShootPod",
-         new FirePod(shooter, collector, 6000));
+         new FirePod(this.shooter, this.collector, 6000));
+
+     NamedCommands.registerCommand(
+        "ShootAmp",
+         new FireAmp(this.shooter, this.collector, this.elevator, 4000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -251,6 +257,7 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
+        /*  ============================= Drive ============================= */
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -263,9 +270,6 @@ public class RobotContainer {
       
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
-
-        operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector));
         
     /*    driverController
             .b()
@@ -276,53 +280,13 @@ public class RobotContainer {
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
                     .ignoringDisable(true)); */
-
-         driverController.y().onTrue(Commands.runOnce(
-          () -> {
-            shooter.setFeedPO(0.2);
-
-            }
-          )
-        ); 
-
-         driverController.y().onFalse(Commands.runOnce(
-          () -> {
-            shooter.setFeedPO(0.0);
-            }
-          )
-        );
       
 
-        // ============================= Collector Debugging ============================= 
+        /*  ============================= Collector  ============================= */
 
-        operatorController.rightBumper().onTrue(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(1.0);
-            }
-          )
-        );
+        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
-        operatorController.rightBumper().onFalse(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(0);
-            }
-          )
-        );
-
-        operatorController.leftBumper().onTrue(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(-1.0);
-            }
-          )
-        );
-
-        operatorController.leftBumper().onFalse(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(0);
-            }
-          )
-        );
-
+        operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
         /*  ============================= Elevator Debugging ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
@@ -353,36 +317,10 @@ public class RobotContainer {
           )
         );
 
+        operatorController.b().whileTrue(new GoHome(shooter,elevator));
+
         // ============================= Wrist Debugging ============================= 
-
-        // Hot keys, motors are not happy tho :(
-          /*      operatorController.a().whileTrue(Commands.runOnce(
-          () -> {
-            shooter.setWristPosition(0.0);
-            }
-          )
-        );
-
-        operatorController.y().whileTrue(Commands.run(
-          () -> {
-            shooter.setWristPosition(-24.8);
-            }
-          )  */
         
-        operatorController.a().whileFalse(Commands.runOnce(
-          () -> {
-            shooter.setWristPO(0.0);
-            }
-          )
-        );
-
-        operatorController.a().whileTrue(Commands.run(
-          () -> {
-            shooter.setWristPO(-0.1);
-            }
-          )
-        );
-
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
@@ -392,22 +330,63 @@ public class RobotContainer {
 
         operatorController.y().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(0.1);
+            shooter.setWristPO(0.3);
             }
           )
         );
-        /*  ============================= Shooter Debugging ============================= */
+
+        operatorController.a().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
+        );
+
+        operatorController.a().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPO(-0.3);
+            }
+          )
+        );
+
+        /*  ============================= Driver Shooter ============================= */
 
          driverController.rightTrigger().whileTrue(new FireSub(shooter, collector,4000)); 
-         driverController.rightBumper().whileTrue(new FirePod(shooter, collector, 6000));
 
-        driverController.rightTrigger().whileFalse(Commands.runOnce(
+         driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }
         )
         ); 
 
+         driverController.rightBumper().whileTrue(new FirePod(shooter, collector, 6000));
+
+         driverController.rightBumper().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
+        ); 
+
+        /*  ============================= Operator Shooter ============================= */
+
+        operatorController.x().whileTrue(new FireAmp(shooter,collector,elevator,4000));
+
+          operatorController.povLeft().onTrue(Commands.runOnce(
+          () -> {
+            shooter.setFeedPO(-0.2);
+
+            }
+          )
+        ); 
+
+         operatorController.povLeft().onFalse(Commands.runOnce(
+          () -> {
+            shooter.setFeedPO(0.0);
+            }
+          )
+        );
 
         
         break;

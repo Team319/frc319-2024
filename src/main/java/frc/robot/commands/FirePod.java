@@ -42,8 +42,9 @@ public class FirePod extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("RPM "+m_shooter.getVelocityRPM());
+    
     System.out.println("Wrist "+m_shooter.getWristPosition());
+
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.podium-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.podium+wristThreshold){
       if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
         m_shooter.setFeedPO (1.0);
@@ -59,6 +60,7 @@ public class FirePod extends Command {
   public void end(boolean interrupted) {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
+    m_shooter.setWristPosition(WristConstants.Setpoints.home);
     System.out.println("end");
 
   }
