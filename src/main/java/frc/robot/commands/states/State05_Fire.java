@@ -6,15 +6,19 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class Collect extends Command {
-  /** Creates a new Collect. */
-  public Collect() {
+public class State05_Fire extends Command {
+  /** Creates a new Fire. */
+  public State05_Fire() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+      
+      // TODO: Update Robot state variable so outside methods can see state
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

@@ -41,7 +41,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.drive.Drive.TargetLocations;
+import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
 
@@ -313,27 +315,6 @@ public class Drive extends SubsystemBase {
     poseEstimator.resetPosition(newGyroRotation, getModulePositions(), pose);
   }
 
-  // OBE
-  public double optimizeHeading(double headingDegrees){
-
-    
-      var currentAngle = getRotation().getDegrees();
-      var deltaDegrees = headingDegrees - currentAngle;
-      double optimizedHeading = headingDegrees;
-
-      if (headingDegrees == 180){
-        optimizedHeading = Math.copySign(optimizedHeading, currentAngle);
-      }
-      
-  
-      // Could use further work, the simulator shows some weird behavior flipping when facing 'south' at the rollover point on occasion
-      // However, I think facing the collector south will be a rare occurance -EKM
-      // in fact, it may be more intuive to have Y and A both point 'north', 
-      // in the event Driver thinks pressing A will set the robot orientation for the speaker - EKM
-    return optimizedHeading;
-
-  }
-
   public double snapToHeading(DoubleSupplier x, DoubleSupplier y) {
     
     // ===================  Thank you 1806 for the help ! =======================
@@ -401,9 +382,23 @@ public class Drive extends SubsystemBase {
     double theta = 0.0;
     // Target - Robot 
 
-    //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
-    Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
-    theta = difference.getAngle().getRadians();
+    boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
+
+    if(isTargetVisible){
+      //System.out.println("Target Visible, use limelight data to automatically control heading");
+      theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
+
+      return headingPID.calculate(theta, 0.0); // try and make the Horizontal Offset 0, meaning the target is centered
+    }
+    else{
+      //System.out.println("Target Not Visible, using odometry and pose for best guess");
+      
+      //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
+      Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
+      theta = difference.getAngle().getRadians();
+    }
+
+  
 
     return headingPID.calculate(getRotation().getRadians(), theta);
   }

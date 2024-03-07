@@ -6,15 +6,20 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class Ready extends Command {
-  /** Creates a new Ready. */
-  public Ready() {
+public class State01_Search extends Command {
+  /** Creates a new Search. */
+  public State01_Search() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    // TODO: Update Robot state variable so outside methods can see state
+
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
