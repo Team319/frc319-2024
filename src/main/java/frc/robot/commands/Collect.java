@@ -46,6 +46,9 @@ public class Collect extends Command {
     } else {
       // YES - We have the note at the end of the tunnel. 'Collector' and 'Tunnel' rollers should stop 
       m_collector.setRollersPO(0.0);
+      Robot.leds.colorTest(255, 30, 0); //orange or blue 
+     // Robot.leds.colorTest(0, 0, 255);
+
       
     }
     // until ...

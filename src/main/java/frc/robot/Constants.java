@@ -29,6 +29,7 @@ public final class Constants {
     /** Running on a real robot. */
     REAL,
 
+    /* Running on Buster */
     BUSTER,
 
     /** Running a real robot with a tank drive. */

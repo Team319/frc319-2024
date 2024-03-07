@@ -35,6 +35,11 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.leds.Leds;
+import frc.robot.subsystems.leds.LedsIO;
+import frc.robot.subsystems.leds.LedsIOBuster;
+import frc.robot.subsystems.leds.LedsIOReal;
+import frc.robot.subsystems.leds.LedsIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -60,6 +65,7 @@ public class RobotContainer {
   public final Shooter shooter;
   public final Collector collector;
   public final Elevator elevator;
+  public final Leds leds;
   // private final Flywheel flywheel;
 
   // Controller
@@ -98,6 +104,11 @@ public class RobotContainer {
           new Elevator(
             new ElevatorIOReal()
         );
+
+        leds =
+          new Leds(
+            new LedsIOReal()
+          );
           
         break;
       
@@ -113,18 +124,24 @@ public class RobotContainer {
         shooter =
           new Shooter(
             new ShooterIO() {}
-          );
+        );
 
         collector =
           new Collector(
             new CollectorIO() {}
-          );
+        );
 
         elevator =
           new Elevator(
             new ElevatorIO() {}
         );
+
+        leds =
+          new Leds(
+            new LedsIOBuster() 
+        );
         break;
+
         case TANK:
           drive = 
             new Drive(new GyroIO() {});
@@ -142,6 +159,11 @@ public class RobotContainer {
           elevator =
             new Elevator(
               new ElevatorIO() {}
+            );
+
+          leds =
+            new Leds(
+              new LedsIO() {}
             );
             
           break;
@@ -171,6 +193,11 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          leds =
+          new Leds(
+            new LedsIOSim() {}
+        );
+
           break;
         
       default:
@@ -199,6 +226,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+        leds =
+          new Leds(
+            new LedsIO() {}
+        );
         break;
     }
 
@@ -260,7 +291,7 @@ public class RobotContainer {
                         drive)
                     .ignoringDisable(true)); */
 
-         driverController.y().onTrue(Commands.runOnce(
+  /*      driverController.y().onTrue(Commands.runOnce(
           () -> {
             shooter.setFeedPO(0.2);
 
@@ -273,7 +304,7 @@ public class RobotContainer {
             shooter.setFeedPO(0.0);
             }
           )
-        );
+        ); */  
       
 
         // ============================= Collector Debugging ============================= 
@@ -281,6 +312,7 @@ public class RobotContainer {
         operatorController.rightBumper().onTrue(Commands.runOnce(
           () -> {
             collector.setRollersPO(1.0);
+            leds.setColor(250, 91, 5);
             }
           )
         );
@@ -306,35 +338,68 @@ public class RobotContainer {
           )
         );
 
+
+
         /*  ============================= Elevator Debugging ============================= */
 
-        operatorController.povUp().whileFalse(Commands.runOnce(
+          operatorController.povUp().whileTrue(Commands.runOnce(
+          () -> {
+          elevator.setPO(0.5);
+             }
+            )
+          );
+          
+          operatorController.povUp().whileFalse(Commands.runOnce(
+          () -> {
+          elevator.setPO(0.0);
+             }
+            )
+          );
+          
+          operatorController.povDown().whileTrue(Commands.runOnce(
+          () -> {
+          elevator.setPO(-0.5);
+             }
+            )
+          );
+          
+          operatorController.povDown().whileFalse(Commands.runOnce(
+          () -> {
+          elevator.setPO(0.0);
+             }
+            )
+          ); 
+        
+
+         /* Elevator movement with sticks (NOT TESTED!!!)
+        operatorController.leftStick().whileFalse(Commands.runOnce(
           () -> {
             elevator.setPO(0.0);
             }
           )
         );
 
-        operatorController.povUp().whileTrue(Commands.runOnce(
+        operatorController.leftStick().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(1.0);
+            if (operatorController.getLeftY() > 0.1) {
+              elevator.setPO(0.5);
+            } else {
+              return;
+            }
             }
           )
         );
 
-        operatorController.povDown().whileFalse(Commands.runOnce(
+        operatorController.leftStick().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            if (operatorController.getLeftY() < -0.1) {
+              elevator.setPO(-0.5);
+            } else {
+              return;
+            }
             }
           )
-        );
-
-        operatorController.povDown().whileTrue(Commands.runOnce(
-          () -> {
-            elevator.setPO(-1.0);
-            }
-          )
-        );
+        ); */
 
         // ============================= Wrist Debugging ============================= 
 
@@ -384,6 +449,7 @@ public class RobotContainer {
          driverController.rightTrigger().whileTrue(Commands.run(
           ()-> {
             shooter.setVoltages(12, 12, 3);
+            leds.setColor(255, 230, 4);
           }
         )
         );
@@ -391,6 +457,7 @@ public class RobotContainer {
         driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
+            leds.setColor(0, 255, 4);
           }
         )
         ); 
