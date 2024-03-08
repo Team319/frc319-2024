@@ -1,16 +1,16 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.3005404928188775,
-      "y": 5.547612425391122
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Score"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -22,40 +22,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Speaker to Center piece"
+                  "pathName": "Amp Score to Amp Note"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootPod"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "Collect"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center to Note 2"
                 }
               }
             ]
@@ -64,13 +39,50 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 2 to Center "
+            "pathName": "Amp Note to Amp Score"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootPod"
+            "name": "ShootSub"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp score to 0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 0 to Amp Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Score to Center Line"
           }
         }
       ]

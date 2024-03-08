@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7275269251393202,
-      "y": 6.64
+      "x": 1.3005404928188775,
+      "y": 5.547612425391122
     },
-    "rotation": 61.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -22,15 +22,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp Side to Center piece"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Speaker to Center piece"
                 }
               }
             ]
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp piece to 0"
+                  "pathName": "Center to Note 2"
                 }
               }
             ]
@@ -64,13 +64,38 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 0 to Amp Piece"
+            "pathName": "Note 2 to Center "
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ShootPod"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Piece to Note 3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Score to Center Line"
           }
         }
       ]

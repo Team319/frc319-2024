@@ -24,10 +24,11 @@ public class Spit extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
+    m_elevator = elevator;
     setpoint = RPM;
     wristThreshold = 0.015;
     elevatorThreshold = 0.015;
-    addRequirements(shooter, collector);
+    addRequirements(shooter, collector, elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -42,12 +43,12 @@ public class Spit extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
-      if (m_elevator.getPosition() > ElevatorIOReal.ElevatorSetpoint.BOTTOM-elevatorThreshold && m_elevator.getPosition() < ElevatorIOReal.ElevatorSetpoint.BOTTOM+elevatorThreshold){
+    m_shooter.setWristPosition(WristConstants.Setpoints.home);
+    m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
     m_shooter.setFeedPO(-1.0);
     }
-   }
-  }
+   
+  
 
   // Called once the command ends or is interrupted.
   @Override

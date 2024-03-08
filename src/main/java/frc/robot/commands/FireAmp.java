@@ -27,7 +27,7 @@ public class FireAmp extends Command {
     m_collector = collector;
     m_elevator = elevator;
     setpoint = RPM;
-    threshold = 750;
+    threshold = 500;
     wristThreshold = 0.015;
     elevatorThreshold = 0.015;
 
@@ -38,7 +38,7 @@ public class FireAmp extends Command {
   @Override
   public void initialize() {
     m_shooter.setShooterVelocity(setpoint);
-    m_shooter.setFeedPO(0.0);
+    m_shooter.setFeedPO(0.2);
     System.out.println("init");
     passedCycles = 0;
     m_shooter.setWristPosition(WristConstants.Setpoints.amp);
@@ -52,10 +52,11 @@ public class FireAmp extends Command {
   public void execute() {
     System.out.println("RPM"+m_shooter.getVelocityRPM());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.amp-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.amp+wristThreshold){
-    if (m_elevator.getPosition() > ElevatorIOReal.ElevatorSetpoint.AMP-elevatorThreshold && m_elevator.getPosition() < ElevatorIOReal.ElevatorSetpoint.AMP+elevatorThreshold){
-    if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
-      m_shooter.setFeedPO (1.0);
-      passedCycles++;
+      if (m_elevator.getPosition() > ElevatorIOReal.ElevatorSetpoint.AMP-elevatorThreshold && m_elevator.getPosition() < ElevatorIOReal.ElevatorSetpoint.AMP+elevatorThreshold){
+        if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
+        m_shooter.setFeedPO (1.0);
+        passedCycles++;
+
       System.out.println("passedCycles"+passedCycles);
       }
      }

@@ -298,7 +298,7 @@ public class RobotContainer {
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.5);
+            elevator.setPO(1.0);
             }
           )
         );
@@ -312,12 +312,12 @@ public class RobotContainer {
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.5);
+            elevator.setPO(-1.0);
             }
           )
         );
 
-        operatorController.b().whileTrue(new GoHome(shooter,elevator));
+        operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
 
         // ============================= Wrist Debugging ============================= 
         
@@ -371,7 +371,7 @@ public class RobotContainer {
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(shooter,collector,elevator,4000));
+        operatorController.x().whileTrue(new FireAmp(shooter,collector,elevator,2000));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {

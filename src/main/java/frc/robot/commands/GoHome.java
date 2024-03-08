@@ -35,7 +35,7 @@ public class GoHome extends Command {
   @Override
   public void execute() {
    m_shooter.setWristPosition(WristConstants.Setpoints.home);
-    m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
+  m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
  }
    
 
