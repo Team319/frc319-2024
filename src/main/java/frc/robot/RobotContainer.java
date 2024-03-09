@@ -84,7 +84,8 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
           new Drive(
-            new GyroIOPigeon2(),
+            new GyroIOPigeon2(), // must restore
+           // new GyroIO(){},           // must remove. debugging only
             new ModuleIOTalonFX(0),
             new ModuleIOTalonFX(1),
             new ModuleIOTalonFX(2),
@@ -351,7 +352,7 @@ public class RobotContainer {
 
         /*  ============================= Driver Shooter ============================= */
 
-         driverController.rightTrigger().whileTrue(new FireSub(shooter, collector,4000)); 
+         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,4000)); 
 
          driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
@@ -360,7 +361,7 @@ public class RobotContainer {
         )
         ); 
 
-         driverController.rightBumper().whileTrue(new FirePod(shooter, collector, 6000));
+         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 6000));
 
          driverController.rightBumper().whileFalse(Commands.runOnce(
           ()-> {
@@ -371,7 +372,7 @@ public class RobotContainer {
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(shooter,collector,elevator,2000));
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,2000));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {

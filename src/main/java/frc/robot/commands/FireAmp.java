@@ -72,6 +72,7 @@ public class FireAmp extends Command {
     m_shooter.setFeedPO(0.0);
     System.out.println("end");
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
+    m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
 
   }
 
