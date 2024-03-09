@@ -84,9 +84,9 @@ public class DriveCommands {
             // Note : we need to consider the sign as we don't have a linearDirection for the right
             // joystick axis
             omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
-            if (omega != 0.0 && throttle > 0.0) {
+           /*  if (omega != 0.0 && throttle > 0.0) {
               omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
-            }
+            }*/
 
             // Calcaulate new linear velocity
             Translation2d linearVelocity =

@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.FireAmp;
@@ -298,7 +298,7 @@ public class RobotContainer {
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(1.0);
+            elevator.setPO(0.5);
             }
           )
         );
@@ -312,7 +312,7 @@ public class RobotContainer {
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-1.0);
+            elevator.setPO(-0.5);
             }
           )
         );
@@ -375,7 +375,7 @@ public class RobotContainer {
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {
-            shooter.setFeedPO(-0.2);
+            shooter.setFeedPO(0.4);
 
             }
           )

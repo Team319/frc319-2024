@@ -35,7 +35,7 @@ public class FireSub extends Command {
     m_shooter.setFeedPO(0.0);
     System.out.println("init");
     passedCycles = 0;
-    m_shooter.setWristPosition(WristConstants.Setpoints.home);
+    m_shooter.setWristPosition(WristConstants.Setpoints.sub);
 
   }
  
@@ -44,7 +44,7 @@ public class FireSub extends Command {
   @Override
   public void execute() {
     System.out.println("RPM"+m_shooter.getVelocityRPM());
-    if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
+    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
     if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
       m_shooter.setFeedPO (1.0);
       passedCycles++;

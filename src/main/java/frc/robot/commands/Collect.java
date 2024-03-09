@@ -94,7 +94,7 @@ public class Collect extends Command {
     m_collector.setRollersPO(0.0);
     // Feed should stop
     m_shooter.setFeedPO(0.0);
-
+    m_shooter.setShooterVelocity(2000);
     // Shooter should go to the default / furthest shot position
    // m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
 
