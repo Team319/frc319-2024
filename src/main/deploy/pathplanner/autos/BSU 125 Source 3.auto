@@ -24,6 +24,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Source Score to Source Podium"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -55,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ShootSub"
+                  "name": "ShootPod"
                 }
               },
               {
@@ -90,7 +96,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "ShootSub"
+                        "name": "ShootPod"
                       }
                     },
                     {

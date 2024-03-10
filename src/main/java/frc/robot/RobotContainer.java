@@ -271,6 +271,13 @@ public class RobotContainer {
       
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
+        driverController.start().onTrue(Commands.runOnce(
+            ()-> { 
+              drive.resetHeading();
+            }
+            )
+          ); 
+
         
     /*    driverController
             .b()
@@ -352,7 +359,7 @@ public class RobotContainer {
 
         /*  ============================= Driver Shooter ============================= */
 
-         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,4000)); 
+         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,6000)); 
 
          driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {

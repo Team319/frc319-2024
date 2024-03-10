@@ -95,6 +95,18 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Note 3 to Center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPod"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Center Score to Center Line"
           }
         }
