@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
+import frc.robot.commands.CollectDuringAuto;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
@@ -212,7 +213,7 @@ public class RobotContainer {
     // Set up named commands for PathPlanner
      NamedCommands.registerCommand(
         "Collect",
-         new Collect(this.shooter, this.collector));
+         new CollectDuringAuto(this.shooter, this.collector));
 
      NamedCommands.registerCommand(
         "ShootSub",
@@ -293,6 +294,9 @@ public class RobotContainer {
         /*  ============================= Collector  ============================= */
 
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+
+       // operatorController.start().onTrue(new Collect(this.shooter, this.collector) );
+
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
         /*  ============================= Elevator Debugging ============================= */

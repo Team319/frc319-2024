@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.47044996702820163,
+      "y": 4.1338974839469875
+    },
+    "rotation": 1.9881526524216262
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Displace Prepare Note 4 Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Displace Note 4 "
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Displace Prepare Note 3 Path"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

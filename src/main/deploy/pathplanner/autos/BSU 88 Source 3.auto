@@ -24,12 +24,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Source Score to Source Podium"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -42,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Podium to Note 4"
+                  "pathName": "Source Score to Source Podium"
                 }
               }
             ]

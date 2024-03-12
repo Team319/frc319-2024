@@ -55,7 +55,7 @@ public final class Constants {
           public static final float top = (float)0.479; //.4
           public static final float shoot = (float)0.3;
           public static final float home = (float)0.0083; //0.025
-          public static final float sub =(float)0.08;
+          public static final float sub =(float)0.08; //.05 worked
           public static final float podium = (float)0.19; //.2
           public static final float amp =(float)0.475;
           public static final float bottom = (float)0.0083; 
