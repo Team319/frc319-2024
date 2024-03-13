@@ -50,7 +50,6 @@ public class Elevator extends SubsystemBase {
 
     LoggedTunableNumber.ifChanged(hashCode(), setpoint-> setPosition(setpoint[0]), elevatorSetpoint);
 
-
     LoggedTunableNumber.ifChanged(hashCode(), pid -> configurePID(pid[0], pid[1], pid[2], pid[3]) ,kP, kI, kD, kFF);
 
 

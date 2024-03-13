@@ -18,11 +18,11 @@ package frc.robot;
  * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>9It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.BUSTER;
+  public static final Mode currentMode = Mode.REAL;
   public static final boolean tuningMode = true;
 
   public static enum Mode {
@@ -43,19 +43,22 @@ public final class Constants {
 
   public static class WristConstants {
         public static class PID {
-          public static final double kP = 0.096155;
+          public static final double kP = 1.750; //0.096155
           public static final double kI = 0;
           public static final double kD = 0;
   
           public static final int iZone = 0;
-          public static final double kFF = 0.0019231;
+          public static final double kFF = 0.0;
         }
   
         public static class Setpoints {
-          public static final float home = (float)0.0;
-          public static final float top = (float)0.0; //1000
-          public static final float bottom = (float)-24.8; // should this be Zero?
-          public static final float shoot = (float)0.0;
+          public static final float top = (float)0.479; //.4
+          public static final float shoot = (float)0.3;
+          public static final float home = (float)0.0083; //0.025
+          public static final float sub =(float)0.08;
+          public static final float podium = (float)0.19; //.2
+          public static final float amp =(float)0.475;
+          public static final float bottom = (float)0.0083; 
         }
   
         public static class SoftLimits {

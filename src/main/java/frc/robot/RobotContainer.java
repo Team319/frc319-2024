@@ -14,15 +14,21 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+// import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.Collect;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.FireAmp;
+import frc.robot.commands.FirePod;
+import frc.robot.commands.FireSub;
+import frc.robot.commands.GoHome;
+import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
 import frc.robot.subsystems.drive.GyroIO;
@@ -78,7 +84,8 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
           new Drive(
-            new GyroIOPigeon2(),
+            new GyroIOPigeon2(), // must restore
+           // new GyroIO(){},           // must remove. debugging only
             new ModuleIOTalonFX(0),
             new ModuleIOTalonFX(1),
             new ModuleIOTalonFX(2),
@@ -203,14 +210,27 @@ public class RobotContainer {
     }
 
     // Set up named commands for PathPlanner
-    // NamedCommands.registerCommand(
-    //    "exampleCommand",
-    //     exampleSubsystem.exampleCommand());
+     NamedCommands.registerCommand(
+        "Collect",
+         new Collect(this.shooter, this.collector));
+
+     NamedCommands.registerCommand(
+        "ShootSub",
+         new FireSub(this.shooter, this.collector, 4000));
+
+     NamedCommands.registerCommand(
+        "ShootPod",
+         new FirePod(this.shooter, this.collector, 6000));
+
+     NamedCommands.registerCommand(
+        "ShootAmp",
+         new FireAmp(this.shooter, this.collector, this.elevator, 4000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up FF characterization routines
+    /* 
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -221,7 +241,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
+    */
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -238,6 +258,7 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
+        /*  ============================= Drive ============================= */
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -249,6 +270,14 @@ public class RobotContainer {
       
       
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+        driverController.start().onTrue(Commands.runOnce(
+            ()-> { 
+              drive.resetHeading();
+            }
+            )
+          ); 
+
         
     /*    driverController
             .b()
@@ -259,53 +288,13 @@ public class RobotContainer {
                                 new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                         drive)
                     .ignoringDisable(true)); */
-
-         driverController.y().onTrue(Commands.runOnce(
-          () -> {
-            shooter.setFeedPO(0.2);
-
-            }
-          )
-        ); 
-
-         driverController.y().onFalse(Commands.runOnce(
-          () -> {
-            shooter.setFeedPO(0.0);
-            }
-          )
-        );
       
 
-        // ============================= Collector Debugging ============================= 
+        /*  ============================= Collector  ============================= */
 
-        operatorController.rightBumper().onTrue(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(1.0);
-            }
-          )
-        );
+        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
-        operatorController.rightBumper().onFalse(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(0);
-            }
-          )
-        );
-
-        operatorController.leftBumper().onTrue(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(-1.0);
-            }
-          )
-        );
-
-        operatorController.leftBumper().onFalse(Commands.runOnce(
-          () -> {
-            collector.setRollersPO(0);
-            }
-          )
-        );
-
+        operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
         /*  ============================= Elevator Debugging ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
@@ -317,7 +306,7 @@ public class RobotContainer {
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(1.0);
+            elevator.setPO(0.5);
             }
           )
         );
@@ -331,41 +320,15 @@ public class RobotContainer {
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-1.0);
+            elevator.setPO(-0.5);
             }
           )
         );
+
+        operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
 
         // ============================= Wrist Debugging ============================= 
-
-        // Hot keys, motors are not happy tho :(
-          /*      operatorController.a().whileTrue(Commands.runOnce(
-          () -> {
-            shooter.setWristPosition(0.0);
-            }
-          )
-        );
-
-        operatorController.y().whileTrue(Commands.run(
-          () -> {
-            shooter.setWristPosition(-24.8);
-            }
-          )  */
         
-        operatorController.a().whileFalse(Commands.runOnce(
-          () -> {
-            shooter.setWristPO(0.0);
-            }
-          )
-        );
-
-        operatorController.a().whileTrue(Commands.run(
-          () -> {
-            shooter.setWristPO(0.1);
-            }
-          )
-        );
-
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
@@ -375,26 +338,63 @@ public class RobotContainer {
 
         operatorController.y().whileTrue(Commands.run(
           () -> {
-            shooter.setWristPO(-0.1);
+            shooter.setWristPO(0.3);
             }
           )
         );
-        /*  ============================= Shooter Debugging ============================= */
 
-         driverController.rightTrigger().whileTrue(Commands.run(
-          ()-> {
-            shooter.setVoltages(12, 12, 3);
-          }
-        )
+        operatorController.a().whileFalse(Commands.runOnce(
+          () -> {
+            shooter.setWristPO(0.0);
+            }
+          )
         );
 
-        driverController.rightTrigger().whileFalse(Commands.runOnce(
+        operatorController.a().whileTrue(Commands.run(
+          () -> {
+            shooter.setWristPO(-0.3);
+            }
+          )
+        );
+
+        /*  ============================= Driver Shooter ============================= */
+
+         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,6000)); 
+
+         driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }
         )
         ); 
 
+         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 6000));
+
+         driverController.rightBumper().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
+        ); 
+
+        /*  ============================= Operator Shooter ============================= */
+
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,2000));
+
+          operatorController.povLeft().onTrue(Commands.runOnce(
+          () -> {
+            shooter.setFeedPO(0.4);
+
+            }
+          )
+        ); 
+
+         operatorController.povLeft().onFalse(Commands.runOnce(
+          () -> {
+            shooter.setFeedPO(0.0);
+            }
+          )
+        );
 
         
         break;

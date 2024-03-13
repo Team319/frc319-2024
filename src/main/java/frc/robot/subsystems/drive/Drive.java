@@ -41,7 +41,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
-  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
+  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(22.0);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(22.0);
   private static final double DRIVE_BASE_RADIUS =
@@ -300,6 +300,10 @@ public class Drive extends SubsystemBase {
       new Translation2d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0),
       new Translation2d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0)
     };
+  }
+
+  public void resetHeading(){
+    gyroIO.reset();
   }
 
 // ========================= Tank Drive =========================

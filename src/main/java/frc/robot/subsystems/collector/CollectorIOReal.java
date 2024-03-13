@@ -15,26 +15,21 @@ public class CollectorIOReal implements CollectorIO {
   private final CANSparkMax lowerRollerMotor = new CANSparkMax(20, MotorType.kBrushless);
   private final CANSparkMax tunnelRollerMotor = new CANSparkMax(21, MotorType.kBrushless);
 
-  private DigitalInput beamBreak = new DigitalInput(1);
+  private DigitalInput beamBreak = new DigitalInput(0);
 
   public LinearFilter currentFilter = LinearFilter.movingAverage(10);
 
   private int currentLimitAmps = 30;
 
-  private boolean isLeadMotorInverted = false;
-
-
-
   public CollectorIOReal() {
-    setCollectorInversions();
     setup();
+    setInversions();
   }
 
   @Override
   public void updateInputs(CollectorIOInputs inputs) {
     inputs.maxCurrentAmps = this.currentLimitAmps;
     inputs.outputCurrentAmps = getCollectorCurrent();
-    inputs.isLeadMotorInverted = this.isLeadMotorInverted;
 
   }
 
@@ -55,9 +50,9 @@ public class CollectorIOReal implements CollectorIO {
     tunnelRollerMotor.set(PO);
   }
   
-  public void setCollectorInversions() {
-    lowerRollerMotor.setInverted(isLeadMotorInverted);
-   
+  public void setInversions() {
+    lowerRollerMotor.setInverted(true); // both was true
+    tunnelRollerMotor.setInverted(true);
   }
 
   public double getCollectorCurrent() {
@@ -68,22 +63,16 @@ public class CollectorIOReal implements CollectorIO {
     lowerRollerMotor.restoreFactoryDefaults();
     lowerRollerMotor.clearFaults();
 
-    //lowerRollerMotor.setInverted(true);
+    tunnelRollerMotor.restoreFactoryDefaults();
+    tunnelRollerMotor.clearFaults();
 
-    //pidController.setFeedbackDevice(collectorEncoder);
-    /*collectorPIDController.setFF(kFF);
-    collectorPIDController.setP(kP);
-    collectorPIDController.setOutputRange(-1, 1);*/
-
-    lowerRollerMotor.setClosedLoopRampRate(0.125);
-    lowerRollerMotor.setOpenLoopRampRate(0.125);
-    
     lowerRollerMotor.setSmartCurrentLimit(currentLimitAmps);
+    tunnelRollerMotor.setSmartCurrentLimit(currentLimitAmps);
   }
 
     @Override
     public boolean isBeamBreakTripped(){
-        return beamBreak.get();
+        return !beamBreak.get();
     }
 
 }

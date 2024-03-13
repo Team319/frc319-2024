@@ -17,15 +17,15 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
-      public static final double TOP = 130.0;
-      public static final double TRAP = 0.0;
-      public static final double AMP = 0.0;
-      public static final double CLIMB = 0.0;
-      public static final double BOTTOM = 5.0;
+      public static final double TOP = 100.0; // 130.0
+      public static final double TRAP = TOP;
+      public static final double AMP = 47.785;
+      public static final double CLIMB = 5.0;
+      public static final double BOTTOM = 2.0; // 2.0
   }
 
   public static class ElevatorPIDGains {
-    public final double kPUp = 0.0;
+    public final double kPUp = 0.2;
     public final double kIUp = 0.0;
     public final double kDUp = 0.0;
     public final double kFFUp = 0.0;
@@ -72,6 +72,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
+
+    configurePID(this.elevatorPIDGains.kPUp,this.elevatorPIDGains.kIUp,this.elevatorPIDGains.kDUp,this.elevatorPIDGains.kFFUp);
   }
 
   public void setFollow() {
