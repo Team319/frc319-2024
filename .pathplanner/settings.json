@@ -1,12 +1,13 @@
 {
-  "robotWidth": 0.6,
-  "robotLength": 0.89,
+  "robotWidth": 0.7,
+  "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
     "Amp Speaker to ___ Note",
     "Center Speaker to ___ Note",
+    "Center Note to ___ Note",
     "Source Speaker Shot to ___ Note",
-    "Note ___ to Note ___"
+    "Podium Note to ____ Note"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.0,
