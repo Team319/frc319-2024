@@ -50,6 +50,10 @@ public class CollectDuringAuto extends Command {
   @Override
   public void execute() {
     timerCycles++;
+    
+  //0. Do I see a note with limelight? 
+  //YES- Go to the Note
+  //NO- Do nothing?
 
     // 1. If the note is detected by the first beam break
    //System.out.println("Wrist "+m_shooter.getWristPosition());

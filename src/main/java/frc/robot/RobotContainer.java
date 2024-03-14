@@ -225,7 +225,7 @@ public class RobotContainer {
 
      NamedCommands.registerCommand(
         "ShootAmp",
-         new FireAmp(this.shooter, this.collector, this.elevator, 4000));
+         new FireAmp(this.shooter, this.collector, this.elevator, 2000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -295,11 +295,9 @@ public class RobotContainer {
 
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
-       // operatorController.start().onTrue(new Collect(this.shooter, this.collector) );
-
-
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
-        /*  ============================= Elevator Debugging ============================= */
+
+        /*  ============================= Climb ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
@@ -331,7 +329,7 @@ public class RobotContainer {
 
         operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
 
-        // ============================= Wrist Debugging ============================= 
+        // ============================= Wrist  ============================= 
         
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
@@ -372,7 +370,7 @@ public class RobotContainer {
         )
         ); 
 
-         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 6000));
+         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000));
 
          driverController.rightBumper().whileFalse(Commands.runOnce(
           ()-> {
