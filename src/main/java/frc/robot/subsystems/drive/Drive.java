@@ -433,6 +433,10 @@ public class Drive extends SubsystemBase {
     };
   }
 
+  public void resetHeading(){
+    gyroIO.reset();
+  }
+
 // ========================= Tank Drive =========================
 
   public Drive( GyroIO gyroIO, TankIO tankIO) {

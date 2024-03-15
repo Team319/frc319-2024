@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3005404928188775,
-      "y": 5.547612425391122
+      "x": 0.47044996702820163,
+      "y": 4.1338974839469875
     },
     "rotation": 0
   },
@@ -12,9 +12,15 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Source Score"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "Shoot Sub"
           }
         },
         {
@@ -22,40 +28,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Speaker to Center piece"
+                  "pathName": "Source Score to Podium Piece"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootPod"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "Collect"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center to Note 2"
                 }
               }
             ]
@@ -64,13 +45,50 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 2 to Center "
+            "pathName": "Podium Note to Source Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Sub"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Podium to Note 4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 4 to Podium"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ShootPod"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source Score to Center Line"
           }
         }
       ]

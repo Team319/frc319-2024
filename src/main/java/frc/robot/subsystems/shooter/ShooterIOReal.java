@@ -125,7 +125,7 @@ public class ShooterIOReal implements ShooterIO {
         shooterLeft.stopMotor();
         shooterRight.stopMotor();
         feed.stopMotor();
-        wrist.stopMotor();
+        //wrist.stopMotor();
     }
 
     @Override

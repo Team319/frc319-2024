@@ -22,6 +22,8 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -87,23 +89,18 @@ public class DriveCommands {
                 // linearDirection to apply later
                 // Note : only apply throttle if we have provided a linear magnitude
 
-                if (throttle > 0.25) 
-                {
-                  linearMagnitude *= THROTTLE_GOVERNOR;
+
+                // Slow mode if Trigger is pulled
+                if(throttle > 0.25){
+                  linearMagnitude = linearMagnitude * linearMagnitude * JOYSTICK_GOVERNOR;
                 }
-                
-                linearMagnitude = (linearMagnitude * linearMagnitude);
-
-                /* 
-                // Old way. Trigger implemented as throttle, instead of a slow mode 
-                // We swapped because it hurts the driver's wrist to hold the trigger the majority of the time
-                if (linearMagnitude > 0.0 && throttle > 0.0) {
-                  linearMagnitude +=
-                      Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, linearMagnitude);
-                }*/
+                else{
+                  linearMagnitude = linearMagnitude * linearMagnitude;
+                }
 
                 
-                if (isSnapHeadingWithJoystickEnabled) 
+
+                if (isSnapHeadingWithJoystickEnabled) // Maintain target heading from joystick
                 {
                   omega = drive.snapToHeading(headingXSupplier, headingYSupplier);
                 
@@ -112,30 +109,32 @@ public class DriveCommands {
                     omega = drive.snapToTarget();
                   }
                 }
-                else if(drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET)
+                else if(drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET) // Maintain target heading
                 { // Heading locked to a target
                   omega = drive.snapToTarget(); 
-
                 }
-                else
-                { // Normal rotation with joystick
-
-                  // Note : we need to consider the sign as we don't have a linearDirection for the right
-                  // joystick axis
-                  omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
-                  if (omega != 0.0 && throttle > 0.0) 
-                  {
-                    omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+                else // Normal rotation with joystick
+                { 
+                  // Note : we need to consider the sign as we don't have a linearDirection for the right joystick axis
+                  if ( throttle > 0.25) {
+                    //omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
+                    omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega); // full pow'ah baby
                   }
-
+                  else
+                  {
+                    omega = Math.copySign((omega * omega ), omega);
+                  }
                 }
                 
-
                 // Calcaulate new linear velocity
                 Translation2d linearVelocity =
                     new Pose2d(new Translation2d(), linearDirection)
                         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                         .getTranslation();
+
+                if (DriverStation.getAlliance().get() == Alliance.Red){
+                    linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));
+                }
 
                 // Convert to field relative speeds
                 ChassisSpeeds fieldRelativeVelocities = ChassisSpeeds.fromFieldRelativeSpeeds(

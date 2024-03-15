@@ -55,6 +55,7 @@ public final class Constants {
           public static final double top = 0.625; //.4
           public static final double shoot = 0.3;
           public static final double home = 0.232; //0.025
+          public static final double sub = 0.08;
           public static final double podium = 0.375;
           public static final double amp = 0.671;
           public static final double bottom = 0.025; 

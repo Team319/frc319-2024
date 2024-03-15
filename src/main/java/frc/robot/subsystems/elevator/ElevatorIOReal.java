@@ -18,6 +18,27 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorIOReal implements ElevatorIO {
 
+  public static class ElevatorSetpoint {
+      public static final double TOP = 100.0; // 130.0
+      public static final double TRAP = TOP;
+      public static final double AMP = 47.785;
+      public static final double CLIMB = 5.0;
+      public static final double BOTTOM = 2.0; // 2.0
+  }
+
+  public static class ElevatorPIDGains {
+    public final double kPUp = 0.2;
+    public final double kIUp = 0.0;
+    public final double kDUp = 0.0;
+    public final double kFFUp = 0.0;
+
+    public final double kPDown = kPUp;
+    public final double kIDown = kIUp;
+    public final double kDDown = kDUp;
+    public final double kFFDown = kFFUp;
+
+  }
+
   private final CANSparkMax elevatorLead = new CANSparkMax(40, MotorType.kBrushless);
   private final CANSparkMax elevatorFollow = new CANSparkMax(41, MotorType.kBrushless);
 
