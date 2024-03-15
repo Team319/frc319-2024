@@ -397,11 +397,26 @@ public class Drive extends SubsystemBase {
       Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
       theta = difference.getAngle().getRadians();
     }
-
-  
-
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
+
+  public double getAngleToCurrentTarget(){
+    return getCurrentTargetLocation().minus(getPose().getTranslation()).getAngle().getRadians();
+  }
+
+  public double getAngleToTarget(Translation2d target){
+    return target.minus(getPose().getTranslation()).getAngle().getRadians();
+  }
+ 
+  public double getDistanceToCurrentTarget(){
+    return getCurrentTargetLocation().getDistance(getPose().getTranslation());
+  }
+  
+  public double getDistanceToTarget(Translation2d target){
+    return target.getDistance(getPose().getTranslation());
+  }
+
+ 
   
   /**
    * Adds a vision measurement to the pose estimator.
