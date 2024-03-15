@@ -71,4 +71,6 @@ public interface ShooterIO {
 
     public default boolean isBeamBreakTripped() { return false;}
 
+    public default double getWristSetpointForDistance(double distance) {return 0.0;};
+
 }
