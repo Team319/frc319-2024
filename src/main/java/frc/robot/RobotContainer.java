@@ -381,7 +381,7 @@ public class RobotContainer {
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,2000));
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,1000));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {

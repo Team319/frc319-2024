@@ -51,7 +51,7 @@ public class Collect extends Command {
     // 1. If the note is detected by the first beam break
    //System.out.println("Wrist "+m_shooter.getWristPosition());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
-      m_shooter.setShooterVelocity(2000);
+      m_shooter.setShooterVelocity(1000);
 
       if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
       //System.out.println("1. Not tripped");

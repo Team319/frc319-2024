@@ -52,12 +52,12 @@ public final class Constants {
         }
   
         public static class Setpoints {
-          public static final float top = (float)0.479; //.4
+          public static final float top = (float)0.485; //.4
           public static final float shoot = (float)0.3;
           public static final float home = (float)0.0083; //0.025
-          public static final float sub =(float)0.08; //.05 worked
+          public static final float sub =(float)0.085; //.08 worked
           public static final float podium = (float)0.18; //.185
-          public static final float amp =(float)0.475;
+          public static final float amp =(float)0.485;
           public static final float bottom = (float)0.0083; 
         }
   
