@@ -22,8 +22,8 @@ public class FirePod extends Command {
     m_shooter = shooter;
     m_collector = collector;
     setpoint = RPM;
-    threshold = 500;
-    wristThreshold = 0.015;
+    threshold = 750;
+    wristThreshold = 0.015; //15
     addRequirements(shooter, collector);
   }
 
@@ -46,7 +46,11 @@ public class FirePod extends Command {
     System.out.println("Wrist "+m_shooter.getWristPosition());
 
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.podium-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.podium+wristThreshold){
+      System.out.println("Ding");
+
       if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
+        System.out.println("Dong");
+
         m_shooter.setFeedPO (1.0);
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);

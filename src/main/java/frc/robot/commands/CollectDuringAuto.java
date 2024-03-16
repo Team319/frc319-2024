@@ -9,16 +9,18 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.shooter.Shooter;
 
-public class Collect extends Command {
+public class CollectDuringAuto extends Command {
 
   Shooter m_shooter;
   Collector m_collector;
   int passedCycles = 0;
+  int timerCycles = 0;
+
   boolean firstDetectionOccured = false;
   double wristThreshold;
 
   /** Creates a new Collect. */
-  public Collect(Shooter shooter , Collector collector) {
+  public CollectDuringAuto(Shooter shooter , Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
@@ -47,12 +49,15 @@ public class Collect extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    timerCycles++;
+    
+  //0. Do I see a note with limelight? 
+  //YES- Go to the Note
+  //NO- Do nothing?
 
     // 1. If the note is detected by the first beam break
    //System.out.println("Wrist "+m_shooter.getWristPosition());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
-      m_shooter.setShooterVelocity(2000);
-
       if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
       //System.out.println("1. Not tripped");
 
@@ -82,6 +87,7 @@ public class Collect extends Command {
       //System.out.println("2. beam break not tripped ... incrementing cycles" + passedCycles );
 
       passedCycles++;
+      timerCycles = 0; // reset 'timer' cycles,
      }
     }
   }
@@ -96,6 +102,7 @@ public class Collect extends Command {
     m_collector.setRollersPO(0.0);
     // Feed should stop
     m_shooter.setFeedPO(0.0);
+    m_shooter.setShooterVelocity(2000);
     // Shooter should go to the default / furthest shot position
    // m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
 
@@ -106,6 +113,6 @@ public class Collect extends Command {
   public boolean isFinished() {
 
     // This command is finished when the note is detected by the second beam break 
-    return passedCycles > 2;
+    return passedCycles > 2 || timerCycles > 250;
   }
 }

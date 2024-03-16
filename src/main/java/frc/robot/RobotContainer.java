@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
+import frc.robot.commands.CollectDuringAuto;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
@@ -214,15 +215,15 @@ public class RobotContainer {
 
      NamedCommands.registerCommand(
         "ShootSub",
-         new FireSub(this.shooter, this.collector, 4000));
+         new FireSub(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootPod",
-         new FirePod(this.shooter, this.collector, 6000));
+         new FirePod(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootAmp",
-         new FireAmp(this.shooter, this.collector, this.elevator, 4000));
+         new FireAmp(this.shooter, this.collector, this.elevator, 2000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -327,39 +328,42 @@ public class RobotContainer {
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
-        /*  ============================= Elevator Debugging ============================= */
+
+        /*  ============================= Climb ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.TOP);
             }
           )
         );
 
         operatorController.povDown().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
             }
           )
         );
 
         operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
 
-        // ============================= Wrist Debugging ============================= 
+        operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
+
+        // ============================= Wrist  ============================= 
         
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
@@ -391,7 +395,7 @@ public class RobotContainer {
 
         /*  ============================= Driver Shooter ============================= */
 
-         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,6000)); 
+         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,5000)); 
 
          driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {
@@ -400,7 +404,7 @@ public class RobotContainer {
         )
         ); 
 
-         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 6000));
+         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000));
 
          driverController.rightBumper().whileFalse(Commands.runOnce(
           ()-> {
