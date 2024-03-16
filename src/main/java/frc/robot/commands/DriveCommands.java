@@ -79,7 +79,7 @@ public class DriveCommands {
                 Rotation2d linearDirection =
                     new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
-                double omega = MathUtil.applyDeadband(headingXSupplier.getAsDouble(), HEADING_DEADBAND); 
+                double omega = MathUtil.applyDeadband(headingYSupplier.getAsDouble(), HEADING_DEADBAND); 
 
                 double throttle = MathUtil.applyDeadband(throttleSupplier.getAsDouble(), DEADBAND);
 
@@ -108,10 +108,11 @@ public class DriveCommands {
                   {
                     omega = drive.snapToTarget();
                   }
-                }
-                else if(drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET) // Maintain target heading
-                { // Heading locked to a target
-                  omega = drive.snapToTarget(); 
+                
+                  if(drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET) // Maintain target heading
+                  { // Heading locked to a target
+                    omega = drive.snapToTarget(); 
+                  }
                 }
                 else // Normal rotation with joystick
                 { 
