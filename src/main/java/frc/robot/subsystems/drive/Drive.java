@@ -23,18 +23,22 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,6 +46,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.LimelightConstants.Device;
 import frc.robot.subsystems.drive.Drive.TargetLocations;
 import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
@@ -217,6 +222,23 @@ public class Drive extends SubsystemBase {
 
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
+ 
+        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER)){
+          double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
+          Pose3d visionPose = new Pose3d(
+                                new Translation3d(poseBuf[0],poseBuf[1],poseBuf[2]), 
+                                new Rotation3d(Units.degreesToRadians(poseBuf[3]), Units.degreesToRadians(poseBuf[4]),Units.degreesToRadians(poseBuf[5]))
+                              );
+          
+          //if(){ // If 2 tags are visible
+
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7,0.7,9999999));
+
+            poseEstimator.addVisionMeasurement(visionPose.toPose2d(), poseBuf[6]);
+            Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
+         // }
+        }
+
         break; // End of Swerve logic
     
       default:

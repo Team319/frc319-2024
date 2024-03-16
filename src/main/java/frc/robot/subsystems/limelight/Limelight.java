@@ -23,7 +23,7 @@ import frc.robot.Constants.LimelightConstants;
 public class Limelight {
 
   private static final NetworkTable m_shooterTable = NetworkTableInstance.getDefault().getTable("limelight-shooter"); // Makes the Limelight data table.
-  private static NetworkTableEntry m_botPose_shooter = m_shooterTable.getEntry("botpose"); // Makes a double array to hold the robot pose.
+  private static NetworkTableEntry m_botPose_shooter = m_shooterTable.getEntry("botpose_wpiblue"); // Makes a double array to hold the robot pose.
   private static NetworkTableEntry m_tv_shooter = m_shooterTable.getEntry("tv");
   private static NetworkTableEntry m_tx_shooter = m_shooterTable.getEntry("tx");
   private static NetworkTableEntry m_ty_shooter = m_shooterTable.getEntry("ty");
@@ -32,7 +32,7 @@ public class Limelight {
   private static NetworkTableEntry m_cl_shooter = m_shooterTable.getEntry("cl");
 
   private static final NetworkTable m_collectTable = NetworkTableInstance.getDefault().getTable("limelight-collect"); // Makes the Limelight data table.
-  private static NetworkTableEntry m_botPose_collect = m_collectTable.getEntry("botpose"); // Makes a double array to hold the robot pose.
+  private static NetworkTableEntry m_botPose_collect = m_collectTable.getEntry("botpose_wpiblue"); // Makes a double array to hold the robot pose.
   private static NetworkTableEntry m_tv_collect = m_collectTable.getEntry("tv");
   private static NetworkTableEntry m_tx_collect = m_collectTable.getEntry("tx");
   private static NetworkTableEntry m_ty_collect = m_collectTable.getEntry("ty");
@@ -94,18 +94,21 @@ public class Limelight {
   }
 
   public static boolean isValidTargetSeen (LimelightConstants.Device device) {
+    double result = 0.0;
     if (device == LimelightConstants.Device.SHOOTER ) {
-      return m_tv_shooter.getBoolean(false); //Returns if a valid target is seen or not
+       result = m_tv_shooter.getDouble(0.0); //Returns if a valid target is seen or not
     } else {
-      return m_tv_collect.getBoolean(false); //Returns if a valid target is seen or not
+       result = m_tv_collect.getDouble(0.0); //Returns if a valid target is seen or not
     }
+
+    return result == 1.0;
   }
 
   public static double[] getBotPose(LimelightConstants.Device device) {
     if (device == LimelightConstants.Device.SHOOTER ) {
-      return  m_botPose_shooter.getDoubleArray(new double[6]); //Returns field space robot pose
+      return  m_botPose_shooter.getDoubleArray(new double[7]); //Returns field space robot pose
     } else {
-      return  m_botPose_collect.getDoubleArray(new double[6]); //Returns field space robot pose
+      return  m_botPose_collect.getDoubleArray(new double[7]); //Returns field space robot pose
     }
   }
 

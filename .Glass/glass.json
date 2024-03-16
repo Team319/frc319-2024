@@ -19,10 +19,10 @@
           }
         }
       },
-      "limelight-collect": {
-        "open": true
-      },
       "limelight-shooter": {
+        "double[]##v_/limelight-shooter/botpose": {
+          "open": true
+        },
         "open": true
       }
     },
