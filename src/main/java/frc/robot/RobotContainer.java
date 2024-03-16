@@ -213,15 +213,15 @@ public class RobotContainer {
     // Set up named commands for PathPlanner
      NamedCommands.registerCommand(
         "Collect",
-         new CollectDuringAuto(this.shooter, this.collector));
+         new Collect(this.shooter, this.collector));
 
      NamedCommands.registerCommand(
         "ShootSub",
-         new FireSub(this.shooter, this.collector, 4000));
+         new FireSub(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootPod",
-         new FirePod(this.shooter, this.collector, 6000));
+         new FirePod(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootAmp",
@@ -301,28 +301,28 @@ public class RobotContainer {
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.TOP);
             }
           )
         );
 
         operatorController.povDown().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
             }
           )
         );
@@ -361,7 +361,7 @@ public class RobotContainer {
 
         /*  ============================= Driver Shooter ============================= */
 
-         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,6000)); 
+         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,5000)); 
 
          driverController.rightTrigger().whileFalse(Commands.runOnce(
           ()-> {

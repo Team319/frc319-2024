@@ -11,13 +11,14 @@ package frc.robot.subsystems.elevator;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
-      public static final double TOP = 100.0; // 130.0
+      public static final double TOP = 90.0; // 130.0
       public static final double TRAP = TOP;
       public static final double AMP = 47.785;
       public static final double CLIMB = 5.0;
@@ -69,6 +70,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
+    elevatorLead.setIdleMode(IdleMode.kBrake);
+    elevatorFollow.setIdleMode(IdleMode.kBrake);
 
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
