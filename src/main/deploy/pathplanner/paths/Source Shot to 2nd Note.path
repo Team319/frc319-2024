@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.98,
-        "y": 7.43
+        "x": 0.79769185179396,
+        "y": 4.280060525933018
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.890078609344145,
-        "y": 6.947468415524263
+        "x": 3.3937941380156262,
+        "y": 1.8242880930206316
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.97,
-        "y": 6.2
+        "x": 7.989596833894521,
+        "y": 4.1046482092964185
       },
       "prevControl": {
-        "x": 5.869216021284614,
-        "y": 6.6605482374900085
+        "x": 5.697542563176294,
+        "y": 4.630885159206216
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,7 +43,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "Source Speaker Shot to ___ Note",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

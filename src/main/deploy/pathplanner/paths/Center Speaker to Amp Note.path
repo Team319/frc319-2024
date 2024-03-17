@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.21,
+        "y": 5.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 1.69891950235207,
+        "y": 6.064349610884495
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 2.517899192567983,
+        "y": 7.010076157919538
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 2.040161039942034,
+        "y": 6.434840423125027
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Podium Note to ____ Note",
+  "folder": "Center Speaker to ___ Note",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

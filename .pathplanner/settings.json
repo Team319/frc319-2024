@@ -3,8 +3,11 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "4 Piece Starting Line",
-    "Square Auto"
+    "Amp Speaker to ___ Note",
+    "Center Speaker to ___ Note",
+    "Center Note to ___ Note",
+    "Source Speaker Shot to ___ Note",
+    "Podium Note to ____ Note"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.0,
