@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
+import frc.robot.Constants.HeadingTargets;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.PolarCoordinate;
 
@@ -40,7 +41,7 @@ public class DriveCommands {
   private static final double JOYSTICK_GOVERNOR = 0.5; // this value must not exceed 1.0
   private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
 
-  private static final boolean isSnapHeadingWithJoystickEnabled = false;
+  private static final boolean isSnapHeadingWithJoystickEnabled = true;
 
   private DriveCommands() {
 
@@ -104,12 +105,12 @@ public class DriveCommands {
                 {
                   omega = drive.snapToHeading(headingXSupplier, headingYSupplier);
                 
-                  if (drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET)
+                  if (drive.getHeadingTarget() != HeadingTargets.NO_TARGET)
                   {
                     omega = drive.snapToTarget();
                   }
                 
-                  if(drive.getHeadingTarget() != Drive.HeadingTargets.NO_TARGET) // Maintain target heading
+                  if(drive.getHeadingTarget() != HeadingTargets.NO_TARGET) // Maintain target heading
                   { // Heading locked to a target
                     omega = drive.snapToTarget(); 
                   }

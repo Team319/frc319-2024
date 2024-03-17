@@ -46,9 +46,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.TargetLocations;
 import frc.robot.Constants.LimelightConstants.Device;
-import frc.robot.subsystems.drive.Drive.TargetLocations;
 import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
@@ -58,19 +59,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
 
-  public static enum HeadingTargets{
-    NO_TARGET,
-    SPEAKER,
-    SOURCE
-  }
-
-  public static class TargetLocations{
-    public static Translation2d ORIGIN = new Translation2d();
-    public static Translation2d RED_SPEAKER = new Translation2d(16.5,5.5);
-    public static Translation2d BLUE_SPEAKER = new Translation2d(0.0,5.5);
-    public static Translation2d RED_SOURCE = new Translation2d(0.0,-0.5);
-    public static Translation2d BLUE_SOURCE = new Translation2d(16.15,-0.5);
-  }
+  
 
   private HeadingTargets headingTarget = HeadingTargets.NO_TARGET;
 
@@ -98,7 +87,7 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition()
       };
   
-  private static final PIDController headingPID = new PIDController(1, 0.01 , 0.0); // originally 0.25, 0.0, 0.0
+  private static final PIDController headingPID = new PIDController(0.4, 0.001 , 0.03); // originally 0.55, 0.0, 0.0
 
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
@@ -172,6 +161,8 @@ public class Drive extends SubsystemBase {
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
 
+    Logger.recordOutput("Drive/DistanceToAllianceSpeaker", getDistanceToAllianceSpeaker());
+
     switch (Constants.currentMode) {
       case REAL:
       case SIM:
@@ -224,7 +215,7 @@ public class Drive extends SubsystemBase {
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
  
-        /* 
+         
         if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER))
         {
           double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
@@ -232,34 +223,36 @@ public class Drive extends SubsystemBase {
                                 new Translation3d(poseBuf[0],poseBuf[1],poseBuf[2]), 
                                 new Rotation3d(Units.degreesToRadians(poseBuf[3]), Units.degreesToRadians(poseBuf[4]),Units.degreesToRadians(poseBuf[5]))
                               );
+          Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
  
           double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
 
           double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
 
           double xyzStds = 999.0;
-          double degStds = 999.0;
+          double degStds = 999.0; // always trust the gyro
           
           if( Limelight.getNumTargets(LimelightConstants.Device.SHOOTER ) >= 2 ) // If 2 tags are visible
           { 
-            xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
-           // poseEstimator.addVisionMeasurement(visionPose.toPose2d(), poseBuf[6]);
+            xyzStds = 0.0; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-          
+            poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
+            
           }  
           else if( targetSize > 0.8 && poseDifference < 0.5 ){ // close target, larger window for adjusting
-            xyzStds = 10.0;
+            xyzStds = 10.0; // arbitrary value
           }
           else if(targetSize > 0.1 && poseDifference < 0.3 ){ // far away target, but measurement is close to robot
-            xyzStds = 20.0;
+            xyzStds = 20.0; // arbitrary value
+          }
+          else{
+            xyzStds = 999.0; // don't accept any values
           }
 
           poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
           poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]);
-          Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
           
-        
-        }*/
+        }
 
         break; // End of Swerve logic
     
@@ -428,7 +421,7 @@ public class Drive extends SubsystemBase {
 
     boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
 
-    if(isTargetVisible){
+    if(false/*isTargetVisible*/){
       //System.out.println("Target Visible, use limelight data to automatically control heading");
       theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
 
@@ -439,7 +432,7 @@ public class Drive extends SubsystemBase {
       
       //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
       Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
-      theta = difference.getAngle().getRadians();
+      theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
     }
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
@@ -458,6 +451,14 @@ public class Drive extends SubsystemBase {
   
   public double getDistanceToTarget(Translation2d target){
     return target.getDistance(getPose().getTranslation());
+  }
+
+  public double getDistanceToAllianceSpeaker(){
+    Translation2d allianceSpeaker = TargetLocations.BLUE_SPEAKER;
+    if (DriverStation.getAlliance().get() == Alliance.Red){
+      allianceSpeaker = TargetLocations.RED_SPEAKER;
+    }
+    return getDistanceToTarget(allianceSpeaker);
   }
 
  
