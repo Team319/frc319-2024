@@ -20,7 +20,7 @@
         }
       },
       "limelight-shooter": {
-        "double[]##v_/limelight-shooter/botpose": {
+        "double[]##v_/limelight-shooter/botpose_wpiblue": {
           "open": true
         },
         "open": true

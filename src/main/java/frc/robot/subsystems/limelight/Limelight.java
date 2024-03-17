@@ -112,6 +112,27 @@ public class Limelight {
     }
   }
 
+  private static int countStringOccurances(String str, String subStr){
+    int occurances = 0;
+    for (int i =0; i< str.length()-subStr.length()+1; i++){
+      if(str.substring(i, i+subStr.length()).equals(subStr)){
+        occurances++;
+      }
+    }
+    return occurances;
+    }
+
+  public static int getNumTargets(LimelightConstants.Device device){
+    int retVal = 0;
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      retVal = countStringOccurances(m_shooterTable.getEntry("json").getString(""), "pts");
+    } else {
+      retVal = countStringOccurances(m_collectTable.getEntry("json").getString(""), "pts");
+    }
+    System.out.println("Num targets seen = "+ retVal);
+    return retVal;
+  }
+
 }
 
 

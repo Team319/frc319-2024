@@ -40,6 +40,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -223,21 +224,42 @@ public class Drive extends SubsystemBase {
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
  
-        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER)){
+        /* 
+        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER))
+        {
           double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
           Pose3d visionPose = new Pose3d(
                                 new Translation3d(poseBuf[0],poseBuf[1],poseBuf[2]), 
                                 new Rotation3d(Units.degreesToRadians(poseBuf[3]), Units.degreesToRadians(poseBuf[4]),Units.degreesToRadians(poseBuf[5]))
                               );
+ 
+          double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
+
+          double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
+
+          double xyzStds = 999.0;
+          double degStds = 999.0;
           
-          //if(){ // If 2 tags are visible
+          if( Limelight.getNumTargets(LimelightConstants.Device.SHOOTER ) >= 2 ) // If 2 tags are visible
+          { 
+            xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
+           // poseEstimator.addVisionMeasurement(visionPose.toPose2d(), poseBuf[6]);
+            
+          
+          }  
+          else if( targetSize > 0.8 && poseDifference < 0.5 ){ // close target, larger window for adjusting
+            xyzStds = 10.0;
+          }
+          else if(targetSize > 0.1 && poseDifference < 0.3 ){ // far away target, but measurement is close to robot
+            xyzStds = 20.0;
+          }
 
-            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7,0.7,9999999));
-
-            poseEstimator.addVisionMeasurement(visionPose.toPose2d(), poseBuf[6]);
-            Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
-         // }
-        }
+          poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
+          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]);
+          Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
+          
+        
+        }*/
 
         break; // End of Swerve logic
     
