@@ -2,21 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.47044996702820163,
-      "y": 4.1338974839469875
+      "x": 0.8444684695637196,
+      "y": 4.5
     },
-    "rotation": 0
+    "rotation": -61.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source Score"
-          }
-        },
         {
           "type": "named",
           "data": {
@@ -28,15 +22,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Collect"
+                  "pathName": "Source Shot to 2nd Note"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Source Score to Source Podium"
+                  "name": "Collect"
                 }
               }
             ]
@@ -49,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 4 to Podium"
+                  "pathName": "2nd Note to Source Shot"
                 }
               },
               {
@@ -63,15 +57,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
-                      "data": {
-                        "name": "Collect"
-                      }
-                    },
-                    {
                       "type": "path",
                       "data": {
                         "pathName": "Podium to Note 3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Collect"
                       }
                     }
                   ]
