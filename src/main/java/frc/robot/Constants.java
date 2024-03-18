@@ -143,6 +143,33 @@ public final class Constants {
 
   }
 
+  public static class ClimberConstants {
+    public static class PID {
+      public static final double kPUp = 0.0;  // Power applied to motor
+      public static final double kIUp = 0.0;  // margin of error in motor
+      public static final double kDUp = 0.0;  // Makes the graph line smooth from point A to point B
+      public static final double kFFUp = 0.0; // Feedforward value
+      public static final int iZoneUp = 0;
+
+      public static final double kPDown = 0.0;  // Power applied to motor
+      public static final double kIDown = 0.0;  // margin of error in motor
+      public static final double kDDown = 0.0;  // Makes the graph line smooth from point A to point B
+      public static final double kFFDown = 0.0; // Feedforward value
+      public static final int iZoneDown = 0;
+    }
+
+    public static class SoftLimits {
+      public static final float forwardSoftLimit = Setpoints.top;
+      public static final float reverseSoftLimit = Setpoints.bottom;
+    }
+
+    public static class Setpoints {
+      public static final float top = (float)0.0;
+      public static final float bottom = (float)0.0;
+    }
+
+  }
+
   public static class LimelightConstants{
     public static enum Device{
       SHOOTER,

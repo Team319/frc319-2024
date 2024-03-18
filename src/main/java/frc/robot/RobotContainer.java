@@ -49,6 +49,10 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOReal;
+import frc.robot.subsystems.climber.ClimberIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
 import frc.robot.subsystems.collector.CollectorIOReal;
@@ -70,6 +74,7 @@ public class RobotContainer {
   public final Shooter shooter;
   public final Collector collector;
   public final Elevator elevator;
+  public final Climber climber;
   // private final Flywheel flywheel;
 
   // Controller
@@ -107,6 +112,11 @@ public class RobotContainer {
           new Elevator(
             new ElevatorIOReal()
         );
+
+        climber =
+          new Climber(
+            new ClimberIOReal() {}
+        );
           
         break;
       
@@ -132,7 +142,13 @@ public class RobotContainer {
         elevator =
           new Elevator(
             new ElevatorIO() {}
+        
+          );
+        climber =
+          new Climber(
+            new ClimberIO() {}
         );
+
         break;
         case TANK:
           drive = 
@@ -152,6 +168,11 @@ public class RobotContainer {
             new Elevator(
               new ElevatorIO() {}
             );
+          
+          climber =
+          new Climber(
+            new ClimberIO() {}
+        );
             
           break;
       
@@ -180,6 +201,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+          new Climber(
+            new ClimberIOSim()
+        );
           break;
         
       default:
@@ -208,6 +233,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+            new Climber(
+              new ClimberIO() {}
+            );
         break;
     }
 
