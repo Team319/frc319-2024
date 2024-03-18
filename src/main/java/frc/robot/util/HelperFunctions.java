@@ -99,4 +99,8 @@ public final class HelperFunctions {
         }
         return 0.0;
     }
+
+    public static boolean isWithin(double value, double target, double tolerance) {
+        return Math.abs(value - target) < tolerance;
+    }
 }

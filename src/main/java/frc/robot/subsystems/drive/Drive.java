@@ -15,32 +15,54 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Constants.HeadingTargets;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.TargetLocations;
+import frc.robot.Constants.LimelightConstants.Device;
+import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.PolarCoordinate;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
+
+  
+
+  private HeadingTargets headingTarget = HeadingTargets.NO_TARGET;
+
   private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(22.0);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(22.0);
@@ -64,9 +86,17 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
+  
+  private static final PIDController headingPID = new PIDController(0.4, 0.001 , 0.03); // originally 0.55, 0.0, 0.0
+
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
-	  
+	
+  @AutoLogOutput(key = "Drive/headingSetpoint")
+  private double headingSetpoint = 0.0;
+
+  @AutoLogOutput(key = "Drive/headingLocked")
+  private boolean headingLocked = false;
 
   public Drive(
       GyroIO gyroIO,
@@ -75,6 +105,9 @@ public class Drive extends SubsystemBase {
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
+
+    headingPID.enableContinuousInput(-Math.PI, Math.PI);
+    headingPID.setTolerance(0.1, 0.1);
 
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
@@ -128,6 +161,8 @@ public class Drive extends SubsystemBase {
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
 
+    Logger.recordOutput("Drive/DistanceToAllianceSpeaker", getDistanceToAllianceSpeaker());
+
     switch (Constants.currentMode) {
       case REAL:
       case SIM:
@@ -179,6 +214,46 @@ public class Drive extends SubsystemBase {
 
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
+ 
+         
+        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER))
+        {
+          double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
+          Pose3d visionPose = new Pose3d(
+                                new Translation3d(poseBuf[0],poseBuf[1],poseBuf[2]), 
+                                new Rotation3d(Units.degreesToRadians(poseBuf[3]), Units.degreesToRadians(poseBuf[4]),Units.degreesToRadians(poseBuf[5]))
+                              );
+          Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
+ 
+          double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
+
+          double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
+
+          double xyzStds = 999.0;
+          double degStds = 999.0; // always trust the gyro
+          
+          if( Limelight.getNumTargets(LimelightConstants.Device.SHOOTER ) >= 2 ) // If 2 tags are visible
+          { 
+            xyzStds = 0.0; // accept a ton of values, need to tune. I really want the speaker to update the pose
+            
+            poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
+            
+          }  
+          else if( targetSize > 0.8 && poseDifference < 0.5 ){ // close target, larger window for adjusting
+            xyzStds = 10.0; // arbitrary value
+          }
+          else if(targetSize > 0.1 && poseDifference < 0.3 ){ // far away target, but measurement is close to robot
+            xyzStds = 20.0; // arbitrary value
+          }
+          else{
+            xyzStds = 999.0; // don't accept any values
+          }
+
+          poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
+          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]);
+          
+        }
+
         break; // End of Swerve logic
     
       default:
@@ -271,6 +346,122 @@ public class Drive extends SubsystemBase {
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
+
+    /** Resets the current odometry pose. */
+  public void setPose(Pose2d pose, Rotation2d newGyroRotation) {
+    poseEstimator.resetPosition(newGyroRotation, getModulePositions(), pose);
+  }
+
+  public double snapToHeading(DoubleSupplier x, DoubleSupplier y) {
+    
+    // ===================  Thank you 1806 for the help ! =======================
+    double[] rightJoyPolarCoordinate = PolarCoordinate.toPolarCoordinate(x,y);
+    double r = rightJoyPolarCoordinate[0];
+    double theta = rightJoyPolarCoordinate[1];
+    
+    if(r < 0.8){
+        theta = getRotation().getRadians();
+    }
+    else{ // Valid Driver input
+      this.headingTarget = HeadingTargets.NO_TARGET;
+    }
+
+    theta /= (Math.PI / 4);
+    theta = Math.round(theta) * (Math.PI / 4);
+    return headingPID.calculate(getRotation().getRadians(), theta);
+  }
+
+  public Translation2d getCurrentTargetLocation(){
+    Translation2d retVal = TargetLocations.ORIGIN;
+
+    switch (this.headingTarget) {
+      case SPEAKER:
+        switch (DriverStation.getAlliance().get()) {
+          case Red:
+            retVal = TargetLocations.RED_SPEAKER;
+            break;
+        
+          default: // Blue
+            retVal = TargetLocations.BLUE_SPEAKER;
+            break;
+        }
+        break;// Escape Speaker Case
+
+      case SOURCE:
+        switch (DriverStation.getAlliance().get()) {
+          case Red:
+            retVal = TargetLocations.RED_SOURCE;
+            break;
+        
+          default: // Blue
+            retVal = TargetLocations.BLUE_SOURCE;
+            break;
+        }
+        break; // Escape Source Case
+    
+      default:
+        retVal = TargetLocations.ORIGIN;
+        break; // Escape Default Case
+    }
+    return retVal;
+  }
+
+  public void setHeadingTarget(HeadingTargets target){
+    this.headingTarget = target;
+  }
+
+  public HeadingTargets getHeadingTarget(){
+    return this.headingTarget ;
+  }
+
+  public double snapToTarget() {
+    // ===================  Thank you 4481 for the help ! =======================
+    double theta = 0.0;
+    // Target - Robot 
+
+    boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
+
+    if(false/*isTargetVisible*/){
+      //System.out.println("Target Visible, use limelight data to automatically control heading");
+      theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
+
+      return headingPID.calculate(theta, 0.0); // try and make the Horizontal Offset 0, meaning the target is centered
+    }
+    else{
+      //System.out.println("Target Not Visible, using odometry and pose for best guess");
+      
+      //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
+      Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
+      theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
+    }
+    return headingPID.calculate(getRotation().getRadians(), theta);
+  }
+
+  public double getAngleToCurrentTarget(){
+    return getCurrentTargetLocation().minus(getPose().getTranslation()).getAngle().getRadians();
+  }
+
+  public double getAngleToTarget(Translation2d target){
+    return target.minus(getPose().getTranslation()).getAngle().getRadians();
+  }
+ 
+  public double getDistanceToCurrentTarget(){
+    return getCurrentTargetLocation().getDistance(getPose().getTranslation());
+  }
+  
+  public double getDistanceToTarget(Translation2d target){
+    return target.getDistance(getPose().getTranslation());
+  }
+
+  public double getDistanceToAllianceSpeaker(){
+    Translation2d allianceSpeaker = TargetLocations.BLUE_SPEAKER;
+    if (DriverStation.getAlliance().get() == Alliance.Red){
+      allianceSpeaker = TargetLocations.RED_SPEAKER;
+    }
+    return getDistanceToTarget(allianceSpeaker);
+  }
+
+ 
   
   /**
    * Adds a vision measurement to the pose estimator.
@@ -338,4 +529,8 @@ public Drive(GyroIO gyroIO){
   // Configure SysId
     sysId = null;
 }
+
+
+
+
 }

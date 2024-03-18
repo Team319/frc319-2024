@@ -17,62 +17,122 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 /*import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;*/
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.Constants;
+import frc.robot.Constants.LimelightConstants;
 
-public class Limelight extends SubsystemBase {
+public class Limelight {
 
-  private final NetworkTable m_table = NetworkTableInstance.getDefault().getTable("limelight"); // Makes the Limelight data table.
-  private NetworkTableEntry m_botPose = m_table.getEntry("botpose"); // Makes a double array to hold the robot pose.
-  private NetworkTableEntry m_tv = m_table.getEntry("tv");
-  private NetworkTableEntry m_tx = m_table.getEntry("tx");
-  private NetworkTableEntry m_ty = m_table.getEntry("ty");
-  private NetworkTableEntry m_ta = m_table.getEntry("ta");
-  private NetworkTableEntry m_tl = m_table.getEntry("tl");
-  private NetworkTableEntry m_cl = m_table.getEntry("cl");
+  private static final NetworkTable m_shooterTable = NetworkTableInstance.getDefault().getTable("limelight-shooter"); // Makes the Limelight data table.
+  private static NetworkTableEntry m_botPose_shooter = m_shooterTable.getEntry("botpose_wpiblue"); // Makes a double array to hold the robot pose.
+  private static NetworkTableEntry m_tv_shooter = m_shooterTable.getEntry("tv");
+  private static NetworkTableEntry m_tx_shooter = m_shooterTable.getEntry("tx");
+  private static NetworkTableEntry m_ty_shooter = m_shooterTable.getEntry("ty");
+  private static NetworkTableEntry m_ta_shooter = m_shooterTable.getEntry("ta");
+  private static NetworkTableEntry m_tl_shooter = m_shooterTable.getEntry("tl");
+  private static NetworkTableEntry m_cl_shooter = m_shooterTable.getEntry("cl");
+
+  private static final NetworkTable m_collectTable = NetworkTableInstance.getDefault().getTable("limelight-collect"); // Makes the Limelight data table.
+  private static NetworkTableEntry m_botPose_collect = m_collectTable.getEntry("botpose_wpiblue"); // Makes a double array to hold the robot pose.
+  private static NetworkTableEntry m_tv_collect = m_collectTable.getEntry("tv");
+  private static NetworkTableEntry m_tx_collect = m_collectTable.getEntry("tx");
+  private static NetworkTableEntry m_ty_collect = m_collectTable.getEntry("ty");
+  private static NetworkTableEntry m_ta_collect = m_collectTable.getEntry("ta");
+  private static NetworkTableEntry m_tl_collect = m_collectTable.getEntry("tl");
+  private static NetworkTableEntry m_cl_collect = m_collectTable.getEntry("cl");
 
  // private NetworkTableEntry m_
 
   /** Creates a new Limelight. */
-  public Limelight() {
+  public Limelight() {}
 
+  public static double getLatency(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_tl_shooter.getDouble(0.0); //Returns latency
+    } else {
+      return m_tl_collect.getDouble(0.0); //Returns latency
+    }
   }
 
-  public double getLatency() {
-    return m_tl.getDouble(getDistance()); //Returns latency
-
-  }
-  public double getTotalLatency() {
-    return m_cl.getDouble(getDistance()); //Returns total latency
-
+  public static double getTotalLatency(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_cl_shooter.getDouble(0.0); //Returns total latency
+    } else {
+      return m_cl_collect.getDouble(0.0); //Returns total latency
+    }
    }
-   public double getTargetArea(){
-    return m_ta.getDouble(getDistance()); // Returns the size of a valid target (how close you are to the target)
+
+   public static double getTargetArea(LimelightConstants.Device device){
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_ta_shooter.getDouble(0.0); //Returns target area
+    } else {
+      return m_ta_collect.getDouble(0.0); //Returns target area
+    }
   }
 
-  public double getHorizontalOffset() {
-    return m_tx.getDouble(getDistance()); // Returns the horizontal offset from valid target
+  public static double getHorizontalOffset(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_tx_shooter.getDouble(0.0); // Returns the horizontal offset from valid target
+    } else {
+      return m_tx_collect.getDouble(0.0); // Returns the horizontal offset from valid target
+    }
   }
 
-  public double getVerticalOffset() {
-    return m_ty.getDouble(getDistance()); // Returns the vertical offset from valid target
+  public static double getVerticalOffset(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_ty_shooter.getDouble(0.0); // Returns the vertical offset from valid target
+    } else {
+      return m_ty_collect.getDouble(0.0); // Returns the vertical offset from valid target
+    }
   }
 
-  public double getDistance() {
-    return m_botPose.getDouble(getDistance()); // Returns the current distance.
+  public static double getDistance(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return m_botPose_shooter.getDouble(0.0); // TODO: Returns the current distance.
+    } else {
+      return m_botPose_collect.getDouble(0.0); // TODO: Returns the current distance.
+    }
   }
 
-  public boolean isValidTargetSeen () {
-    return m_tv.getBoolean(false); //Returns if a valid target is seen or not
+  public static boolean isValidTargetSeen (LimelightConstants.Device device) {
+    double result = 0.0;
+    if (device == LimelightConstants.Device.SHOOTER ) {
+       result = m_tv_shooter.getDouble(0.0); //Returns if a valid target is seen or not
+    } else {
+       result = m_tv_collect.getDouble(0.0); //Returns if a valid target is seen or not
+    }
+
+    return result == 1.0;
   }
 
-  public double[] getBotPose() {
-    return  m_botPose.getDoubleArray(new double[6]); //Returns field space robot pose
+  public static double[] getBotPose(LimelightConstants.Device device) {
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      return  m_botPose_shooter.getDoubleArray(new double[7]); //Returns field space robot pose
+    } else {
+      return  m_botPose_collect.getDoubleArray(new double[7]); //Returns field space robot pose
+    }
   }
 
-  @Override
-  public void periodic() {  
+  private static int countStringOccurances(String str, String subStr){
+    int occurances = 0;
+    for (int i =0; i< str.length()-subStr.length()+1; i++){
+      if(str.substring(i, i+subStr.length()).equals(subStr)){
+        occurances++;
+      }
+    }
+    return occurances;
+    }
+
+  public static int getNumTargets(LimelightConstants.Device device){
+    int retVal = 0;
+    if (device == LimelightConstants.Device.SHOOTER ) {
+      retVal = countStringOccurances(m_shooterTable.getEntry("json").getString(""), "pts");
+    } else {
+      retVal = countStringOccurances(m_collectTable.getEntry("json").getString(""), "pts");
+    }
+    System.out.println("Num targets seen = "+ retVal);
+    return retVal;
   }
+
 }
 
 

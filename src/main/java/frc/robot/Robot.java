@@ -40,29 +40,6 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
 
-    SmartDashboard.putNumber("leftShooter volts",0.0);
-    SmartDashboard.putNumber("rightShooter volts",0.0);
-    SmartDashboard.putNumber("feed volts",0.0);
-
-    SmartDashboard.putNumber("leftShooter rpm",0.0);
-    SmartDashboard.putNumber("rightShooter rpm",0.0);
-    SmartDashboard.putNumber("feed rpm",0.0);
-
-    SmartDashboard.putNumber("leftShooter velocity",0.0);
-    SmartDashboard.putNumber("rightShooter velocity",0.0);
-    SmartDashboard.putNumber("feedforward volts",0.0);
-
-    SmartDashboard.putNumber("shooter P", 0.0);
-    SmartDashboard.putNumber("shooter I", 0.0);
-    SmartDashboard.putNumber("shooter D", 0.0);
-
-    SmartDashboard.putNumber("Elevator P", 0.0);
-    SmartDashboard.putNumber("Elevator I", 0.0);
-    SmartDashboard.putNumber("Elevator D", 0.0);
-
-    SmartDashboard.putNumber("Elevator Position", 0.0);
-    SmartDashboard.putNumber("Wrist Position", 0.0);
-
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -123,7 +100,6 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
    
-
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
@@ -169,7 +145,11 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+    //Logger.recordOutput("Aim/wristSetpointForDistance", robotContainer.shooter.getWristSetpointForDistance(robotContainer.drive.getDistanceToAllianceSpeaker()));
+
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override

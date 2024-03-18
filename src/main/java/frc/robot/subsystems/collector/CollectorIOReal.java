@@ -68,6 +68,9 @@ public class CollectorIOReal implements CollectorIO {
 
     lowerRollerMotor.setSmartCurrentLimit(currentLimitAmps);
     tunnelRollerMotor.setSmartCurrentLimit(currentLimitAmps);
+
+    lowerRollerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    tunnelRollerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
     @Override

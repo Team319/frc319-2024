@@ -15,6 +15,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import frc.robot.Constants.ElevatorConstants;
+
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
@@ -44,7 +46,6 @@ public class ElevatorIOReal implements ElevatorIO {
   private final RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   private final SparkPIDController elevatorPIDController = elevatorLead.getPIDController();
 
-  private final ElevatorPIDGains elevatorPIDGains = new ElevatorPIDGains();
   private double positionTargetSetpoint;
 
   public ElevatorIOReal() {
@@ -65,8 +66,8 @@ public class ElevatorIOReal implements ElevatorIO {
    elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
    elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-   elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorSetpoint.TOP);
-   elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorSetpoint.BOTTOM);
+   elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorConstants.Setpoints.top);
+   elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorConstants.Setpoints.bottom);
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);
@@ -76,7 +77,7 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setFeedbackDevice(elevatorEncoder);
     elevatorPIDController.setOutputRange(-1.0, 1.0);
 
-    configurePID(this.elevatorPIDGains.kPUp,this.elevatorPIDGains.kIUp,this.elevatorPIDGains.kDUp,this.elevatorPIDGains.kFFUp);
+    configurePID(ElevatorConstants.PID.kPUp,ElevatorConstants.PID.kIUp,ElevatorConstants.PID.kDUp,ElevatorConstants.PID.kFFUp);
   }
 
   public void setFollow() {
@@ -85,15 +86,15 @@ public class ElevatorIOReal implements ElevatorIO {
 
   @Override
   public void updateInputs(ElevatorIOInputs inputs){
-    inputs.kPUp = this.elevatorPIDGains.kPUp;
-    inputs.kIUp = this.elevatorPIDGains.kIUp;
-    inputs.kDUp = this.elevatorPIDGains.kDUp;
-    inputs.kFFUp = this.elevatorPIDGains.kFFUp;
+    inputs.kPUp = ElevatorConstants.PID.kPUp;
+    inputs.kIUp = ElevatorConstants.PID.kIUp;
+    inputs.kDUp = ElevatorConstants.PID.kDUp;
+    inputs.kFFUp = ElevatorConstants.PID.kFFUp;
     
-    inputs.kPDown = this.elevatorPIDGains.kPDown;
-    inputs.kIDown = this.elevatorPIDGains.kIDown;
-    inputs.kDDown = this.elevatorPIDGains.kDDown;
-    inputs.kFFDown = this.elevatorPIDGains.kFFDown;
+    inputs.kPDown = ElevatorConstants.PID.kPDown;
+    inputs.kIDown = ElevatorConstants.PID.kIDown;
+    inputs.kDDown = ElevatorConstants.PID.kDDown;
+    inputs.kFFDown = ElevatorConstants.PID.kFFDown;
 
     inputs.targetPosition = this.positionTargetSetpoint;
     inputs.appliedVoltage = elevatorLead.getAppliedOutput();
@@ -128,17 +129,7 @@ public class ElevatorIOReal implements ElevatorIO {
     elevatorPIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
 
-  private void manageMotion(double targetPosition) {
-    double currentPosition = getPosition();
-      if (currentPosition > targetPosition) {
-        configurePID(this.elevatorPIDGains.kPUp, this.elevatorPIDGains.kIUp, this.elevatorPIDGains.kDUp, this.elevatorPIDGains.kFFUp);
-      }
-      else {
-        configurePID( this.elevatorPIDGains.kPDown, this.elevatorPIDGains.kIDown, this.elevatorPIDGains.kDDown, this.elevatorPIDGains.kFFDown);
-      }
-  }
-
-  @Override
+   @Override
   public void setPO(double PO) {
     elevatorLead.set(PO);
   }
@@ -153,8 +144,16 @@ public class ElevatorIOReal implements ElevatorIO {
     return elevatorLead.getOutputCurrent();
   }
 
+  private void manageMotion(double targetPosition) {
+    double currentPosition = getPosition();
+      if (currentPosition > targetPosition) {
+        configurePID(ElevatorConstants.PID.kPUp, ElevatorConstants.PID.kIUp, ElevatorConstants.PID.kDUp, ElevatorConstants.PID.kFFUp);
+      }
+      else {
+        configurePID( ElevatorConstants.PID.kPDown, ElevatorConstants.PID.kIDown, ElevatorConstants.PID.kDDown, ElevatorConstants.PID.kFFDown);
+      }
+  }
 
-
-
+ 
 
 }

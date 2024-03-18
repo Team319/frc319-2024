@@ -19,12 +19,17 @@ import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkPIDController.ArbFFUnits;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.WristConstants;
 
 public class ShooterIOReal implements ShooterIO {
+
+    public final InterpolatingDoubleTreeMap shooterPositionMap = new InterpolatingDoubleTreeMap();
+    public final InterpolatingDoubleTreeMap shooterVelocityMap = new InterpolatingDoubleTreeMap();
 
     private final TalonFX shooterLeft = new TalonFX(31); 
     private final TalonFX shooterRight = new TalonFX(32);
@@ -36,14 +41,29 @@ public class ShooterIOReal implements ShooterIO {
     private final SparkPIDController wristPid = wrist.getPIDController();
 
     private final RelativeEncoder wristEncoder = wrist.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+
+    private final InterpolatingDoubleTreeMap wristPositionMap = new InterpolatingDoubleTreeMap();
+
+    private double currentWristSetpoint = 0.0;
     
     //private final DigitalInput beamBreak = new DigitalInput(1); // Doesn't exist!
 
   public ShooterIOReal() {
-      setupShooter();
-      setupWrist();
-      configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
-      configureFlywheelPID(0.6,0.5,0.0); // P 0.6,I 0.4, D 0.0
+    setupShooter();
+    setupWrist();
+    configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
+    configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
+
+    // TODO: ADD ADJUSTABILITY SCALAR TO THIS
+    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.bottom);
+    wristPositionMap.put(1.65, WristConstants.Setpoints.sub);
+    wristPositionMap.put(2.4, 0.135);
+    wristPositionMap.put(3.1, WristConstants.Setpoints.podium);
+    wristPositionMap.put(3.4, 0.185);
+    wristPositionMap.put(3.6, 0.19);
+    wristPositionMap.put(4.0, 0.2);
+    wristPositionMap.put(Double.POSITIVE_INFINITY, WristConstants.Setpoints.top);
+
   }
 
   @Override
@@ -66,6 +86,14 @@ public class ShooterIOReal implements ShooterIO {
         shooterLeft.setInverted(true);
         shooterRight.setInverted(false);
         feed.setInverted(true);
+
+        shooterPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.bottom);
+        shooterPositionMap.put(0.0, 0.0);
+        shooterPositionMap.put(Double.POSITIVE_INFINITY, WristConstants.Setpoints.top);
+
+        shooterVelocityMap.put(Double.NEGATIVE_INFINITY, 0.0);
+        shooterVelocityMap.put(0.0, 0.0);
+        shooterVelocityMap.put(Double.POSITIVE_INFINITY, 6000.0);
     }
 
     
@@ -83,9 +111,8 @@ public class ShooterIOReal implements ShooterIO {
             new VelocityVoltage(
                 Units.radiansToRotations(velocityRadPerSec*1.0), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
-            new VelocityVoltage(
-                Units.radiansToRotations(velocityRadPerSec*0.9), 0.0, false, 0, 0, false, false, false));
-        //feed.setVoltage(ffVolts);                    // 0.6 was ok
+            new VelocityVoltage(                           // 0.6 was ok
+                Units.radiansToRotations(velocityRadPerSec) * 0.6 , 0.0, false, 0, 0, false, false, false));            
         updateRPM();
     }
     @Override
@@ -170,7 +197,13 @@ public class ShooterIOReal implements ShooterIO {
       }
 
     public void setWristPosition(double targetPosition) {
+        currentWristSetpoint = targetPosition;
         wristPid.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+    }
+
+    @Override
+    public double getCurrentWristSetpoint() {
+        return currentWristSetpoint;
     }
 
     @Override
@@ -194,5 +227,10 @@ public class ShooterIOReal implements ShooterIO {
       feedPid.setI(kI, 0);
       feedPid.setD(kD, 0);
       feedPid.setFF(0, 0);
+    }
+
+    @Override
+    public double getWristSetpointForDistance(double distance) {
+        return wristPositionMap.get(distance);
     }
 }

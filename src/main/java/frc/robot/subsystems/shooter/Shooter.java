@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.util.LoggedTunableNumber;
 
 public class Shooter extends SubsystemBase {
@@ -29,10 +30,10 @@ public class Shooter extends SubsystemBase {
     private static final LoggedTunableNumber shooter_setpoint = new LoggedTunableNumber("Flywheel/setpoint", 0.0);
 
 
-  private static final LoggedTunableNumber wrist_kP = new LoggedTunableNumber("Wrist/kP", 0.0);
-  private static final LoggedTunableNumber wrist_kI = new LoggedTunableNumber("Wrist/kI", 0.0);
-  private static final LoggedTunableNumber wrist_kD = new LoggedTunableNumber("Wrist/kD", 0.0);
-  private static final LoggedTunableNumber wrist_kFF = new LoggedTunableNumber("Wrist/kFF", 0.0);
+  private static final LoggedTunableNumber wrist_kP = new LoggedTunableNumber("Wrist/kP", WristConstants.PID.kP);
+  private static final LoggedTunableNumber wrist_kI = new LoggedTunableNumber("Wrist/kI", WristConstants.PID.kI);
+  private static final LoggedTunableNumber wrist_kD = new LoggedTunableNumber("Wrist/kD", WristConstants.PID.kD);
+  private static final LoggedTunableNumber wrist_kFF = new LoggedTunableNumber("Wrist/kFF", WristConstants.PID.kFF);
 
 
   private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", 0.0);
@@ -74,9 +75,9 @@ public class Shooter extends SubsystemBase {
 
     //LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , flywheel_kP, flywheel_kI, flywheel_kD);
 
-    //LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
 
-    //LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setWristPosition(setpoint[0]) , wrist_setpoint);
+    LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setWristPosition(setpoint[0]) , wrist_setpoint);
 
     //LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setShooterVelocity(setpoint[0]) , shooter_setpoint);
 
@@ -157,6 +158,10 @@ public class Shooter extends SubsystemBase {
     return io.getWristPosition();
   }
 
+  public double getCurrentWristSetpoint() {
+    return io.getCurrentWristSetpoint();
+  }
+
   public void setFeedPO(double PO){
     io.setFeedPO(PO);
   }
@@ -172,6 +177,10 @@ public class Shooter extends SubsystemBase {
  public boolean isBeamBreakTripped() {
   return io.isBeamBreakTripped();
  }
+
+ public double getWristSetpointForDistance(double distance) {
+  return io.getWristSetpointForDistance(distance);
+}
 
    public Command shootCommand(double rpm) {
     return Commands.runOnce(
