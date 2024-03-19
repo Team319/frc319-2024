@@ -2,8 +2,6 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-
 public interface ShooterIO {
     
     @AutoLog 

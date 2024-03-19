@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Sub"
+            "name": "ShootSub"
           }
         },
         {
@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Sub"
+            "name": "ShootSub"
           }
         },
         {

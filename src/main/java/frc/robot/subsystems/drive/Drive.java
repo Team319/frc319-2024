@@ -38,7 +38,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,7 +48,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TargetLocations;
-import frc.robot.Constants.LimelightConstants.Device;
 import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
@@ -371,6 +369,23 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
+  public double snapToHeading() {
+    return headingPID.calculate(getRotation().getRadians(), headingSetpoint);
+  }
+
+  public void setHeadingSetpoint(double headingRadians) {
+    lockHeading();
+    headingTarget = HeadingTargets.NO_TARGET;
+
+    Rotation2d heading = Rotation2d.fromRadians(headingRadians);
+
+    //if (DriverStation.getAlliance().get() == Alliance.Red){
+    //  this.headingSetpoint = heading.rotateBy(Rotation2d.fromRadians(Math.PI)).getRadians();
+    //}
+    this.headingSetpoint = headingRadians;
+
+  }
+
   public Translation2d getCurrentTargetLocation(){
     Translation2d retVal = TargetLocations.ORIGIN;
 
@@ -408,6 +423,7 @@ public class Drive extends SubsystemBase {
 
   public void setHeadingTarget(HeadingTargets target){
     this.headingTarget = target;
+    lockHeading();
   }
 
   public HeadingTargets getHeadingTarget(){
@@ -459,6 +475,18 @@ public class Drive extends SubsystemBase {
       allianceSpeaker = TargetLocations.RED_SPEAKER;
     }
     return getDistanceToTarget(allianceSpeaker);
+  }
+
+  public boolean isHeadingLocked() {
+    return headingLocked;
+  }
+
+  public void lockHeading() {
+    this.headingLocked = true;
+  }
+
+  public void unlockHeading() {
+    this.headingLocked = false;
   }
 
  

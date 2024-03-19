@@ -19,7 +19,6 @@ import frc.robot.util.LoggedTunableNumber;
 
 public class Shooter extends SubsystemBase {
   private static final double leftShooterVelocity = 0.0;
-  private static final double feedVolts = 0.0;
   private static ShooterIO io;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private final SimpleMotorFeedforward ffModel;

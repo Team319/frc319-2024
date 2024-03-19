@@ -4,11 +4,8 @@
 
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.HeadingTargets;
-import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 
@@ -47,7 +44,8 @@ public class Aim extends Command {
       // Update the Shooter Wrist Position
       m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
     }
-    //  Update the Drivetrain to point to the Target?
+    
+    // Command the drivetrain to rotate to face the speaker
     m_drive.setHeadingTarget(HeadingTargets.SPEAKER);
   }
 
