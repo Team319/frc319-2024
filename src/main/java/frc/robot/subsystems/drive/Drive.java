@@ -15,9 +15,11 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -125,6 +127,8 @@ public class Drive extends SubsystemBase {
             DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
+
+    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
@@ -451,6 +455,35 @@ public class Drive extends SubsystemBase {
       theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
     }
     return headingPID.calculate(getRotation().getRadians(), theta);
+  }
+
+  private Optional<Rotation2d> getRotationTargetOverride(){
+
+    //NOTE : Returned value must be a field relative angle
+
+    if (isHeadingLocked()){
+      // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
+      if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
+        //Method 1 : Use Limelight
+        //double theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
+        //return Optional.of(Rotation2d.fromDegrees(theta));
+
+        //Method 2 : Use Pose
+        Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
+        double theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
+        return Optional.of(Rotation2d.fromRadians(theta));
+      }
+      else{ // i don't see both tags...
+        return Optional.empty();
+      }
+    }
+    else // heading is unlocked
+    {
+      return Optional.empty();
+    }
+    
+
+    
   }
 
   public double getAngleToCurrentTarget(){
