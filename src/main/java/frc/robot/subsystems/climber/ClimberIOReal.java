@@ -10,11 +10,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.subsystems.elevator.ElevatorIO.ElevatorIOInputs;
 
 public class ClimberIOReal implements ClimberIO {
   /** Creates a new CollectorIOReal. */
@@ -99,7 +95,7 @@ public class ClimberIOReal implements ClimberIO {
     climberPIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
 
-   @Override
+  @Override
   public void setPO(double PO) {
     rightClimber.set(PO);
   }
@@ -117,10 +113,10 @@ public class ClimberIOReal implements ClimberIO {
   private void manageMotion(double targetPosition) {
     double currentPosition = getPosition();
       if (currentPosition > targetPosition) {
-        configurePID(ElevatorConstants.PID.kPUp, ElevatorConstants.PID.kIUp, ElevatorConstants.PID.kDUp, ElevatorConstants.PID.kFFUp);
+        configurePID(ClimberConstants.PID.kPUp, ClimberConstants.PID.kIUp, ClimberConstants.PID.kDUp, ClimberConstants.PID.kFFUp);
       }
       else {
-        configurePID( ElevatorConstants.PID.kPDown, ElevatorConstants.PID.kIDown, ElevatorConstants.PID.kDDown, ElevatorConstants.PID.kFFDown);
+        configurePID( ClimberConstants.PID.kPDown, ClimberConstants.PID.kIDown, ClimberConstants.PID.kDDown, ClimberConstants.PID.kFFDown);
       }
   }
 }

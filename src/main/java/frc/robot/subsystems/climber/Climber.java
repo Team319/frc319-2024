@@ -22,4 +22,36 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void stop() {
+    io.stop();
+  }
+
+  public void configurePID(double kP, double kI, double kD, double kFF) {
+    io.configurePID(kP, kI, kD, kFF);
+  }
+
+  public void setPosition(double targetPosition) {
+    io.setPosition(targetPosition);
+  }
+
+  public double getVelocity() {
+    return io.getVelocity();
+  }
+
+  public double getPosition() {
+    return io.getPosition();
+  }  
+
+  public double getCurrent() {
+    return io.getCurrent();
+  }
+
+  public void setVoltage(double voltage) {
+    io.setVoltage(voltage);
+  }
+
+  public void setPO(double PO) {
+    io.setPO(PO);
+  }
 }

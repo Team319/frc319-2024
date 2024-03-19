@@ -388,7 +388,7 @@ public class RobotContainer {
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
 
-        /*  ============================= Climb ============================= */
+        /*  ============================= Elevator ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
@@ -471,6 +471,21 @@ public class RobotContainer {
           )
         );
 
+        /* ============================== Climber ========================================= */
+
+        operatorController.rightTrigger().onTrue(Commands.runOnce(
+          () -> {
+            climber.setPO(0.1);
+          }
+        )
+        );
+
+        operatorController.rightTrigger().onFalse(Commands.runOnce(
+          () -> {
+            climber.setPO(0.);
+          }
+        )
+        );
         
         break;
     
