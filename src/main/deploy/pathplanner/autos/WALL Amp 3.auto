@@ -2,22 +2,16 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.46070020881134544,
-      "y": 6.90282881753412
+      "x": 0.8210801606788397,
+      "y": 6.560420642208806
     },
-    "rotation": 0
+    "rotation": 61.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Amp Score Backup"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "ShootSub"
@@ -30,32 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp Score to Amp Note"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSub"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp Speaker to 0th Note"
+                  "pathName": "Amp Speaker to Note 0 WALL"
                 }
               },
               {
@@ -70,19 +39,44 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 0 to Amp Piece"
+            "pathName": "0th Note to Amp Note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "ShootPod"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp Note to 1st Note"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Amp Score to Center Line"
+            "pathName": "1st Note to Amp Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPod"
           }
         }
       ]
