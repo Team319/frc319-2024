@@ -41,7 +41,7 @@ public class DriveCommands {
   private static final double JOYSTICK_GOVERNOR = 0.5; // this value must not exceed 1.0
   private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
 
-  private static final boolean isSnapHeadingWithJoystickEnabled = true;
+  private static final boolean isSnapHeadingWithJoystickEnabled = false;
 
   private DriveCommands() {
 

@@ -482,7 +482,7 @@ public class RobotContainer {
 
         operatorController.rightTrigger().onFalse(Commands.runOnce(
           () -> {
-            climber.setPO(0.);
+            climber.setPO(0.0);
           }
         )
         );
