@@ -59,7 +59,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Podium to Note 3"
+                        "pathName": "Source Shot to 1st Note"
                       }
                     },
                     {
@@ -72,25 +72,19 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "New Path"
+                }
+              },
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Note 3 - Source Score"
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
                         "name": "ShootPod"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Drive Source"
                       }
                     }
                   ]
