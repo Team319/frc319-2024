@@ -278,6 +278,10 @@ public class RobotContainer {
         ) 
     );
 
+      NamedCommands.registerCommand(
+        "Spit", 
+        new Spit(this.shooter, this.collector, this.elevator,4000));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -367,7 +371,7 @@ public class RobotContainer {
           /*  ============================= Driver Shooter ============================= */
 
           // For testing. -EKM
-          driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+         // driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
           driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------

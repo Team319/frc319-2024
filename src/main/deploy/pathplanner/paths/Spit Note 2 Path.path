@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.036262343308536,
-        "y": 4.4361399886695265
+        "x": 7.97,
+        "y": 4.15
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.866291357285805,
-        "y": 4.397140955802103
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.451965319885056,
+        "x": 8.933240099259297,
         "y": 4.1046482092964185
       },
-      "prevControl": {
-        "x": 6.668157381898809,
-        "y": 4.057871591526659
-      },
-      "nextControl": {
-        "x": 4.324086142904578,
-        "y": 4.148028177641821
-      },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.35,
-        "y": 3.5
+        "x": 7.0,
+        "y": 4.796881042693202
       },
       "prevControl": {
-        "x": 3.6256083312166636,
-        "y": 2.002593938578191
+        "x": 8.988950676238645,
+        "y": 4.923627899512331
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.43000000000001,
+    "rotation": -178.5436413656603,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "2nd Note to ___ Shot",
+  "folder": "Displace Center Notes",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
