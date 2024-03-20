@@ -21,9 +21,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.HeadingTargets;
+import frc.robot.commands.Aim;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
+import frc.robot.commands.CollectDuringAuto;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
@@ -45,6 +49,10 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOReal;
+import frc.robot.subsystems.climber.ClimberIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
 import frc.robot.subsystems.collector.CollectorIOReal;
@@ -62,10 +70,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
+  public final Drive drive;
   public final Shooter shooter;
   public final Collector collector;
   public final Elevator elevator;
+  public final Climber climber;
   // private final Flywheel flywheel;
 
   // Controller
@@ -74,8 +83,6 @@ public class RobotContainer {
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
- //private final LoggedDashboardNumber flywheelSpeedInput =
-  //    new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -105,6 +112,11 @@ public class RobotContainer {
           new Elevator(
             new ElevatorIOReal()
         );
+
+        climber =
+          new Climber(
+            new ClimberIOReal() {}
+        );
           
         break;
       
@@ -130,7 +142,13 @@ public class RobotContainer {
         elevator =
           new Elevator(
             new ElevatorIO() {}
+        
+          );
+        climber =
+          new Climber(
+            new ClimberIO() {}
         );
+
         break;
         case TANK:
           drive = 
@@ -150,6 +168,11 @@ public class RobotContainer {
             new Elevator(
               new ElevatorIO() {}
             );
+          
+          climber =
+          new Climber(
+            new ClimberIO() {}
+        );
             
           break;
       
@@ -178,6 +201,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+          new Climber(
+            new ClimberIOSim()
+        );
           break;
         
       default:
@@ -206,6 +233,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+            new Climber(
+              new ClimberIO() {}
+            );
         break;
     }
 
@@ -216,15 +247,15 @@ public class RobotContainer {
 
      NamedCommands.registerCommand(
         "ShootSub",
-         new FireSub(this.shooter, this.collector, 4000));
+         new FireSub(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootPod",
-         new FirePod(this.shooter, this.collector, 6000));
+         new FirePod(this.shooter, this.collector, 5000));
 
      NamedCommands.registerCommand(
         "ShootAmp",
-         new FireAmp(this.shooter, this.collector, this.elevator, 4000));
+         new FireAmp(this.shooter, this.collector, this.elevator, 2000));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -263,12 +294,46 @@ public class RobotContainer {
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
               drive,
-              () -> -driverController.getLeftY(),
-              () -> -driverController.getLeftX(),
+              () -> -driverController.getLeftY(), // Note : This is X supplier because the field's X axis is down field long
+              () -> -driverController.getLeftX(), // Note this is Y supplier because the field's Y axis is across the field 
+              () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
               () -> driverController.getLeftTriggerAxis()));
       
+        driverController.rightStick().onTrue(
+          Commands.runOnce(
+          () -> drive.setHeadingTarget(HeadingTargets.SPEAKER), 
+          drive
+            )
+        );
+        
+        /* 
+        controller.y().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(0.0),
+            drive
+          )
+        );
+        controller.b().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(-90),
+            drive
+          )
+        );
+        controller.a().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(180),
+            drive
+          )
+        );
+        controller.x().onTrue( 
+          Commands.runOnce(
+            () -> drive.setHeadingSetpoint(90),
+            drive
+          )
+        );*/
       
+        
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
         driverController.start().onTrue(Commands.runOnce(
@@ -277,6 +342,33 @@ public class RobotContainer {
             }
             )
           ); 
+
+          /*  ============================= Driver Shooter ============================= */
+
+          // For testing. -EKM
+          driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+          driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
+
+          // ------
+          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter)); 
+
+          driverController.rightTrigger().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
+
+        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter));
+
+         //driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000)); OLD
+
+         /*driverController.rightBumper().whileFalse(Commands.runOnce(
+          ()-> {
+            shooter.stop();
+          }
+        )
+        ); */
 
         
     /*    driverController
@@ -295,39 +387,40 @@ public class RobotContainer {
         operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
-        /*  ============================= Elevator Debugging ============================= */
+
+        /*  ============================= Elevator ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povUp().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.TOP);
             }
           )
         );
 
         operatorController.povDown().whileFalse(Commands.runOnce(
           () -> {
-            elevator.setPO(0.0);
+            elevator.stop();
             }
           )
         );
 
         operatorController.povDown().whileTrue(Commands.runOnce(
           () -> {
-            elevator.setPO(-0.5);
+            elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
             }
           )
         );
 
         operatorController.b().whileTrue(new GoHome(this.shooter, this.elevator));
 
-        // ============================= Wrist Debugging ============================= 
+        // ============================= Wrist  ============================= 
         
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
@@ -357,29 +450,11 @@ public class RobotContainer {
           )
         );
 
-        /*  ============================= Driver Shooter ============================= */
-
-         driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,6000)); 
-
-         driverController.rightTrigger().whileFalse(Commands.runOnce(
-          ()-> {
-            shooter.stop();
-          }
-        )
-        ); 
-
-         driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 6000));
-
-         driverController.rightBumper().whileFalse(Commands.runOnce(
-          ()-> {
-            shooter.stop();
-          }
-        )
-        ); 
+        
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,2000));
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,1000));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {
@@ -396,6 +471,21 @@ public class RobotContainer {
           )
         );
 
+        /* ============================== Climber ========================================= */
+
+        operatorController.rightTrigger().onTrue(Commands.runOnce(
+          () -> {
+            climber.setPO(0.1);
+          }
+        )
+        );
+
+        operatorController.rightTrigger().onFalse(Commands.runOnce(
+          () -> {
+            climber.setPO(0.0);
+          }
+        )
+        );
         
         break;
     

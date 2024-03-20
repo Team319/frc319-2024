@@ -2,15 +2,9 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface ShooterIO {
-    
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
-    public static final double kS = 0.0; // Overcomes Static friction
-    public static final double kV = 0.0; // A velocity target of 1 rps results in 0.12 V output [Ctre documentation]
-    public static final double kA = 0.0; // The request acceleration/acceleration value?
-    public static final double kP = 0.0; // Power applied to motor
-    public static final double kI = 0.0; // margin of error in motor
-    public static final double kD = 0.0; // Smooths power over time
+public interface ShooterIO {
     
     @AutoLog 
     public static class ShooterIOInputs {
@@ -69,9 +63,14 @@ public interface ShooterIO {
 
     public default double getWristPosition() {return 0.0;}
 
+    public default double getCurrentWristSetpoint() {return 0.0;}
+
     public default void setWristPosition(double position) {}
 
     public default void setWristPO(double PO) {}
 
     public default boolean isBeamBreakTripped() { return false;}
+
+    public default double getWristSetpointForDistance(double distance) {return 0.0;};
+
 }

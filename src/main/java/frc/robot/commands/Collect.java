@@ -51,6 +51,8 @@ public class Collect extends Command {
     // 1. If the note is detected by the first beam break
    //System.out.println("Wrist "+m_shooter.getWristPosition());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.home-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.home+wristThreshold){
+      m_shooter.setShooterVelocity(1000);
+
       if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
       //System.out.println("1. Not tripped");
 
@@ -94,7 +96,6 @@ public class Collect extends Command {
     m_collector.setRollersPO(0.0);
     // Feed should stop
     m_shooter.setFeedPO(0.0);
-    m_shooter.setShooterVelocity(2000);
     // Shooter should go to the default / furthest shot position
    // m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
 

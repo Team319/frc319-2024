@@ -4,20 +4,23 @@
 
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.HeadingTargets;
 import frc.robot.subsystems.collector.Collector;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class Aim extends Command {
+  Drive m_drive;
   Shooter m_shooter;
-  Collector m_collector;
   /** Creates a new Aim. */
-  public Aim(Shooter shooter, Collector collector) {
+  public Aim(Drive drive , Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_drive = drive;
     m_shooter = shooter;
-    m_collector = collector;
-    addRequirements(shooter, collector);
+    addRequirements(shooter);
   }
   
   // Called when the command is initially scheduled.
@@ -27,7 +30,7 @@ public class Aim extends Command {
     // Drivetrain : Begin Tracking a Target
 
     // Pre-spin the Shooter Flywheels to some speed
-    m_shooter.setShooterVelocity(0); //TODO Find optimal speed
+    //m_shooter.setShooterVelocity(3000); //TODO Find optimal speed
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,15 +38,17 @@ public class Aim extends Command {
   public void execute() {
 
     // 1. If I'm within some Distance to the Target
-
+    double distanceToSpeaker = m_drive.getDistanceToAllianceSpeaker();
+    if(distanceToSpeaker <= 5.0){ // TODO : Tune this, what's our furthest shot. ie - Podium shot is 2.286 meters 
+      
       // Update the Shooter Flywheel Velocity 
-      m_shooter.setShooterVelocity(0); //TODO Find optimal speed
+      //m_shooter.setShooterVelocity(5000); //TODO Find optimal shot speed
 
       // Update the Shooter Wrist Position
-      m_shooter.setWristPosition(WristConstants.Setpoints.shoot);
-      
-    // ??? - Update the Drivetrain to point to the Target?
-
+      m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
+    }
+    //  Update the Drivetrain to point to the Target?
+    m_drive.setHeadingTarget(HeadingTargets.SPEAKER);
   }
 
   // Called once the command ends or is interrupted.
