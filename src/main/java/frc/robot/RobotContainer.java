@@ -44,6 +44,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.leds.Leds;
+import frc.robot.subsystems.leds.LedsIO;
+import frc.robot.subsystems.leds.LedsIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -74,6 +77,8 @@ public class RobotContainer {
   public final Collector collector;
   public final Elevator elevator;
   public final Climber climber;
+  public final Leds leds;
+
   // private final Flywheel flywheel;
 
   // Controller
@@ -116,6 +121,10 @@ public class RobotContainer {
           new Climber(
             new ClimberIOReal() {}
         );
+        leds = 
+          new Leds(
+            new LedsIOReal()
+          );
           
         break;
       
@@ -148,6 +157,10 @@ public class RobotContainer {
             new ClimberIO() {}
         );
 
+        leds = 
+          new Leds(
+            new LedsIO(){}
+          );
         break;
         case TANK:
           drive = 
@@ -173,6 +186,10 @@ public class RobotContainer {
             new ClimberIO() {}
         );
             
+          leds = 
+            new Leds(
+              new LedsIO(){}
+            ); 
           break;
       
         case SIM:
@@ -204,6 +221,10 @@ public class RobotContainer {
           new Climber(
             new ClimberIOSim()
         );
+          leds = 
+            new Leds(
+              new LedsIO(){}
+            );
           break;
         
       default:
@@ -235,6 +256,10 @@ public class RobotContainer {
           climber =
             new Climber(
               new ClimberIO() {}
+            );
+          leds = 
+            new Leds(
+              new LedsIO(){}
             );
         break;
     }
