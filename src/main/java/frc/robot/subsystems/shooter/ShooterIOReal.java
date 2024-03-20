@@ -110,7 +110,7 @@ public class ShooterIOReal implements ShooterIO {
     public void setShooterVelocity(double velocityRadPerSec, double ffVolts) {
         shooterLeft.setControl(
             new VelocityVoltage(
-                Units.radiansToRotations(velocityRadPerSec), 0.0, false, 0, 0, false, false, false));
+                Units.radiansToRotations(velocityRadPerSec*1.0), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
             new VelocityVoltage(                           // 0.6 was ok
                 Units.radiansToRotations(velocityRadPerSec) * 0.6 , 0.0, false, 0, 0, false, false, false));            

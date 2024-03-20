@@ -3,9 +3,20 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "4 Piece Starting Line",
     "EKM",
-    "Square Auto"
+    "0th Note to ____ Shot",
+    "1st Note to ____ Shot",
+    "2nd Note to ___ Shot",
+    "3rd Note to ___ Shot",
+    "4th Note to ____ Shot",
+    "Amp Note to ___ Note",
+    "Amp Speaker to ___ Note",
+    "Center Note to ___Shot",
+    "Center Speaker to ___ Note",
+    "Displace Center Notes",
+    "Podium Note to ____ Shot",
+    "Source Shot to ____ Note",
+    "Source Speaker Shot to ___ Note"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.0,

@@ -22,7 +22,7 @@ public class ElevatorIOReal implements ElevatorIO {
   public static class ElevatorSetpoint {
       public static final double TOP = 90.0; // 130.0
       public static final double TRAP = TOP;
-      public static final double AMP = 47.785;
+      public static final double AMP = 47.85;
       public static final double CLIMB = 5.0;
       public static final double BOTTOM = 2.0; // 2.0
   }
@@ -63,11 +63,11 @@ public class ElevatorIOReal implements ElevatorIO {
 
     elevatorLead.setInverted(false);
 
-   elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
-   elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-   elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorConstants.Setpoints.top);
-   elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorConstants.Setpoints.bottom);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)ElevatorConstants.Setpoints.top);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)ElevatorConstants.Setpoints.bottom);
 
     elevatorLead.setSmartCurrentLimit(30);
     elevatorFollow.setSmartCurrentLimit(30);

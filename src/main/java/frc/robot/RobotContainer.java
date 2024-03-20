@@ -48,6 +48,10 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOReal;
+import frc.robot.subsystems.climber.ClimberIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
 import frc.robot.subsystems.collector.CollectorIOReal;
@@ -69,6 +73,7 @@ public class RobotContainer {
   public final Shooter shooter;
   public final Collector collector;
   public final Elevator elevator;
+  public final Climber climber;
   // private final Flywheel flywheel;
 
   // Controller
@@ -106,6 +111,11 @@ public class RobotContainer {
           new Elevator(
             new ElevatorIOReal()
         );
+
+        climber =
+          new Climber(
+            new ClimberIOReal() {}
+        );
           
         break;
       
@@ -131,7 +141,13 @@ public class RobotContainer {
         elevator =
           new Elevator(
             new ElevatorIO() {}
+        
+          );
+        climber =
+          new Climber(
+            new ClimberIO() {}
         );
+
         break;
         case TANK:
           drive = 
@@ -151,6 +167,11 @@ public class RobotContainer {
             new Elevator(
               new ElevatorIO() {}
             );
+          
+          climber =
+          new Climber(
+            new ClimberIO() {}
+        );
             
           break;
       
@@ -179,6 +200,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+          new Climber(
+            new ClimberIOSim()
+        );
           break;
         
       default:
@@ -207,6 +232,10 @@ public class RobotContainer {
               new ElevatorIO() {}
             );
 
+          climber =
+            new Climber(
+              new ClimberIO() {}
+            );
         break;
     }
 
@@ -380,7 +409,7 @@ public class RobotContainer {
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
 
-        /*  ============================= Climb ============================= */
+        /*  ============================= Elevator ============================= */
 
         operatorController.povUp().whileFalse(Commands.runOnce(
           () -> {
@@ -446,7 +475,7 @@ public class RobotContainer {
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,2000));
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,1000));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {
@@ -463,6 +492,21 @@ public class RobotContainer {
           )
         );
 
+        /* ============================== Climber ========================================= */
+
+        operatorController.rightTrigger().onTrue(Commands.runOnce(
+          () -> {
+            climber.setPO(0.1);
+          }
+        )
+        );
+
+        operatorController.rightTrigger().onFalse(Commands.runOnce(
+          () -> {
+            climber.setPO(0.0);
+          }
+        )
+        );
         
         break;
     

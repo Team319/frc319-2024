@@ -68,12 +68,12 @@ public final class Constants {
         }
   
         public static class Setpoints {
-          public static final double top = 0.479; //.4
+          public static final double top = 0.485; //.4
           public static final double shoot = 0.3;
           public static final double home = 0.0083; //0.025
-          public static final double sub = 0.08;
-          public static final double podium = 0.18;
-          public static final double amp = 0.475;
+          public static final double sub =0.085; //.08 worked
+          public static final double podium = 0.18; //.185
+          public static final double amp =0.485;
           public static final double bottom = 0.0083; 
         }
   
@@ -139,6 +139,33 @@ public final class Constants {
     public static class SoftLimits {
       public static final float forwardSoftLimit = Setpoints.top;
       public static final float reverseSoftLimit = Setpoints.bottom;
+    }
+
+  }
+
+  public static class ClimberConstants {
+    public static class PID {
+      public static final double kPUp = 0.0;  // Power applied to motor
+      public static final double kIUp = 0.0;  // margin of error in motor
+      public static final double kDUp = 0.0;  // Makes the graph line smooth from point A to point B
+      public static final double kFFUp = 0.0; // Feedforward value
+      public static final int iZoneUp = 0;
+
+      public static final double kPDown = 0.0;  // Power applied to motor
+      public static final double kIDown = 0.0;  // margin of error in motor
+      public static final double kDDown = 0.0;  // Makes the graph line smooth from point A to point B
+      public static final double kFFDown = 0.0; // Feedforward value
+      public static final int iZoneDown = 0;
+    }
+
+    public static class SoftLimits {
+      public static final float forwardSoftLimit = Setpoints.top;
+      public static final float reverseSoftLimit = Setpoints.bottom;
+    }
+
+    public static class Setpoints {
+      public static final float top = (float)0.0;
+      public static final float bottom = (float)0.0;
     }
 
   }

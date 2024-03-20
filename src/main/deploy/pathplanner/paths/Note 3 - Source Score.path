@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 1.35,
+        "y": 3.41
       },
       "prevControl": {
-        "x": 4.360360941234703,
-        "y": 1.1618893440635882
+        "x": 3.8203609412347026,
+        "y": 1.2618893440635883
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,33 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.75,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -49.39999999999998,
+    "rotation": -57.43000000000001,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "3rd Note to ___ Shot",
   "previewStartingState": {
     "rotation": 1.0416266760099442,
     "velocity": 0
