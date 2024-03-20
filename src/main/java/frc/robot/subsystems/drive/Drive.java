@@ -15,9 +15,11 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -38,7 +40,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,7 +50,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TargetLocations;
-import frc.robot.Constants.LimelightConstants.Device;
 import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
@@ -127,6 +127,8 @@ public class Drive extends SubsystemBase {
             DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
+
+    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
@@ -216,7 +218,7 @@ public class Drive extends SubsystemBase {
         Logger.recordOutput("Odometry/Robot", getPose());
  
          
-        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER))
+        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER) && DriverStation.isTeleop())
         {
           double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
           Pose3d visionPose = new Pose3d(
@@ -234,23 +236,25 @@ public class Drive extends SubsystemBase {
           
           if( Limelight.getNumTargets(LimelightConstants.Device.SHOOTER ) >= 2 ) // If 2 tags are visible
           { 
-            xyzStds = 0.0; // accept a ton of values, need to tune. I really want the speaker to update the pose
+            xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-            poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
+            if(poseDifference >= 1.0){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
+              poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
+            }
             
           }  
           else if( targetSize > 0.8 && poseDifference < 0.5 ){ // close target, larger window for adjusting
-            xyzStds = 10.0; // arbitrary value
+            xyzStds = 1.0; // arbitrary value
           }
           else if(targetSize > 0.1 && poseDifference < 0.3 ){ // far away target, but measurement is close to robot
-            xyzStds = 20.0; // arbitrary value
+            xyzStds = 2.0; // arbitrary value
           }
           else{
             xyzStds = 999.0; // don't accept any values
           }
 
           poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
-          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]);
+          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]); // poseBuf[6] = Limelight latency = tl + cl
           
         }
 
@@ -371,6 +375,23 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
+  public double snapToHeading() {
+    return headingPID.calculate(getRotation().getRadians(), headingSetpoint);
+  }
+
+  public void setHeadingSetpoint(double headingRadians) {
+    lockHeading();
+    headingTarget = HeadingTargets.NO_TARGET;
+
+    Rotation2d heading = Rotation2d.fromRadians(headingRadians);
+
+    //if (DriverStation.getAlliance().get() == Alliance.Red){
+    //  this.headingSetpoint = heading.rotateBy(Rotation2d.fromRadians(Math.PI)).getRadians();
+    //}
+    this.headingSetpoint = headingRadians;
+
+  }
+
   public Translation2d getCurrentTargetLocation(){
     Translation2d retVal = TargetLocations.ORIGIN;
 
@@ -408,6 +429,7 @@ public class Drive extends SubsystemBase {
 
   public void setHeadingTarget(HeadingTargets target){
     this.headingTarget = target;
+    lockHeading();
   }
 
   public HeadingTargets getHeadingTarget(){
@@ -437,6 +459,35 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
+  private Optional<Rotation2d> getRotationTargetOverride(){
+
+    //NOTE : Returned value must be a field relative angle
+
+    if (isHeadingLocked()){
+      // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
+      if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
+        //Method 1 : Use Limelight
+        //double theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
+        //return Optional.of(Rotation2d.fromDegrees(theta));
+
+        //Method 2 : Use Pose
+        Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
+        double theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
+        return Optional.of(Rotation2d.fromRadians(theta));
+      }
+      else{ // i don't see both tags...
+        return Optional.empty();
+      }
+    }
+    else // heading is unlocked
+    {
+      return Optional.empty();
+    }
+    
+
+    
+  }
+
   public double getAngleToCurrentTarget(){
     return getCurrentTargetLocation().minus(getPose().getTranslation()).getAngle().getRadians();
   }
@@ -459,6 +510,18 @@ public class Drive extends SubsystemBase {
       allianceSpeaker = TargetLocations.RED_SPEAKER;
     }
     return getDistanceToTarget(allianceSpeaker);
+  }
+
+  public boolean isHeadingLocked() {
+    return headingLocked;
+  }
+
+  public void lockHeading() {
+    this.headingLocked = true;
+  }
+
+  public void unlockHeading() {
+    this.headingLocked = false;
   }
 
  

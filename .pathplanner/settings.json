@@ -3,6 +3,7 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
+    "EKM",
     "0th Note to ____ Shot",
     "1st Note to ____ Shot",
     "2nd Note to ___ Shot",

@@ -55,7 +55,8 @@ public class ShooterIOReal implements ShooterIO {
     configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
     // TODO: ADD ADJUSTABILITY SCALAR TO THIS
-    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.bottom);
+    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub);
+    wristPositionMap.put(0.00, WristConstants.Setpoints.sub);
     wristPositionMap.put(1.65, WristConstants.Setpoints.sub);
     wristPositionMap.put(2.4, 0.135);
     wristPositionMap.put(3.1, WristConstants.Setpoints.podium);

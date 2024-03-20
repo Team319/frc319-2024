@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.47044996702820163,
-      "y": 4.1338974839469875
+      "x": 1.4096302478319247,
+      "y": 5.55593454044051
     },
     "rotation": 0
   },
@@ -12,15 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Source Score"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "Fire"
           }
         },
         {
@@ -30,7 +24,32 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source Score to Podium Piece"
+                  "pathName": "EKM_C_Sub_to_C_Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Fire"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "EKM_C_Note_to_A_Note"
                 }
               },
               {
@@ -45,50 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Podium Note to Source Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSub"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Podium to Note 4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 4 to Source Shot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootPod"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source Score to Center Line"
+            "pathName": "EKM_A_Note_to_StageShot"
           }
         }
       ]

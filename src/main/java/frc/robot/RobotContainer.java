@@ -25,7 +25,6 @@ import frc.robot.Constants.HeadingTargets;
 import frc.robot.commands.Aim;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
-import frc.robot.commands.CollectDuringAuto;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
@@ -241,21 +240,43 @@ public class RobotContainer {
     }
 
     // Set up named commands for PathPlanner
-     NamedCommands.registerCommand(
-        "Collect",
-         new Collect(this.shooter, this.collector));
+    NamedCommands.registerCommand(
+      "Collect",
+        new Collect(this.shooter, this.collector));
 
-     NamedCommands.registerCommand(
-        "ShootSub",
-         new FireSub(this.shooter, this.collector, 5000));
+    NamedCommands.registerCommand(
+      "ShootSub",
+        new FireSub(this.shooter, this.collector, 5000));
 
-     NamedCommands.registerCommand(
-        "ShootPod",
-         new FirePod(this.shooter, this.collector, 5000));
+    NamedCommands.registerCommand(
+      "ShootPod",
+        new FirePod(this.shooter, this.collector, 5000));
 
-     NamedCommands.registerCommand(
-        "ShootAmp",
-         new FireAmp(this.shooter, this.collector, this.elevator, 2000));
+    NamedCommands.registerCommand(
+      "ShootAmp",
+        new FireAmp(this.shooter, this.collector, this.elevator, 2000));
+
+    NamedCommands.registerCommand(
+      "Fire",
+        new Fire(this.drive, this.shooter));
+
+    NamedCommands.registerCommand(
+      "Aim",
+        new Aim(this.drive, this.shooter));
+
+    NamedCommands.registerCommand(
+      "LockHeadingToSpeaker",
+        Commands.runOnce(
+          ()-> {drive.setHeadingTarget(HeadingTargets.SPEAKER); }
+        ) 
+    );
+
+    NamedCommands.registerCommand(
+      "UnlockHeading",
+        Commands.runOnce(
+          ()-> {drive.unlockHeading(); }
+        ) 
+    );
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -307,31 +328,31 @@ public class RobotContainer {
             )
         );
         
-        /* 
-        controller.y().onTrue( 
+         
+        driverController.y().onTrue( 
           Commands.runOnce(
             () -> drive.setHeadingSetpoint(0.0),
             drive
           )
         );
-        controller.b().onTrue( 
+        driverController.b().onTrue( 
           Commands.runOnce(
-            () -> drive.setHeadingSetpoint(-90),
+            () -> drive.setHeadingSetpoint(-Math.PI/2),
             drive
           )
         );
-        controller.a().onTrue( 
+        driverController.a().onTrue( 
           Commands.runOnce(
-            () -> drive.setHeadingSetpoint(180),
+            () -> drive.setHeadingSetpoint(Math.PI),
             drive
           )
         );
-        controller.x().onTrue( 
+        driverController.x().onTrue( 
           Commands.runOnce(
-            () -> drive.setHeadingSetpoint(90),
+            () -> drive.setHeadingSetpoint(Math.PI/2),
             drive
           )
-        );*/
+        );
       
         
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));

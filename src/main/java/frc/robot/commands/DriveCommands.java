@@ -14,14 +14,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,17 +26,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.Constants.HeadingTargets;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.util.PolarCoordinate;
-
 import java.util.function.DoubleSupplier;
-
-import org.littletonrobotics.junction.Logger;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.2;
   private static final double HEADING_DEADBAND = DEADBAND;
   private static final double JOYSTICK_GOVERNOR = 0.5; // this value must not exceed 1.0
-  private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
+  //private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
 
   private static final boolean isSnapHeadingWithJoystickEnabled = false;
 
@@ -115,17 +108,36 @@ public class DriveCommands {
                     omega = drive.snapToTarget(); 
                   }
                 }
-                else // Normal rotation with joystick
+                else // Perform manual rotation with joystick input
                 { 
-                  // Note : we need to consider the sign as we don't have a linearDirection for the right joystick axis
-                  if ( throttle > 0.25) {
-                    //omega += Math.copySign(throttleSupplier.getAsDouble() * THROTTLE_GOVERNOR, omega);
-                    omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega); // full pow'ah baby
-                  }
-                  else
+                  
+                  if( omega != 0 || drive.isHeadingLocked() == false ) // Right joystick input greater than the deadband was provided, or heading isn't locked
                   {
-                    omega = Math.copySign((omega * omega ), omega);
+                    drive.unlockHeading();
+                    
+                    if ( throttle > 0.25) 
+                    {
+                      omega = Math.copySign((omega * omega * JOYSTICK_GOVERNOR), omega);
+                    }
+                    else
+                    {
+                      omega = Math.copySign((omega * omega ), omega);
+                    }
                   }
+                  else   // No joystick input, but heading is locked
+                  {
+                    // Maintain some heading
+                    if(drive.getHeadingTarget() != HeadingTargets.NO_TARGET) 
+                    { // Heading is locked to a target
+                      omega = drive.snapToTarget(); 
+                    }
+                    else
+                    { // Heading is locked to a setpoint
+                      omega = drive.snapToHeading();
+                    }
+                    
+                  }
+
                 }
                 
                 // Calcaulate new linear velocity
