@@ -41,12 +41,18 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.leds.Leds;
+import frc.robot.subsystems.leds.LedsIO;
+import frc.robot.subsystems.leds.LedsIOBuster;
+import frc.robot.subsystems.leds.LedsIOReal;
+import frc.robot.subsystems.leds.LedsIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.collector.CollectorIO;
+import frc.robot.subsystems.collector.CollectorIOBuster;
 import frc.robot.subsystems.collector.CollectorIOReal;
 import frc.robot.subsystems.collector.CollectorIOSim;
 
@@ -66,6 +72,7 @@ public class RobotContainer {
   public final Shooter shooter;
   public final Collector collector;
   public final Elevator elevator;
+  public final Leds leds;
   // private final Flywheel flywheel;
 
   // Controller
@@ -105,6 +112,11 @@ public class RobotContainer {
           new Elevator(
             new ElevatorIOReal()
         );
+
+        leds =
+          new Leds(
+            new LedsIOReal()
+          );
           
         break;
       
@@ -124,13 +136,19 @@ public class RobotContainer {
 
         collector =
           new Collector(
-            new CollectorIO() {}
+            new CollectorIOBuster() {}
           );
 
         elevator =
           new Elevator(
             new ElevatorIO() {}
         );
+        
+        leds =
+          new Leds(
+            new LedsIOBuster()
+          );
+
         break;
         case TANK:
           drive = 
@@ -149,6 +167,11 @@ public class RobotContainer {
           elevator =
             new Elevator(
               new ElevatorIO() {}
+            );
+
+          leds =
+            new Leds(
+              new LedsIO() {}
             );
             
           break;
@@ -176,6 +199,11 @@ public class RobotContainer {
           elevator =
             new Elevator(
               new ElevatorIO() {}
+            );
+          
+          leds =
+            new Leds(
+              new LedsIOSim()
             );
 
           break;
@@ -205,6 +233,11 @@ public class RobotContainer {
             new Elevator(
               new ElevatorIO() {}
             );
+      
+      leds =
+        new Leds(
+            new LedsIO() {}
+          );
 
         break;
     }
@@ -212,7 +245,7 @@ public class RobotContainer {
     // Set up named commands for PathPlanner
      NamedCommands.registerCommand(
         "Collect",
-         new Collect(this.shooter, this.collector));
+         new Collect(this.shooter, this.collector, this.leds));
 
      NamedCommands.registerCommand(
         "ShootSub",
@@ -292,7 +325,7 @@ public class RobotContainer {
 
         /*  ============================= Collector  ============================= */
 
-        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector, this.leds) );
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
         /*  ============================= Elevator Debugging ============================= */
