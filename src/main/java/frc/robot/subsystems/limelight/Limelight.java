@@ -129,7 +129,7 @@ public class Limelight {
     } else {
       retVal = countStringOccurances(m_collectTable.getEntry("json").getString(""), "pts");
     }
-    System.out.println("Num targets seen = "+ retVal);
+    //System.out.println("Num targets seen = "+ retVal);
     return retVal;
   }
 
