@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.026512585091679,
-        "y": 4.709133218741497
+        "x": 8.0,
+        "y": 3.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.856541599068947,
-        "y": 4.6701341858740735
+        "x": 6.8105294975435555,
+        "y": 3.4464095731041824
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.091835361817993,
-        "y": 3.8316549792244485
+        "x": 3.13,
+        "y": 4.991876207030324
       },
       "prevControl": {
-        "x": 6.086310699937315,
-        "y": 4.514138054404375
-      },
-      "nextControl": {
-        "x": 4.161196340510655,
-        "y": 3.1929811410723534
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.35,
-        "y": 3.5
-      },
-      "prevControl": {
-        "x": 3.0736354109287802,
-        "y": 2.5934356856837244
+        "x": 5.179583185769698,
+        "y": 4.640884911223504
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,17 +30,24 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.05,
-      "rotationDegrees": 0.716721420839167,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 1.55,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -14.350000000000023,
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.55,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
@@ -66,7 +57,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -57.43000000000001,
+    "rotation": -14.350000000000023,
     "rotateFast": false
   },
   "reversed": false,

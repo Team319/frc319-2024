@@ -14,8 +14,24 @@ public class Climber extends SubsystemBase {
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
+  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/kP", 0.0);
+  private static final LoggedTunableNumber kI = new LoggedTunableNumber("Elevator/kI", 0.0);
+  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Elevator/kD", 0.0);
+  private static final LoggedTunableNumber kFF = new LoggedTunableNumber("Elevator/kFF", 0.0);
+
+  private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Elevator/setpoint", 0.0);
+  private static double climberPosition = 0.0;
+
   public Climber(ClimberIO io) {
     this.io = io;
+
+    switch (Constants.currentMode) {
+      case REAL:
+      case REPLAY:
+      case SIM:
+      default:
+
+    }
   }
 
   @Override
@@ -51,7 +67,11 @@ public class Climber extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
-  public void setPO(double PO) {
-    io.setPO(PO);
+  public void setLeftPO(double leftPO) {
+    io.setLeftPO(leftPO);
+  }
+
+    public void setRightPO(double rightPO) {
+    io.setRightPO(rightPO);
   }
 }

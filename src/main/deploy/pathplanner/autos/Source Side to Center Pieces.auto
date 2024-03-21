@@ -18,13 +18,19 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Source Shot to 2nd Note"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source Shot to 2nd Note"
+                  "pathName": "Stage SetPoint to 2nd Note"
                 }
               },
               {
@@ -59,7 +65,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Source Shot to 1st Note"
+                        "pathName": "New New Path"
                       }
                     },
                     {
