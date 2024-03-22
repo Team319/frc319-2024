@@ -45,7 +45,9 @@ public interface ClimberIO {
 
     public default void setVoltage(double voltage) {}
 
-    public default void setPO(double PO) {}
+    public default void setLeftPO(double leftPO) {}
+
+    public default void setRightPO (double rightPO) {}
 
     
 }

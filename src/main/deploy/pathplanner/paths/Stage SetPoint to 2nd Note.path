@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8444684695637196,
-        "y": 4.5
+        "x": 3.3,
+        "y": 3.2
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1626828004249845,
-        "y": 3.782906188140168
+        "x": 4.516599627023483,
+        "y": 3.909653044959297
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.3,
-        "y": 3.2
+        "x": 8.0,
+        "y": 3.3
       },
       "prevControl": {
-        "x": 1.8375362674715843,
-        "y": 3.3559961314696976
+        "x": 6.215794246315334,
+        "y": 3.816737185493371
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.6,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
@@ -45,8 +57,8 @@
   "reversed": false,
   "folder": "Source Speaker Shot to ___ Note",
   "previewStartingState": {
-    "rotation": -61.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

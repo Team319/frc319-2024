@@ -525,18 +525,50 @@ public class RobotContainer {
 
         operatorController.rightTrigger().onTrue(Commands.runOnce(
           () -> {
-            climber.setPO(0.1);
+            climber.setRightPO(0.1);
+            System.out.println("button pressed");
           }
         )
         );
 
         operatorController.rightTrigger().onFalse(Commands.runOnce(
           () -> {
-            climber.setPO(0.0);
+            climber.setRightPO(0.0);
           }
         )
         );
-        
+
+        operatorController.leftTrigger().onTrue(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.1);
+            System.out.println("button pressed");
+          }
+        )
+        );
+
+        operatorController.leftTrigger().onFalse(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.0);
+          }
+        )
+        );
+
+        operatorController.povRight().onTrue(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(-0.3);
+            climber.setRightPO(-0.3);
+          }
+        )
+        );
+
+        operatorController.povRight().onFalse(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.0);
+            climber.setRightPO(0.0);
+          }
+        )
+        );
+
         break;
     
       default:
