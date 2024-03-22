@@ -31,6 +31,7 @@ import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
 import frc.robot.commands.GoHome;
+import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -77,8 +78,8 @@ public class RobotContainer {
   // private final Flywheel flywheel;
 
   // Controller
-  private final CommandXboxController driverController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
+  public final CommandXboxController driverController = new CommandXboxController(0);
+  public final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
@@ -314,7 +315,7 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
-        /*  ============================= Drive ============================= */
+        /*  ============================= Defaults ============================= */
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -324,7 +325,10 @@ public class RobotContainer {
               () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
               () -> driverController.getLeftTriggerAxis()));
-      
+
+        climber.setDefaultCommand(
+          ( new JoystickClimb(climber, () -> operatorController.getLeftY(), () -> operatorController.getRightY()) ));
+
         driverController.rightStick().onTrue(
           Commands.runOnce(
           () -> drive.setHeadingTarget(HeadingTargets.SPEAKER), 
@@ -498,7 +502,8 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        operatorController.rightTrigger().onTrue(Commands.runOnce(
+        
+        /* operatorController.rightTrigger().onTrue(Commands.runOnce(
           () -> {
             climber.setRightPO(0.1);
             System.out.println("button pressed");
@@ -542,8 +547,8 @@ public class RobotContainer {
             climber.setRightPO(0.0);
           }
         )
-        );
-
+        ); 
+*/
         break;
     
       default:

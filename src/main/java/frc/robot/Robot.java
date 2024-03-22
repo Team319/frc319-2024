@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -146,8 +147,14 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
 
-    //Logger.recordOutput("Aim/wristSetpointForDistance", robotContainer.shooter.getWristSetpointForDistance(robotContainer.drive.getDistanceToAllianceSpeaker()));
-
+    if(robotContainer.collector.isBeamBreakTripped()){
+      robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+      robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+    }
+    else{
+      robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+      robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+    }
   }
 
   /** This function is called once when test mode is enabled. */
