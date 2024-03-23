@@ -153,14 +153,17 @@ public class Robot extends LoggedRobot {
     if(robotContainer.collector.isBeamBreakTripped()){
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
-      robotContainer.leds.setColor(0x00, 0xff, 0x00);
+      robotContainer.leds.setColor(255, 100, 0);
     }
     else if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
-      robotContainer.leds.setColor(255, 100, 0);
+      robotContainer.leds.setColor(0x00, 0x00, 0x00);
     }
     else{
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+      //robotContainer.leds.stop();
+      robotContainer.leds.setColor(0x00, 0x00, 0x00);
+
     }
   }
 

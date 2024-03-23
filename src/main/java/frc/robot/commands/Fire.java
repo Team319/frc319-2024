@@ -52,17 +52,28 @@ m_drive.setUpdatePoseWithVision(true);
     //Potentially redundant, but we want to make sure the wrist is at the right position
     m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
 
-    //System.out.println("RPM" + m_shooter.getVelocityRPM());
+    //System.out.println("RPM " + m_shooter.getVelocityRPM());
     if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
     { 
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
-        m_shooter.setFeedPO (1.0);
+        //m_shooter.setFeedPO (1.0);
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
 
+      }else{
+        passedCycles = 0;
       }
+      
+    }else{
+      passedCycles = 0;
     }
+
+
+    if(passedCycles > 5){
+      m_shooter.setFeedPO (1.0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

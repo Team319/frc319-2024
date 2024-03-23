@@ -127,7 +127,7 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)125.0;// FYI: Real top is closer to 130-135 
+      public static final float top = (float)99.0;// FYI: Real top is closer to 130-135 
       public static final float trap = top;
       public static final float climb = top;
       public static final float amp = (float)47.785;
@@ -159,13 +159,13 @@ public final class Constants {
     }
 
     public static class SoftLimits {
-    //  public static final float forwardSoftLimit = Setpoints.top;
-     // public static final float reverseSoftLimit = Setpoints.bottom;
+      public static final float forwardSoftLimit = Setpoints.top;
+      public static final float reverseSoftLimit = Setpoints.bottom;
     }
 
     public static class Setpoints {
-      public static final float top = (float)0.0;
-      public static final float bottom = (float)0.0;
+      public static final float top = (float)80.0;
+      public static final float bottom = (float)-45.0;
     }
 
   }

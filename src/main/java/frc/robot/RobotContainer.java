@@ -351,9 +351,11 @@ public class RobotContainer {
               () -> -driverController.getRightX(),
               () -> driverController.getLeftTriggerAxis()));
 
+         
         climber.setDefaultCommand(
           ( new JoystickClimb(climber, () -> -operatorController.getLeftY(), () -> -operatorController.getRightY()) ));
-
+        
+        
         /*  ============================= Drive ============================= */
 
         driverController.rightStick().onTrue(
@@ -406,7 +408,7 @@ public class RobotContainer {
           //driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter)); 
+          driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,4000)); 
 
           driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {
@@ -414,8 +416,22 @@ public class RobotContainer {
             }
           )
         ); 
+          driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000));
+          driverController.rightBumper().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
 
-        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter));
+          driverController.povUp().whileTrue(new Fire(this.drive, this.shooter));
+          driverController.povUp().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
+        driverController.leftBumper().whileTrue(new Aim( this.drive, this.shooter));
 
         // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
