@@ -327,7 +327,9 @@ public class RobotContainer {
               () -> driverController.getLeftTriggerAxis()));
 
         climber.setDefaultCommand(
-          ( new JoystickClimb(climber, () -> operatorController.getLeftY(), () -> operatorController.getRightY()) ));
+          ( new JoystickClimb(climber, () -> -operatorController.getLeftY(), () -> -operatorController.getRightY()) ));
+
+        /*  ============================= Drive ============================= */
 
         driverController.rightStick().onTrue(
           Commands.runOnce(
@@ -376,7 +378,7 @@ public class RobotContainer {
 
           // For testing. -EKM
          // driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
-          driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
+          //driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
           driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter)); 
@@ -390,9 +392,9 @@ public class RobotContainer {
 
         driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter));
 
-         //driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000)); OLD
+        // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
-         /*driverController.rightBumper().whileFalse(Commands.runOnce(
+        /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }

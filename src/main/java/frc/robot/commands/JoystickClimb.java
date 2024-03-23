@@ -15,15 +15,19 @@ public class JoystickClimb extends Command {
   /** Creates a new JoystickClimb. */
 
   Climber m_climber;
+
+  DoubleSupplier m_leftSupplier;
+  DoubleSupplier m_rightSupplier;
   double rightPO = 0.0;
   double leftPO = 0.0;
 
   public JoystickClimb(Climber climber,DoubleSupplier leftSupplier,DoubleSupplier rightSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_climber = climber;
+    m_leftSupplier = leftSupplier;
+    m_rightSupplier = rightSupplier;
     addRequirements(climber);
-    leftPO = MathUtil.applyDeadband(leftSupplier.getAsDouble(), DEADBAND);
-    rightPO = MathUtil.applyDeadband(rightSupplier.getAsDouble(), DEADBAND);
+    
 
 
   }
@@ -35,6 +39,11 @@ public class JoystickClimb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+   // System.out.println("LeftPO: "+ leftPO + " RightPO: " + rightPO);
+
+    leftPO = MathUtil.applyDeadband(m_leftSupplier.getAsDouble(), DEADBAND);
+    rightPO = MathUtil.applyDeadband(m_rightSupplier.getAsDouble(), DEADBAND);
+
     m_climber.setLeftPO(leftPO);
     m_climber.setRightPO(rightPO);
 

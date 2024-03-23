@@ -25,7 +25,7 @@ public class Fire extends Command {
     m_shooter = shooter;
 
     setpoint = 5000;
-    threshold = 750;
+    threshold = 550;
     wristThreshold = 0.015;
     addRequirements(shooter);
 

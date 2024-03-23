@@ -57,8 +57,8 @@ public static class ClimberPIDGains {
     rightClimber.clearFaults();
     leftClimber.clearFaults();
 
-    rightClimber.setInverted(false);
-    leftClimber.setInverted(true);
+    rightClimber.setInverted(true);
+    leftClimber.setInverted(false);
 
     rightClimber.setSmartCurrentLimit(30);
     leftClimber.setSmartCurrentLimit(30);
@@ -129,7 +129,8 @@ public static class ClimberPIDGains {
   public void setRightPO(double rightPO) {
     rightClimber.set(rightPO);
   }
-    public void setLeftPO(double leftPO) {
+  @Override
+  public void setLeftPO(double leftPO) {
     leftClimber.set(leftPO);
   }
 
