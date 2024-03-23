@@ -16,6 +16,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.subsystems.limelight.Limelight;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -150,6 +153,10 @@ public class Robot extends LoggedRobot {
     if(robotContainer.collector.isBeamBreakTripped()){
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+      robotContainer.leds.setColor(0x00, 0xff, 0x00);
+    }
+    else if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
+      robotContainer.leds.setColor(255, 100, 0);
     }
     else{
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);

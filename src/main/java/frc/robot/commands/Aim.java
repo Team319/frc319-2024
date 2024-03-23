@@ -27,11 +27,7 @@ public class Aim extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    // Drivetrain : Begin Tracking a Target
-
-    // Pre-spin the Shooter Flywheels to some speed
-    //m_shooter.setShooterVelocity(3000); //TODO Find optimal speed
+      m_drive.setUpdatePoseWithVision(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +51,10 @@ public class Aim extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.setUpdatePoseWithVision(false);
+
+  }
 
   // Returns true when the command should end.
   @Override

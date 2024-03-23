@@ -38,6 +38,8 @@ public class Fire extends Command {
     m_shooter.setFeedPO(0.0);
     System.out.println("init");
     passedCycles = 0;
+    m_drive.setUpdatePoseWithVision(true);
+
     
 
   }
@@ -68,8 +70,8 @@ public class Fire extends Command {
   public void end(boolean interrupted) {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
-    System.out.println("end");
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
+    m_drive.setUpdatePoseWithVision(false);
 
 
   }
