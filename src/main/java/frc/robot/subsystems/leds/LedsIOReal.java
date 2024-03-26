@@ -7,7 +7,9 @@ package frc.robot.subsystems.leds;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.util.Color;
 
 public class LedsIOReal implements LedsIO {
   private static LedsIOReal instance;
@@ -41,6 +43,23 @@ public class LedsIOReal implements LedsIO {
     
     m_Led.setData(m_LedBuffer);
   } 
+/* 
+  public void wave(Color c1, Color c2, double cycleLength, double duration){
+    double x = (1 - ((Timer.getFPGATimestamp() % duration) / duration)) * 2.0 * Math.PI;
+    double xDiffPeriod = (2.0 * Math.PI) / cycleLength;
+
+    x += xDiffPeriod;
+
+    double ratio = (Math.pow(Math.sin(x), 0.4) + 1.0) / 2.0;
+    if(Double.isNaN(ratio)){
+      ratio = (-Math.pow(Math.sin(x), 0.4) + 1.0) / 2.0 ;
+    }
+    if(Double.isNaN(ratio)){
+      ratio = 0.5;
+    }
+    double red = (c1)
+
+  }*/
   
   @Override
   public void allianceIdleColor() {

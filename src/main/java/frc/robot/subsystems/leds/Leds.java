@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.leds;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -28,6 +29,13 @@ public class Leds extends SubsystemBase {
     // This method will be called once per scheduler run
     //setColor(0xFF, 0xFF, 0xFF);
     //allianceIdleColor();
+
+    /* 
+    if(DriverStation.isDisabled()){
+
+    }
+    */
+    
   }
 
   public void stop() {
