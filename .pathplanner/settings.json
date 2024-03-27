@@ -3,9 +3,11 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
+    "Amp Side 3PC ",
     "BSU 125 Source 3",
     "EKM ",
-    "New Folder",
+    "Center 3PC",
+    "Source SIde 3PC",
     "Source Side to Center Piece",
     "Starting Line",
     "Taxi Amp",

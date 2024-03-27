@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.84,
-        "y": 6.0
+        "x": 2.81,
+        "y": 7.01
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.253356155168368,
-        "y": 6.990576641485824
+        "x": 4.1461088147818685,
+        "y": 7.039325432574085
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.007013068657967,
+        "x": 8.01,
         "y": 7.448815277678062
       },
       "prevControl": {
-        "x": 7.007013068657967,
-        "y": 7.448815277678062
+        "x": 6.837042082634154,
+        "y": 7.039325432574085
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
@@ -43,7 +55,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "New Folder",
+  "folder": "Amp Side 3PC ",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

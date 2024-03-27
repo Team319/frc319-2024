@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7726924717507405,
-        "y": 6.600586312811581
+        "x": 2.8,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7726924717507386,
-        "y": 6.600586312811581
+        "x": 4.233856638734657,
+        "y": 4.572636603705512
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.810391939073666,
-        "y": 7.010076157919538
+        "x": 8.007013068657967,
+        "y": 4.1046482092964185
       },
       "prevControl": {
-        "x": 1.7866673263037751,
-        "y": 6.668834620329574
+        "x": 7.480526124947738,
+        "y": 3.490413441634485
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 25.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side 3PC ",
+  "folder": "Center 3PC",
   "previewStartingState": {
-    "rotation": 59.0362434679265,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true
