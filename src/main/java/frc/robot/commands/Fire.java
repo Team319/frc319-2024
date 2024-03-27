@@ -18,14 +18,16 @@ public class Fire extends Command {
   double setpoint;
   double threshold;
   double wristThreshold;
+  boolean firstDetectionOccured = false;
   /** Creates a new Fire. */
   public Fire(Drive drive, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive; 
     m_shooter = shooter;
-
+    passedCycles = 0;
+    firstDetectionOccured = false;
     setpoint = 5000;
-    threshold = 750;
+    threshold = 550;
     wristThreshold = 0.015;
     addRequirements(shooter);
 
@@ -38,6 +40,9 @@ public class Fire extends Command {
     m_shooter.setFeedPO(0.0);
     System.out.println("init");
     passedCycles = 0;
+    firstDetectionOccured = false;
+m_drive.setUpdatePoseWithVision(true);
+
     
 
   }
@@ -48,11 +53,21 @@ public class Fire extends Command {
   public void execute() 
   {
     //Potentially redundant, but we want to make sure the wrist is at the right position
+    if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
+
     m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
+    } else {
+      firstDetectionOccured = true;
+    } 
 
     //System.out.println("RPM" + m_shooter.getVelocityRPM());
+    
     if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
     { 
+    /*if (firstDetectionOccured)
+    { 
+    if (m_shooter.isBeamBreakTripped()){
+*/
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
         m_shooter.setFeedPO (1.0);
@@ -62,15 +77,17 @@ public class Fire extends Command {
       }
     }
   }
+  //}
+//}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
-    m_shooter.setFeedPO(0.0);
-    System.out.println("end");
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
-
+    m_shooter.setFeedPO(0.0);
+    m_drive.setUpdatePoseWithVision(false);
+   
 
   }
 
