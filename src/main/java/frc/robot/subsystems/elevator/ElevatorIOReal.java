@@ -20,7 +20,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorIOReal implements ElevatorIO {
 
   public static class ElevatorSetpoint {
-      public static final double TOP = 90.0; // 130.0
+      public static final double TOP = 130.0; // 130.0
       public static final double TRAP = TOP;
       public static final double AMP = 47.85;
       public static final double CLIMB = 5.0;

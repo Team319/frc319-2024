@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 2.81,
+        "y": 7.01
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7098358983042754,
-        "y": 0.6431784943341966
+        "x": 4.1461088147818685,
+        "y": 7.039325432574085
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036373451664282,
-        "y": 0.7718141932010376
+        "x": 8.01,
+        "y": 7.448815277678062
       },
       "prevControl": {
-        "x": 7.036373451664282,
-        "y": 0.7718141932010376
+        "x": 6.837042082634154,
+        "y": 7.039325432574085
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
@@ -39,14 +51,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": "Amp Side 3PC ",
   "previewStartingState": {
-    "rotation": -49.39999999999998,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

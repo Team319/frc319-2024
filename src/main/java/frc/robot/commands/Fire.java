@@ -25,7 +25,7 @@ public class Fire extends Command {
     m_shooter = shooter;
 
     setpoint = 5000;
-    threshold = 750;
+    threshold = 550;
     wristThreshold = 0.015;
     addRequirements(shooter);
 
@@ -38,6 +38,8 @@ public class Fire extends Command {
     m_shooter.setFeedPO(0.0);
     System.out.println("init");
     passedCycles = 0;
+m_drive.setUpdatePoseWithVision(true);
+
     
 
   }
@@ -50,27 +52,38 @@ public class Fire extends Command {
     //Potentially redundant, but we want to make sure the wrist is at the right position
     m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
 
-    //System.out.println("RPM" + m_shooter.getVelocityRPM());
+    //System.out.println("RPM " + m_shooter.getVelocityRPM());
     if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
     { 
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
-        m_shooter.setFeedPO (1.0);
+        //m_shooter.setFeedPO (1.0);
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
 
+      }else{
+        passedCycles = 0;
       }
+      
+    }else{
+      passedCycles = 0;
     }
+
+
+    if(passedCycles > 5){
+      m_shooter.setFeedPO (1.0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
-    m_shooter.setFeedPO(0.0);
-    System.out.println("end");
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
-
+    m_shooter.setFeedPO(0.0);
+    m_drive.setUpdatePoseWithVision(false);
+   
 
   }
 

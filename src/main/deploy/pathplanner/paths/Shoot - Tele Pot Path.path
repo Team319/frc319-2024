@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 4.0,
+        "y": 5.84
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7098358983042754,
-        "y": 0.6431784943341966
+        "x": 4.9065899556977275,
+        "y": 7.770557298834312
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036373451664282,
-        "y": 0.7718141932010376
+        "x": 7.5585241906825855,
+        "y": 4.894378624861763
       },
       "prevControl": {
-        "x": 7.036373451664282,
-        "y": 0.7718141932010376
+        "x": 6.486050786828415,
+        "y": 7.010076157919537
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": "Amp Side 3PC ",
   "previewStartingState": {
-    "rotation": -49.39999999999998,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

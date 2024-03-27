@@ -46,17 +46,28 @@ public class FirePod extends Command {
     System.out.println("Wrist "+m_shooter.getWristPosition());
 
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.podium-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.podium+wristThreshold){
-      System.out.println("Ding");
+      //System.out.println("Ding");
 
       if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
-        System.out.println("Dong");
+       // System.out.println("Dong");
 
-        m_shooter.setFeedPO (1.0);
+        //m_shooter.setFeedPO (1.0);
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
 
       }
+      else{
+        passedCycles = 0;
+      }
     }
+    else{
+      passedCycles = 0;
+    }
+
+    if(passedCycles > 5){
+      m_shooter.setFeedPO (1.0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

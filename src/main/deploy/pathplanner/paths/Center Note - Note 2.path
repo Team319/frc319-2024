@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 2.8,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7098358983042754,
-        "y": 0.6431784943341966
+        "x": 4.233856638734657,
+        "y": 4.572636603705512
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036373451664282,
-        "y": 0.7718141932010376
+        "x": 8.007013068657967,
+        "y": 4.1046482092964185
       },
       "prevControl": {
-        "x": 7.036373451664282,
-        "y": 0.7718141932010376
+        "x": 7.480526124947738,
+        "y": 3.490413441634485
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": "Center 3PC",
   "previewStartingState": {
-    "rotation": -49.39999999999998,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

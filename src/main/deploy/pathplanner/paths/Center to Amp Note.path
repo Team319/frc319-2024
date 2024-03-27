@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.4582617826204314,
-        "y": 6.782609576615164
+        "x": 2.4,
+        "y": 6.85
       },
       "prevControl": {
-        "x": 1.1251281761822782,
-        "y": 6.162819391165848
+        "x": 1.0668663935618468,
+        "y": 6.230209814550683
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center Speaker to ___ Note",
+  "folder": "Starting Line",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

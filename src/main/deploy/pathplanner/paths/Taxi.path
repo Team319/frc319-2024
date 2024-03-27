@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 0.7726924717507405,
+        "y": 6.600586312811581
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7098358983042754,
-        "y": 0.6431784943341966
+        "x": 1.689169744135214,
+        "y": 7.1173234983049545
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036373451664282,
-        "y": 0.7718141932010376
+        "x": 2.67389532403768,
+        "y": 7.565812376280334
       },
       "prevControl": {
-        "x": 7.036373451664282,
-        "y": 0.7718141932010376
+        "x": 1.9621629742071847,
+        "y": 7.2538201133409395
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": "Taxi Amp",
   "previewStartingState": {
-    "rotation": -49.39999999999998,
+    "rotation": 60.461217740441874,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

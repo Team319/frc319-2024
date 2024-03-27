@@ -31,6 +31,7 @@ import frc.robot.commands.FireAmp;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
 import frc.robot.commands.GoHome;
+import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -44,6 +45,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOReal;
+import frc.robot.subsystems.leds.Leds;
+import frc.robot.subsystems.leds.LedsIO;
+import frc.robot.subsystems.leds.LedsIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -74,11 +78,13 @@ public class RobotContainer {
   public final Collector collector;
   public final Elevator elevator;
   public final Climber climber;
+  public final Leds leds;
+
   // private final Flywheel flywheel;
 
   // Controller
-  private final CommandXboxController driverController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
+  public final CommandXboxController driverController = new CommandXboxController(0);
+  public final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
  private final LoggedDashboardChooser<Command> autoChooser;
@@ -116,6 +122,10 @@ public class RobotContainer {
           new Climber(
             new ClimberIOReal() {}
         );
+        leds = 
+          new Leds(
+            new LedsIOReal()
+          );
           
         break;
       
@@ -148,6 +158,10 @@ public class RobotContainer {
             new ClimberIO() {}
         );
 
+        leds = 
+          new Leds(
+            new LedsIO(){}
+          );
         break;
         case TANK:
           drive = 
@@ -173,6 +187,10 @@ public class RobotContainer {
             new ClimberIO() {}
         );
             
+          leds = 
+            new Leds(
+              new LedsIO(){}
+            ); 
           break;
       
         case SIM:
@@ -204,6 +222,10 @@ public class RobotContainer {
           new Climber(
             new ClimberIOSim()
         );
+          leds = 
+            new Leds(
+              new LedsIO(){}
+            );
           break;
         
       default:
@@ -235,6 +257,10 @@ public class RobotContainer {
           climber =
             new Climber(
               new ClimberIO() {}
+            );
+          leds = 
+            new Leds(
+              new LedsIO(){}
             );
         break;
     }
@@ -278,6 +304,10 @@ public class RobotContainer {
         ) 
     );
 
+      NamedCommands.registerCommand(
+        "Spit", 
+        new Spit(this.shooter, this.collector, this.elevator,4000));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -310,7 +340,7 @@ public class RobotContainer {
       case REAL:
       case SIM:
       case REPLAY:
-        /*  ============================= Drive ============================= */
+        /*  ============================= Defaults ============================= */
 
         drive.setDefaultCommand(
           DriveCommands.joystickDrive(
@@ -320,13 +350,22 @@ public class RobotContainer {
               () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
               () -> driverController.getLeftTriggerAxis()));
-      
+              
+
+        climber.setDefaultCommand(
+          ( new JoystickClimb(climber, () -> -operatorController.getLeftY(), () -> -operatorController.getRightY()) ));
+        
+        
+        /*  ============================= Drive ============================= */
+
+        /* 
         driverController.rightStick().onTrue(
           Commands.runOnce(
           () -> drive.setHeadingTarget(HeadingTargets.SPEAKER), 
           drive
             )
         );
+        */
         
          
         driverController.y().onTrue( 
@@ -367,11 +406,11 @@ public class RobotContainer {
           /*  ============================= Driver Shooter ============================= */
 
           // For testing. -EKM
-          driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
-          driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
+         // driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+          //driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter)); 
+          driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector,4000)); 
 
           driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {
@@ -379,12 +418,26 @@ public class RobotContainer {
             }
           )
         ); 
+          driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000));
+          driverController.rightBumper().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
 
-        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter));
+          driverController.povUp().whileTrue(new Fire(this.drive, this.shooter));
+          driverController.povUp().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
+        driverController.leftBumper().whileTrue(new Aim( this.drive, this.shooter));
 
-         //driverController.rightBumper().whileTrue(new FirePod(this.shooter, this.collector, 5000)); OLD
+        // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
-         /*driverController.rightBumper().whileFalse(Commands.runOnce(
+        /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
             shooter.stop();
           }
@@ -494,20 +547,53 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        operatorController.rightTrigger().onTrue(Commands.runOnce(
+        
+        /* operatorController.rightTrigger().onTrue(Commands.runOnce(
           () -> {
-            climber.setPO(0.1);
+            climber.setRightPO(0.1);
+            System.out.println("button pressed");
           }
         )
         );
 
         operatorController.rightTrigger().onFalse(Commands.runOnce(
           () -> {
-            climber.setPO(0.0);
+            climber.setRightPO(0.0);
           }
         )
         );
-        
+
+        operatorController.leftTrigger().onTrue(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.1);
+            System.out.println("button pressed");
+          }
+        )
+        );
+
+        operatorController.leftTrigger().onFalse(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.0);
+          }
+        )
+        );
+
+        operatorController.povRight().onTrue(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(-0.3);
+            climber.setRightPO(-0.3);
+          }
+        )
+        );
+
+        operatorController.povRight().onFalse(Commands.runOnce(
+          () -> {
+            climber.setLeftPO(0.0);
+            climber.setRightPO(0.0);
+          }
+        )
+        ); 
+*/
         break;
     
       default:

@@ -24,7 +24,8 @@ public interface ClimberIO {
         public double targetPosition = 0.0; // Target position of the elevator
         public double appliedVoltage = 0.0; // Voltage applied to the motor
         public double outputCurrentAmps = 0.0; // Current applied to the motor
-        public double position = 0.0; // Position of the elevator
+        public double leftPosition = 0.0; // Position of the elevator
+        public double rightPosition = 0.0;
         public double velocity = 0.0; // Velocity of the elevator
 
     }
@@ -37,7 +38,9 @@ public interface ClimberIO {
 
     public default void setPosition(double targetPosition) {}
 
-    public default double getPosition() {return 0.0;}
+    public default double getLeftPosition() {return 0.0;}
+
+    public default double getRightPosition() {return 0.0;}
 
     public default double getVelocity() {return 0.0;}
 
@@ -45,7 +48,9 @@ public interface ClimberIO {
 
     public default void setVoltage(double voltage) {}
 
-    public default void setPO(double PO) {}
+    public default void setLeftPO(double leftPO) {}
+
+    public default void setRightPO (double rightPO) {}
 
     
 }

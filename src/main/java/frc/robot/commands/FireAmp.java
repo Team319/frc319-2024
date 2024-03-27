@@ -50,16 +50,16 @@ public class FireAmp extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("RPM"+m_shooter.getVelocityRPM());
+   // System.out.println("RPM "+m_shooter.getVelocityRPM());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.amp-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.amp+wristThreshold){
-      System.out.println("Ding");
+      //System.out.println("Ding");
       if (m_elevator.getPosition() > ElevatorIOReal.ElevatorSetpoint.AMP-elevatorThreshold && m_elevator.getPosition() < ElevatorIOReal.ElevatorSetpoint.AMP+elevatorThreshold){
-              System.out.println("Dong");
+             // System.out.println("Dong");
 
         if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
           m_shooter.setFeedPO (1.0);
           passedCycles++;
-          System.out.println("passedCycles"+passedCycles);
+       //   System.out.println("passedCycles"+passedCycles);
       }
      }
     }
