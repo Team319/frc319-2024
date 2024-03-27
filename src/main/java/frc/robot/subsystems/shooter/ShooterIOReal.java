@@ -21,6 +21,7 @@ import com.revrobotics.SparkPIDController.ArbFFUnits;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShooterConstants;
@@ -46,7 +47,7 @@ public class ShooterIOReal implements ShooterIO {
 
     private double currentWristSetpoint = 0.0;
     
-    //private final DigitalInput beamBreak = new DigitalInput(1); // Doesn't exist!
+    private final DigitalInput beamBreak = new DigitalInput(1); 
 
   public ShooterIOReal() {
     setupShooter();
@@ -213,11 +214,11 @@ public class ShooterIOReal implements ShooterIO {
         wrist.set(PO);
     }
 
-    /* 
+     
     @Override
     public boolean isBeamBreakTripped(){
-        return beamBreak.get();
-    }*/
+        return !beamBreak.get();
+    }
 
     @Override
     public void setFeedPO(double PO) {

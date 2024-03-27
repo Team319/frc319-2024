@@ -26,7 +26,7 @@ public class LedsIOReal implements LedsIO {
 
   /** Creates a new LedsIOReal. */
   public LedsIOReal() {
-    m_Led = new AddressableLED(1);
+    m_Led = new AddressableLED(0);
     m_LedBuffer = new AddressableLEDBuffer(length);
     m_Led.setLength(length);
     m_Led.setData(m_LedBuffer);
