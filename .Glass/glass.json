@@ -12,13 +12,18 @@
           }
         },
         "limelight-shooter": {
-          "open": true,
           "string[]##v_/CameraPublisher/limelight-shooter/modes": {
             "open": true
           },
           "string[]##v_/CameraPublisher/limelight-shooter/streams": {
             "open": true
           }
+        },
+        "open": true
+      },
+      "limelight-shooter": {
+        "double[]##v_/limelight-shooter/botpose_wpiblue": {
+          "open": true
         },
         "open": true
       }

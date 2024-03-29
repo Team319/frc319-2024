@@ -41,7 +41,7 @@ public class Fire extends Command {
     System.out.println("init");
     passedCycles = 0;
     firstDetectionOccured = false;
-m_drive.setUpdatePoseWithVision(true);
+    m_drive.setUpdatePoseWithVision(true);
 
     
 

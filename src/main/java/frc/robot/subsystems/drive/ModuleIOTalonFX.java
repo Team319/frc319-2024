@@ -77,6 +77,7 @@ public class ModuleIOTalonFX implements ModuleIO {
             absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(42)); // MUST BE CALIBRATED
             break;
         
+          case BUSTER:
           default:
             absoluteEncoderOffset = new Rotation2d(-0.271520872); // MUST BE CALIBRATED BUSTER
             break;
@@ -92,6 +93,7 @@ public class ModuleIOTalonFX implements ModuleIO {
             absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(100)); // MUST BE CALIBRATED
             break;
         
+          case BUSTER:
           default:
             absoluteEncoderOffset = new Rotation2d(1.920542856); // MUST BE CALIBRATED BUSTER
             break;
@@ -105,7 +107,8 @@ public class ModuleIOTalonFX implements ModuleIO {
           case REAL:
             absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(-15)); // MUST BE CALIBRATED
             break;
-        
+
+          case BUSTER:
           default:
             absoluteEncoderOffset = new Rotation2d(2.734512059); // MUST BE CALIBRATED BUSTER
             break;
@@ -120,8 +123,9 @@ public class ModuleIOTalonFX implements ModuleIO {
             absoluteEncoderOffset = new Rotation2d(Units.degreesToRadians(60)); // MUST BE CALIBRATED
             break;
         
+          case BUSTER:
           default:
-            absoluteEncoderOffset = new Rotation2d(2.0); // MUST BE CALIBRATED BUSTER -1.84079631861
+            absoluteEncoderOffset = new Rotation2d(-1.84079631861); // MUST BE CALIBRATED BUSTER -1.84079631861
             break;
         }
         break;
