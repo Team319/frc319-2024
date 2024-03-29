@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7726924717507405,
-      "y": 6.600586312811581
+      "x": 0.6849446477990359,
+      "y": 4.475139021536951
     },
-    "rotation": 59.82647997035563
+    "rotation": -61.85839876773825
   },
   "command": {
     "type": "sequential",
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Sub - Amp Note Path"
+                  "pathName": "Sub - Source Note"
                 }
               }
             ]
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Shoot - Note 0 Path"
+                  "pathName": "Source Note - Note 3"
                 }
               }
             ]
@@ -64,7 +64,38 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot - note 0"
+            "pathName": "Note 3 - Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPod"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot __ Note 4 Path"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 4 __ Shoot Path"
           }
         },
         {
@@ -76,7 +107,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot - Tele Pot Path"
+            "pathName": "Shoot - Tele Pot"
           }
         }
       ]

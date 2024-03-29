@@ -2,22 +2,16 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7726924717507405,
-      "y": 6.600586312811581
+      "x": 1.2991794154609702,
+      "y": 5.518363150740554
     },
-    "rotation": 59.82647997035563
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ShootSub"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -30,10 +24,41 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Sub - Amp Note Path"
+                  "pathName": "Center - Center Note"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPod"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Note - Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 2 - Shoot"
           }
         },
         {
@@ -55,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Shoot - Note 0 Path"
+                  "pathName": "Shoot __ Note 1"
                 }
               }
             ]
@@ -64,7 +89,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot - note 0"
+            "pathName": "Note 1 __ Shoot"
           }
         },
         {
@@ -76,7 +101,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot - Tele Pot Path"
+            "pathName": "Shoot _ Tele Post"
           }
         }
       ]

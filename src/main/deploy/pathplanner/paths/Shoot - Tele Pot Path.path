@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.0,
-        "y": 5.84
+        "x": 2.8,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9065899556977275,
-        "y": 7.770557298834312
+        "x": 3.7065899556977273,
+        "y": 7.450557298834312
       },
       "isLocked": false,
       "linkedName": null
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side 3PC ",
+  "folder": "Amp Side 3-4PC ",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

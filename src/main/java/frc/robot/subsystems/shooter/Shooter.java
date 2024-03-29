@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   private double shooterVelocity;
 
     private static final LoggedTunableNumber wrist_setpoint = new LoggedTunableNumber("Wrist/setpoint", 0.0);
-    private static final LoggedTunableNumber shooter_setpoint = new LoggedTunableNumber("Flywheel/setpoint", 0.0);
+   // private static final LoggedTunableNumber shooter_setpoint = new LoggedTunableNumber("Flywheel/setpoint", 0.0);
 
 
   private static final LoggedTunableNumber wrist_kP = new LoggedTunableNumber("Wrist/kP", WristConstants.PID.kP);
@@ -35,9 +35,9 @@ public class Shooter extends SubsystemBase {
   private static final LoggedTunableNumber wrist_kFF = new LoggedTunableNumber("Wrist/kFF", WristConstants.PID.kFF);
 
 
-  private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", 0.0);
-  private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", 0.0);
-  private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", 0.0);
+//  private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", 0.0);
+ // private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", 0.0);
+ // private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", 0.0);
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 

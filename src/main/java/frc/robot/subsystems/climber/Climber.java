@@ -7,15 +7,15 @@ package frc.robot.subsystems.climber;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.util.LoggedTunableNumber;
+//import frc.robot.util.LoggedTunableNumber;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-  private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Climber/setpoint", 0.0);
-  private static double climberPosition = 0.0;
+  //private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Climber/setpoint", 0.0);
+  //private static double climberPosition = 0.0;
 
   public Climber(ClimberIO io) {
     this.io = io;

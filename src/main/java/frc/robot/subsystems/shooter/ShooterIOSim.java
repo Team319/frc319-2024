@@ -20,7 +20,7 @@ public class ShooterIOSim implements ShooterIO {
     private double ffVolts = 0.0;
     private double leftShooterAppliedVolts = 0.0;
     private double rightShooterAppliedVolts = 0.0;
-    private double leftFeedAppliedVolts = 0.0;
+    //private double leftFeedAppliedVolts = 0.0;
     private double rightFeedAppliedVolts = 0.0;
 
     @Override
@@ -63,7 +63,7 @@ public class ShooterIOSim implements ShooterIO {
         closedLoop = false;
         leftShooterAppliedVolts = 0.0;
         rightShooterAppliedVolts = 0.0;
-        leftFeedAppliedVolts = 0.0;
+       // leftFeedAppliedVolts = 0.0;
         rightFeedAppliedVolts = 0.0;
         
         leftShooterSim.setInputVoltage(leftFlywheelVolts);

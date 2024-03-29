@@ -216,7 +216,7 @@ public class ShooterIOReal implements ShooterIO {
     
     @Override
     public boolean isBeamBreakTripped(){
-        return beamBreak.get();
+        return !beamBreak.get();
     }
 
     @Override
