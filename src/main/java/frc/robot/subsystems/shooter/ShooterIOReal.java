@@ -21,6 +21,7 @@ import com.revrobotics.SparkPIDController.ArbFFUnits;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShooterConstants;
@@ -46,7 +47,7 @@ public class ShooterIOReal implements ShooterIO {
 
     private double currentWristSetpoint = 0.0;
     
-    //private final DigitalInput beamBreak = new DigitalInput(1); // Doesn't exist!
+    private final DigitalInput beamBreak = new DigitalInput(1); 
 
   public ShooterIOReal() {
     setupShooter();
@@ -55,14 +56,15 @@ public class ShooterIOReal implements ShooterIO {
     configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
     // TODO: ADD ADJUSTABILITY SCALAR TO THIS
-    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub);
-    wristPositionMap.put(0.00, WristConstants.Setpoints.sub);
-    wristPositionMap.put(1.65, WristConstants.Setpoints.sub);
-    wristPositionMap.put(2.4, 0.135);
-    wristPositionMap.put(3.1, WristConstants.Setpoints.podium);
-    wristPositionMap.put(3.4, 0.185);
-    wristPositionMap.put(3.6, 0.19);
-    wristPositionMap.put(4.0, 0.2);
+    double scaler = 1.1; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
+    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub*scaler);
+    wristPositionMap.put(0.00, WristConstants.Setpoints.sub*scaler);
+    wristPositionMap.put(1.65, WristConstants.Setpoints.sub*scaler);
+    wristPositionMap.put(2.4, 0.135*scaler);
+    wristPositionMap.put(3.1, WristConstants.Setpoints.podium*scaler);
+    wristPositionMap.put(3.4, 0.185*scaler);
+    wristPositionMap.put(3.6, 0.19*scaler);
+    wristPositionMap.put(4.0, 0.2*scaler);
     wristPositionMap.put(Double.POSITIVE_INFINITY, WristConstants.Setpoints.top);
 
   }
@@ -212,11 +214,11 @@ public class ShooterIOReal implements ShooterIO {
         wrist.set(PO);
     }
 
-    /* 
+     
     @Override
     public boolean isBeamBreakTripped(){
-        return beamBreak.get();
-    }*/
+        return !beamBreak.get();
+    }
 
     @Override
     public void setFeedPO(double PO) {

@@ -159,8 +159,8 @@ public final class Constants {
     }
 
     public static class SoftLimits {
-      public static final float forwardSoftLimit = Setpoints.top;
-      public static final float reverseSoftLimit = Setpoints.bottom;
+    //  public static final float forwardSoftLimit = Setpoints.top;
+     // public static final float reverseSoftLimit = Setpoints.bottom;
     }
 
     public static class Setpoints {

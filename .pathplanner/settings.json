@@ -3,7 +3,6 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "EKM",
     "0th Note to ____ Shot",
     "1st Note to ____ Shot",
     "2nd Note to ___ Shot",
@@ -19,8 +18,8 @@
     "Source Speaker Shot to ___ Note"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxVel": 5.0,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5

@@ -98,6 +98,8 @@ public class Drive extends SubsystemBase {
   @AutoLogOutput(key = "Drive/headingLocked")
   private boolean headingLocked = false;
 
+  private boolean updatePoseUsingVision = false;
+
   public Drive(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
@@ -238,7 +240,7 @@ public class Drive extends SubsystemBase {
           { 
             xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-            if(poseDifference >= 1.0){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
+            if(poseDifference >= 1.0 && this.updatePoseUsingVision ){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
               poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
             }
             
@@ -558,6 +560,10 @@ public class Drive extends SubsystemBase {
 
   public void resetHeading(){
     gyroIO.reset();
+  }
+
+  public void setUpdatePoseWithVision(boolean input){
+    this.updatePoseUsingVision = input;
   }
 
 // ========================= Tank Drive =========================
