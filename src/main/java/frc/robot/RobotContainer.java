@@ -338,6 +338,7 @@ public class RobotContainer {
 
     switch (Constants.currentMode) {
       case REAL:
+      case BUSTER:
       case SIM:
       case REPLAY:
         /*  ============================= Defaults ============================= */

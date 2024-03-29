@@ -169,6 +169,7 @@ public class Drive extends SubsystemBase {
 
     switch (Constants.currentMode) {
       case REAL:
+      case BUSTER:
       case SIM:
       case REPLAY:
         // if Swerve, use and update the modules
@@ -230,17 +231,22 @@ public class Drive extends SubsystemBase {
           Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
  
           double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
+          Logger.recordOutput("Drive/poseDifference", poseDifference);
 
           double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
+
+          double NumVisableShooterTargets = poseBuf[7];
+          Logger.recordOutput("Limelight/NumVisableShooterTargets", NumVisableShooterTargets );
+
 
           double xyzStds = 999.0;
           double degStds = 999.0; // always trust the gyro
           
-          if( Limelight.getNumTargets(LimelightConstants.Device.SHOOTER ) >= 2 ) // If 2 tags are visible
+          if( NumVisableShooterTargets >= 2.0 ) // If 2 tags are visible
           { 
             xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-            if(poseDifference >= 1.0 && this.updatePoseUsingVision ){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
+            if(poseDifference >= 1.0 /*&& this.updatePoseUsingVision*/ ){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
               poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
             }
             
@@ -256,7 +262,7 @@ public class Drive extends SubsystemBase {
           }
 
           poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
-          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - poseBuf[6]); // poseBuf[6] = Limelight latency = tl + cl
+          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - (poseBuf[6]/1000.0) ); // poseBuf[6] = Limelight latency = tl + cl
           
         }
 

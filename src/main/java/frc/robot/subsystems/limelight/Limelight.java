@@ -122,6 +122,7 @@ public class Limelight {
     return occurances;
     }
 
+  //Deprecated : JSON is disabled by default, and we can now get the number of visable apriltags from the botpose buffer
   public static int getNumTargets(LimelightConstants.Device device){
     int retVal = 0;
     if (device == LimelightConstants.Device.SHOOTER ) {

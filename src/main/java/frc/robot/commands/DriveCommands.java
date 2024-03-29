@@ -60,6 +60,7 @@ public class DriveCommands {
             drive);
 
           case REAL:
+          case BUSTER:
           case SIM:
           case REPLAY:
           return Commands.run(
