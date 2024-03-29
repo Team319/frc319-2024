@@ -40,12 +40,12 @@ public class Score extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("RPM"+m_shooter.getVelocityRPM());
+    //System.out.println("RPM "+m_shooter.getVelocityRPM());
     
     if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
       m_shooter.setFeedPO (1.0);
       passedCycles++;
-      System.out.println("passedCycles"+passedCycles);
+      //System.out.println("passedCycles"+passedCycles);
 
     }
   }

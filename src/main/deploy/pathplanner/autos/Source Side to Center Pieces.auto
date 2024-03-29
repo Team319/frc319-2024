@@ -18,13 +18,19 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Source Shot to 2nd Note"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source Shot to 2nd Note"
+                  "pathName": "Stage SetPoint to 2nd Note"
                 }
               },
               {
@@ -59,7 +65,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Podium to Note 3"
+                        "pathName": "Shoot - Note 1"
                       }
                     },
                     {
@@ -72,25 +78,19 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot _ Note 1"
+                }
+              },
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Note 3 - Source Score"
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
                         "name": "ShootPod"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Drive Source"
                       }
                     }
                   ]

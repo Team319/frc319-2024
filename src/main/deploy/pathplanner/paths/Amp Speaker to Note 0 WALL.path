@@ -16,16 +16,32 @@
     },
     {
       "anchor": {
-        "x": 2.493344245947751,
-        "y": 7.71814193201036
+        "x": 2.5373987090016947,
+        "y": 7.731558265966888
       },
       "prevControl": {
-        "x": 1.6747534349769553,
-        "y": 7.729836086452799
+        "x": 1.718807898030899,
+        "y": 7.743252420409328
       },
       "nextControl": {
-        "x": 3.7328533026614084,
-        "y": 7.700434659771593
+        "x": 3.776907765715352,
+        "y": 7.713850993728122
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.394077866540532,
+        "y": 7.425788070949362
+      },
+      "prevControl": {
+        "x": 4.6000792979257445,
+        "y": 7.403982438756238
+      },
+      "nextControl": {
+        "x": 6.232557073190157,
+        "y": 7.448815277678062
       },
       "isLocked": false,
       "linkedName": null
@@ -51,7 +67,19 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 1.6,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.0,
@@ -65,7 +93,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Speaker to ___ Note",
+  "folder": "Wall Amp 3",
   "previewStartingState": {
     "rotation": 58.9251134546248,
     "velocity": 0
