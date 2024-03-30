@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 2.65,
-        "y": 5.54
+        "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.1134340217398382,
-        "y": 4.841379939170135
+        "y": 4.701379939170136
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.5050384003901907,
-        "y": 4.291754680375458
+        "x": 2.51,
+        "y": 3.99
       },
       "prevControl": {
-        "x": 1.6116509164642254,
-        "y": 4.712744240303296
+        "x": 1.6166125160740346,
+        "y": 4.410989559927838
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center Note to ___Shot",
+  "folder": "Starting Line",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

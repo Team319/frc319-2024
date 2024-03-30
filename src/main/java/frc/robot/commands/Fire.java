@@ -75,9 +75,11 @@ public class Fire extends Command {
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
         m_shooter.setFeedPO (1.0);
+        
+        if(!m_shooter.isBeamBreakTripped()) {
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
-
+        }
       }
     }
   }

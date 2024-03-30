@@ -10,6 +10,8 @@ public interface LedsIO {
 
   public default void setColor(int rValue, int gValue, int bValue) {}
 
+  public default void setHue(int hValue, int sValue, int vValue) {}
+
   public default void allianceIdleColor() {}
 
 }

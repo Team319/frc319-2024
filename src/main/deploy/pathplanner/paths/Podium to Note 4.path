@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.89,
-        "y": 3.31
+        "x": 3.45,
+        "y": 2.32
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7098358983042754,
-        "y": 0.6431784943341966
+        "x": 5.157346548596227,
+        "y": 0.5892651425188884
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036373451664282,
-        "y": 0.7718141932010376
+        "x": 8.04,
+        "y": 0.77
       },
       "prevControl": {
-        "x": 7.036373451664282,
-        "y": 0.7718141932010376
+        "x": 7.039999999999999,
+        "y": 0.7699999999999999
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Shot to ____ Note",
+  "folder": "BSU 125 Source 3",
   "previewStartingState": {
-    "rotation": -49.39999999999998,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

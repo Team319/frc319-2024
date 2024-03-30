@@ -64,9 +64,11 @@ public class ShooterIOReal implements ShooterIO {
     //wristPositionMap.put(3.1, WristConstants.Setpoints.podium*scaler);
     wristPositionMap.put(3.1,0.15);
     wristPositionMap.put(3.4, 0.185*scaler);
+    wristPositionMap.put(3.5, 0.19*scaler);
+
     wristPositionMap.put(3.6, 0.19*scaler);
     wristPositionMap.put(3.75, .17);
-    wristPositionMap.put(4.0, 0.18*scaler);
+   // wristPositionMap.put(4.0, 0.16*scaler); //maybe wrong distance
     wristPositionMap.put(4.4, .187);
     wristPositionMap.put(4.8, .197);
     wristPositionMap.put(7.12, .22);
@@ -224,7 +226,7 @@ public class ShooterIOReal implements ShooterIO {
      
     @Override
     public boolean isBeamBreakTripped(){
-        return !beamBreak.get();
+        return beamBreak.get();
     }
 
     @Override

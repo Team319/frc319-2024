@@ -471,7 +471,7 @@ public class Drive extends SubsystemBase {
 
     //NOTE : Returned value must be a field relative angle
 
-    if (isHeadingLocked()){
+    if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
       if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
         //Method 1 : Use Limelight

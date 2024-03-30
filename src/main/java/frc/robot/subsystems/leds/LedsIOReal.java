@@ -41,6 +41,15 @@ public class LedsIOReal implements LedsIO {
     
     m_Led.setData(m_LedBuffer);
   } 
+
+  @Override
+  public void setHue(int hValue, int sValue, int vValue){
+    for (int i = 0; i < m_LedBuffer.getLength(); i++){
+      m_LedBuffer.setHSV(i, hValue, sValue, vValue);
+    }
+    
+    m_Led.setData(m_LedBuffer);
+  }
   
   @Override
   public void allianceIdleColor() {

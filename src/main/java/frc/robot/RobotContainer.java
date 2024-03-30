@@ -269,7 +269,7 @@ public class RobotContainer {
     // Set up named commands for PathPlanner
     NamedCommands.registerCommand(
       "Collect",
-        new Collect(this.shooter, this.collector));
+        new CollectAndIndex(this.shooter, this.collector));
 
     NamedCommands.registerCommand(
       "ShootSub",
@@ -404,12 +404,12 @@ public class RobotContainer {
           /*  ============================= Driver Shooter ============================= */
 
           // For testing. -EKM
-          driverController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
+          //driverController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
 
-          driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
+         // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter, this.collector)); 
+          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter, this.collector)); //on true worked tunnel
 
           driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {

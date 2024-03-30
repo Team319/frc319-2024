@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2537638750491173,
-      "y": 5.5430292057165325
+      "x": 1.2991794154609702,
+      "y": 5.518363150740554
     },
     "rotation": 0
   },
@@ -12,15 +12,28 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Aim"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center - Center Note"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "ShootPod"
           }
         },
         {
@@ -30,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center to Amp Note"
+                  "pathName": "Center Note - Note 2"
                 }
               },
               {
@@ -43,15 +56,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Aim"
+            "pathName": "Note 2 - Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "ShootPod"
           }
         },
         {
@@ -59,61 +72,36 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Amp Note to Center Note"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Collect"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot __ Note 1"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Aim"
+            "pathName": "Note 1 __ Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "ShootPod"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center Piece to Podium Piece"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
+            "pathName": "Shoot _ Tele Post"
           }
         }
       ]

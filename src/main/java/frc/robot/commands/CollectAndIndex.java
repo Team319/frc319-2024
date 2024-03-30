@@ -129,8 +129,8 @@ public class CollectAndIndex extends Command {
 
       case GOING_FINAL:
         m_collector.setLowerRollersPO(0.0);
-        m_collector.setTunnelRollersPO(0.4);
-        m_shooter.setFeedPO(0.25);
+        m_collector.setTunnelRollersPO(0.3);
+        m_shooter.setFeedPO(0.20);
 
         if ( m_shooter.isBeamBreakTripped() ){
           collectState = CollectorStates.AT_FINAL;

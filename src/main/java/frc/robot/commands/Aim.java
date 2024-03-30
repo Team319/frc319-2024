@@ -32,7 +32,7 @@ public class Aim extends Command {
   @Override
   public void initialize() {
       m_drive.setUpdatePoseWithVision(true);
-      m_collector.setTunnelRollersPO(0.5);
+      m_collector.setTunnelRollersPO(1.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,6 +59,7 @@ public class Aim extends Command {
   public void end(boolean interrupted) {
     m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
+    
 
   }
 

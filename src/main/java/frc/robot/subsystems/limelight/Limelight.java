@@ -125,12 +125,20 @@ public class Limelight {
   //Deprecated : JSON is disabled by default, and we can now get the number of visable apriltags from the botpose buffer
   public static int getNumTargets(LimelightConstants.Device device){
     int retVal = 0;
+    /* 
+    int retVal = 0;
     if (device == LimelightConstants.Device.SHOOTER ) {
       retVal = countStringOccurances(m_shooterTable.getEntry("json").getString(""), "pts");
     } else {
       retVal = countStringOccurances(m_collectTable.getEntry("json").getString(""), "pts");
     }
-    //System.out.println("Num targets seen = "+ retVal);
+    //System.out.println("Num targets seen = "+ retVal);*/
+
+    double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
+
+    retVal = (int) poseBuf[7];
+
+
     return retVal;
   }
 

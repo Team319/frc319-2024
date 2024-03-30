@@ -42,6 +42,7 @@ public class FireAmp extends Command {
     System.out.println("init");
     passedCycles = 0;
     m_shooter.setWristPosition(WristConstants.Setpoints.amp);
+    m_collector.setTunnelRollersPO(1.0);
     m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.AMP);
     
   }
@@ -73,6 +74,7 @@ public class FireAmp extends Command {
     System.out.println("end");
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
+    m_collector.setTunnelRollersPO(0.0);
 
   }
 

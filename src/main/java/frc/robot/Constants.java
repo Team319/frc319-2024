@@ -59,7 +59,7 @@ public final class Constants {
 
   public static class WristConstants {
         public static class PID {
-          public static final double kP = 3.75; //BSU 1.75 //4.5
+          public static final double kP = 3.75; //BSU 1.75 3.75
           public static final double kI = 0; //0.0005
           public static final double kD = 0;
   
@@ -71,7 +71,7 @@ public final class Constants {
           public static final double top = 0.485; //.4
           public static final double shoot = 0.3;
           public static final double home = 0.0083; //0.025
-          public static final double sub =0.0083; //.08 worked
+          public static final double sub =0.083; //.08 worked
           public static final double podium = 0.18; //.185
           public static final double amp =0.475;
           public static final double bottom = 0.0083; 
