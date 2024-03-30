@@ -36,6 +36,7 @@ public class FireSub extends Command {
     System.out.println("init");
     passedCycles = 0;
     m_shooter.setWristPosition(WristConstants.Setpoints.sub);
+    m_collector.setTunnelRollersPO(0.2);
 
   }
  
@@ -60,6 +61,7 @@ public class FireSub extends Command {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
     System.out.println("end");
+    m_collector.setTunnelRollersPO(0.0);
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
 
 
