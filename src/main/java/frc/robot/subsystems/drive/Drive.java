@@ -221,7 +221,7 @@ public class Drive extends SubsystemBase {
         Logger.recordOutput("Odometry/Robot", getPose());
  
          
-        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER) && DriverStation.isTeleop())
+        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER) /*&& DriverStation.isTeleop()*/ )
         {
           double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
           Pose3d visionPose = new Pose3d(

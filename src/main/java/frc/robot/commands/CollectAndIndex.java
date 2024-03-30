@@ -12,16 +12,23 @@ import frc.robot.util.HelperFunctions;
 
 public class CollectAndIndex extends Command {
 
+  private static enum CollectorStates {
+    NO_NOTE,
+    FIRST_DETECTION,
+    GOING_UP,
+    GOING_DOWN,
+    GOING_FINAL,
+    AT_FINAL
+  } 
+
   Shooter m_shooter;
   Collector m_collector;
   int passedCycles = 0;
-  boolean firstDetectionOccured = false;
+  boolean initialDetectionOccured = false;
+  boolean atFinalCompleted = false;
   double wristThreshold;
 
-  boolean goingUp = false;
-  boolean goingDown = false;
-  boolean goingFinal = false;
-  boolean atFinalPosition = false;
+  CollectorStates collectState = CollectorStates.NO_NOTE;
 
   /** Creates a new Collect. */
   public CollectAndIndex(Shooter shooter , Collector collector) {
@@ -29,8 +36,10 @@ public class CollectAndIndex extends Command {
     m_shooter = shooter;
     m_collector = collector;
     passedCycles = 0;
-    firstDetectionOccured = false;
+    initialDetectionOccured = false;
+    atFinalCompleted = false;
     wristThreshold = 0.1;
+    collectState = CollectorStates.NO_NOTE;
     addRequirements(shooter, collector);
   }
 
@@ -45,7 +54,10 @@ public class CollectAndIndex extends Command {
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
 
     passedCycles = 0;
-    firstDetectionOccured = false;
+    initialDetectionOccured = false;
+
+    collectState = CollectorStates.NO_NOTE;
+    atFinalCompleted = false;
     //System.out.println("init");
 
   }
@@ -58,60 +70,81 @@ public class CollectAndIndex extends Command {
    //System.out.println("Wrist "+m_shooter.getWristPosition());
     if (HelperFunctions.isWithin(m_shooter.getWristPosition(), WristConstants.Setpoints.home, wristThreshold)){ 
 
-      if(m_collector.isBeamBreakTripped() == false && firstDetectionOccured == false) {
+      if(m_collector.isBeamBreakTripped() == false && initialDetectionOccured == false) {
       //System.out.println("1. Not tripped");
 
       // NO - We need to collect the note. 'Lower' and 'Tunnel' Rollers can now Intake
       m_collector.setRollersPO(1.0);
     } else {
       //System.out.println(" 1. tripped!");
-      firstDetectionOccured = true;
+      initialDetectionOccured = true;
       // YES - We have the note at the end of the tunnel. 'Lower' rollers should stop 
       m_collector.setLowerRollersPO(0.0);
       
     }
-    // until ...
+    
+    switch (collectState) {
 
-    // If the note is detected by the first beam break, and the Shooter is in the right position  
+      case NO_NOTE:
+      default:
+        collectState = CollectorStates.NO_NOTE;
+        m_collector.setRollersPO(1.0);
 
-    if(firstDetectionOccured){
-      if(m_collector.isBeamBreakTripped() ) // Collector Beam Break is tripped
-      {
-        // True : The passoff can be completed. 'Tunnel' and 'Feed' Rollers 
-
-        //System.out.println("2. still tripped... trying to pass off");
-        m_collector.setTunnelRollersPO(0.4); //0.4
-        m_shooter.setFeedPO(0.25); //0.35
-
-        goingUp = true;
-
-        if (goingDown){
-          goingFinal = true;
+        if(m_collector.isBeamBreakTripped()){
+          collectState = CollectorStates.FIRST_DETECTION;
         }
+        break;
 
-      }
-      else if(m_shooter.isBeamBreakTripped() ) // Shooter Beam Break is tripped
-      {
-        // True : The passoff can be completed. 'Tunnel' and 'Feed' Rollers 
+      case FIRST_DETECTION:
+        m_collector.setLowerRollersPO(0.0);
+        m_collector.setTunnelRollersPO(0.4);
+        m_shooter.setFeedPO(0.25);
 
-        //System.out.println("2. still tripped... trying to pass off");
-        m_collector.setTunnelRollersPO(-0.4); //0.4
-        m_shooter.setFeedPO(-0.25); //0.35
+        if (m_shooter.isBeamBreakTripped()){
+          collectState = CollectorStates.GOING_UP;
+        }
+        break;
 
-        goingDown = true;
+      case GOING_UP:
 
-        if (goingFinal){
-          atFinalPosition = true;
+        m_collector.setLowerRollersPO(0.0);
+        m_collector.setTunnelRollersPO(0.4);
+        m_shooter.setFeedPO(0.25);
+
+        if ( !m_collector.isBeamBreakTripped() ){
+          collectState = CollectorStates.GOING_DOWN;
+        }
+        break;
+
+      case GOING_DOWN:
+
+        m_collector.setLowerRollersPO(0.0);
+        m_collector.setTunnelRollersPO(-0.4);
+        m_shooter.setFeedPO(-0.25);
+
+        if ( m_collector.isBeamBreakTripped() && !m_shooter.isBeamBreakTripped() ){
+          collectState = CollectorStates.GOING_FINAL;
+        }
+        break;
+
+      case GOING_FINAL:
+        m_collector.setLowerRollersPO(0.0);
+        m_collector.setTunnelRollersPO(0.4);
+        m_shooter.setFeedPO(0.25);
+
+        if ( m_shooter.isBeamBreakTripped() ){
+          collectState = CollectorStates.AT_FINAL;
         }
         
-    } 
-    else { // The note is not detected by either beam break
-      // False : We need to do nothing while we wait for the shooter wrist to move
-      //System.out.println("2. beam break not tripped ... incrementing cycles" + passedCycles );
-
-      passedCycles++;
-     }
+        break;
+      case AT_FINAL:
+        atFinalCompleted = true;
+        
+        break;
+    
+      
     }
+
   }
 
   }
@@ -134,6 +167,6 @@ public class CollectAndIndex extends Command {
   public boolean isFinished() {
 
     // This command is finished when the note is detected by the second beam break 
-    return atFinalPosition;
+    return collectState == CollectorStates.AT_FINAL;
   }
 }
