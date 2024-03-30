@@ -35,6 +35,7 @@ public class FirePod extends Command {
     System.out.println("init");
     passedCycles = 0;
     m_shooter.setWristPosition(WristConstants.Setpoints.podium);
+    m_collector.setTunnelRollersPO(0.2);
 
   }
  
@@ -64,6 +65,7 @@ public class FirePod extends Command {
   public void end(boolean interrupted) {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
+    m_collector.setTunnelRollersPO(0.0);
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     System.out.println("end");
 

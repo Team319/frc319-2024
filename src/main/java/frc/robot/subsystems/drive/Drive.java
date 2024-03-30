@@ -449,7 +449,7 @@ public class Drive extends SubsystemBase {
     double theta = 0.0;
     // Target - Robot 
 
-    boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
+   boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
 
     if(false/*isTargetVisible*/){
       //System.out.println("Target Visible, use limelight data to automatically control heading");

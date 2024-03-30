@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.WristConstants;
+import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.HelperFunctions;
@@ -13,6 +14,7 @@ import frc.robot.util.HelperFunctions;
 public class Fire extends Command {
   Drive m_drive;
   Shooter m_shooter;
+  Collector m_collector;
 
   int passedCycles;
   double setpoint;
@@ -20,14 +22,15 @@ public class Fire extends Command {
   double wristThreshold;
   boolean firstDetectionOccured = false;
   /** Creates a new Fire. */
-  public Fire(Drive drive, Shooter shooter) {
+  public Fire(Drive drive, Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive; 
     m_shooter = shooter;
+    m_collector = collector;
     passedCycles = 0;
     firstDetectionOccured = false;
     setpoint = 5000;
-    threshold = 550;
+    threshold = 750;
     wristThreshold = 0.015;
     addRequirements(shooter);
 
@@ -42,6 +45,7 @@ public class Fire extends Command {
     passedCycles = 0;
     firstDetectionOccured = false;
     m_drive.setUpdatePoseWithVision(true);
+    m_collector.setTunnelRollersPO(0.5);
 
     
 
@@ -87,6 +91,7 @@ public class Fire extends Command {
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_shooter.setFeedPO(0.0);
     m_drive.setUpdatePoseWithVision(false);
+    m_collector.setTunnelRollersPO(0.0);
    
 
   }

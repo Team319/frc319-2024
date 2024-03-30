@@ -284,11 +284,11 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "Fire",
-        new Fire(this.drive, this.shooter));
+        new Fire(this.drive, this.shooter, this.collector));
 
     NamedCommands.registerCommand(
       "Aim",
-        new Aim(this.drive, this.shooter));
+        new Aim(this.drive, this.shooter, this.collector));
 
     NamedCommands.registerCommand(
       "LockHeadingToSpeaker",
@@ -403,11 +403,11 @@ public class RobotContainer {
           /*  ============================= Driver Shooter ============================= */
 
           // For testing. -EKM
-         // driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
-          //driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
+          driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+          driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter)); 
+          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter, this.collector)); 
 
           driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {
@@ -416,7 +416,7 @@ public class RobotContainer {
           )
         ); 
 
-        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter));
+        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter, this.collector));
 
         // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
