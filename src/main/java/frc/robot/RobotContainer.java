@@ -25,6 +25,7 @@ import frc.robot.Constants.HeadingTargets;
 import frc.robot.commands.Aim;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
+import frc.robot.commands.CollectAndIndex;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
@@ -403,7 +404,8 @@ public class RobotContainer {
           /*  ============================= Driver Shooter ============================= */
 
           // For testing. -EKM
-          driverController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+          driverController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
+
           driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
@@ -416,7 +418,7 @@ public class RobotContainer {
           )
         ); 
 
-        driverController.rightBumper().whileTrue(new Aim( this.drive, this.shooter, this.collector));
+        driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
         // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
@@ -441,7 +443,7 @@ public class RobotContainer {
 
         /*  ============================= Collector  ============================= */
 
-        operatorController.leftBumper().onTrue(new Collect(this.shooter, this.collector) );
+        operatorController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
 
         operatorController.rightBumper().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000));
 

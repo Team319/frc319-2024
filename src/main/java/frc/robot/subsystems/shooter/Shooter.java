@@ -119,6 +119,7 @@ public class Shooter extends SubsystemBase {
 
     // Log flywheel setpoint
     Logger.recordOutput("Shooter/SetpointRPM", velocityRPM);
+    Logger.recordOutput("Shooter/SetpointRadPerSecond", velocityRadPerSec );
   }
 
   
