@@ -40,6 +40,19 @@ public class DriveCommands {
 
   }
 
+  public static Command lockHeadingToSpeaker(Drive drive){
+    return Commands.run(
+      ()-> { drive.setHeadingTarget(HeadingTargets.SPEAKER);
+        drive.setUpdatePoseWithVision(true); }
+    ) ;
+  }
+
+  public static Command unlockHeading(Drive drive){
+    return Commands.run(
+      ()-> { drive.setUpdatePoseWithVision(false); }
+    ) ;
+  }
+
   /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
    */

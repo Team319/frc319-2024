@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -35.0,
+    "rotation": -37.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0

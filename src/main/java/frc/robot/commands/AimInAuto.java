@@ -11,7 +11,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.HelperFunctions;
 
-public class Aim extends Command {
+public class AimInAuto extends Command {
   Drive m_drive;
   Shooter m_shooter;
   Collector m_collector;
@@ -19,7 +19,7 @@ public class Aim extends Command {
   boolean isWristAtDesiredSetpoint = false;
   double wristThreshold = 0.015;
   /** Creates a new Aim. */
-  public Aim(Drive drive , Shooter shooter, Collector collector) {
+  public AimInAuto(Drive drive , Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     m_shooter = shooter;
@@ -58,7 +58,7 @@ public class Aim extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setUpdatePoseWithVision(false);
+   // m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
     
 

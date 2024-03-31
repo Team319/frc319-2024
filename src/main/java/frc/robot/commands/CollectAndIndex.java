@@ -158,7 +158,7 @@ public class CollectAndIndex extends Command {
     // Feed should stop
     m_shooter.setFeedPO(0.0);
     // Pre-spin shooter wheels
-    m_shooter.setShooterVelocity(3000);
+    //m_shooter.setShooterVelocity(3000);
 
   }
 

@@ -30,7 +30,7 @@ public class Fire extends Command {
     passedCycles = 0;
     firstDetectionOccured = false;
     setpoint = 5000;
-    threshold = 750;
+    threshold = 750; //750
     wristThreshold = 0.015;
     addRequirements(shooter);
 
@@ -89,7 +89,7 @@ public class Fire extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stop();
+    //m_shooter.stop();
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_shooter.setFeedPO(0.0);
     m_drive.setUpdatePoseWithVision(false);

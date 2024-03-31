@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Side to Center Piece",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

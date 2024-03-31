@@ -474,6 +474,9 @@ public class Drive extends SubsystemBase {
     if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
       if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
+
+        System.out.println("Override Heading!!");
+
         //Method 1 : Use Limelight
         //double theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
         //return Optional.of(Rotation2d.fromDegrees(theta));

@@ -78,12 +78,6 @@
                 }
               },
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Shoot _ Note 1"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
