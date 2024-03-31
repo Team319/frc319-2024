@@ -467,7 +467,7 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
-  private Optional<Rotation2d> getRotationTargetOverride(){
+  public Optional<Rotation2d> getRotationTargetOverride(){ //(was private)pathplanner says public. if not able to view out of class then would pathplanner see it?
 
     //NOTE : Returned value must be a field relative angle
 
