@@ -31,7 +31,7 @@ public class Aim extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      System.out.println("Aim In Auto: Init");
+     // System.out.println("Aim In Auto: Init");
       m_drive.setUpdatePoseWithVision(true);
       m_collector.setTunnelRollersPO(1.0);
   }
@@ -40,8 +40,10 @@ public class Aim extends Command {
   @Override
   public void execute() {
 
+  //  System.out.println("Aiming...");
+
     if(m_shooter.isBeamBreakTripped()){
-      m_shooter.setFeedPO(-0.2);
+      m_shooter.setFeedPO(-0.5);
     }
     else{
       m_shooter.setFeedPO(0.0);

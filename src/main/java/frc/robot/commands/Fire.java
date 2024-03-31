@@ -57,6 +57,8 @@ public class Fire extends Command {
   public void execute() 
   {
 
+    System.out.println("Firing");
+
     //Potentially redundant, but we want to make sure the wrist is at the right position
     if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
 
@@ -66,21 +68,23 @@ public class Fire extends Command {
     } 
 
     //System.out.println("RPM" + m_shooter.getVelocityRPM());
-    
+    //System.out.println(" is wrist happy? " +  HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold));
     if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
     { 
     /*if (firstDetectionOccured)
     { 
     if (m_shooter.isBeamBreakTripped()){
 */
+      //System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold));
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
         m_shooter.setFeedPO (1.0);
         
-        if(!m_shooter.isBeamBreakTripped()) {
+       // System.out.println(" Is Shooter Empty?: " + !m_shooter.isBeamBreakTripped());
+       // if( !m_shooter.isBeamBreakTripped() ) {
         passedCycles++;
-        System.out.println("passedCycles"+passedCycles);
-        }
+      //  System.out.println("passedCycles"+passedCycles);
+       // }
       }
     }
   }

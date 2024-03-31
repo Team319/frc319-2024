@@ -24,6 +24,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Fire"
@@ -65,6 +71,12 @@
                 }
               },
               {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.0
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Fire"
@@ -103,6 +115,12 @@
                       "type": "named",
                       "data": {
                         "name": "Aim"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
                       }
                     },
                     {
@@ -150,6 +168,12 @@
                 "type": "named",
                 "data": {
                   "name": "Aim"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
                 }
               },
               {
