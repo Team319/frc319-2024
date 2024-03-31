@@ -358,7 +358,7 @@ public class RobotContainer {
               () -> driverController.getLeftTriggerAxis()));
 
         climber.setDefaultCommand(
-          ( new JoystickClimb(climber, () -> -operatorController.getLeftY(), () -> -operatorController.getRightY()) ));
+          ( new JoystickClimb(climber, () -> -operatorController.getRightY(), () -> -operatorController.getLeftY()) ));
 
         /*  ============================= Drive ============================= */
 

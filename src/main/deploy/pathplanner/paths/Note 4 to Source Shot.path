@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.02467929722184,
-        "y": 0.7601200387585969
+        "x": 8.08,
+        "y": 0.11
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.208878439409299,
-        "y": 0.9690407030386717
+        "x": 7.581368447858997,
+        "y": 0.07303278196220753
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8852482149408742,
-        "y": 3.3094457072105032
+        "x": 4.13,
+        "y": 1.66
       },
       "prevControl": {
-        "x": 2.6570624081419103,
-        "y": 1.0641680542620358
+        "x": 5.2963203712630715,
+        "y": 1.3259671174924308
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -49.398705354995556,
+    "rotation": -37.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "4th Note to ____ Shot",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -15.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

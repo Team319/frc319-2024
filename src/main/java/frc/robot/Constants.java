@@ -51,8 +51,8 @@ public final class Constants {
 
   public static class TargetLocations{
     public static Translation2d ORIGIN = new Translation2d();
-    public static Translation2d RED_SPEAKER = new Translation2d(16.5,5.5);
-    public static Translation2d BLUE_SPEAKER = new Translation2d(0.0,5.5);
+    public static Translation2d RED_SPEAKER = new Translation2d(16.45,5.3);
+    public static Translation2d BLUE_SPEAKER = new Translation2d(0.0,5.3);
     public static Translation2d RED_SOURCE = new Translation2d(0.0,-0.5);
     public static Translation2d BLUE_SOURCE = new Translation2d(16.15,-0.5);
   }

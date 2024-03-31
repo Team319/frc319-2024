@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.45,
-        "y": 2.32
+        "x": 2.41,
+        "y": 2.01
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.157346548596227,
-        "y": 0.5892651425188884
+        "x": 3.420324239793373,
+        "y": 1.3737246127698908
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.04,
-        "y": 0.77
+        "x": 8.075261376175959,
+        "y": 0.31
       },
       "prevControl": {
-        "x": 7.039999999999999,
-        "y": 0.7699999999999999
+        "x": 7.075261376175959,
+        "y": 0.3099999999999999
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,33 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.6,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": -15.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "BSU 125 Source 3",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0
