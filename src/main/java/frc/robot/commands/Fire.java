@@ -56,6 +56,7 @@ public class Fire extends Command {
   @Override
   public void execute() 
   {
+
     //Potentially redundant, but we want to make sure the wrist is at the right position
     if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
 

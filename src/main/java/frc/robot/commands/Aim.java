@@ -40,6 +40,13 @@ public class Aim extends Command {
   @Override
   public void execute() {
 
+    if(m_shooter.isBeamBreakTripped()){
+      m_shooter.setFeedPO(-0.2);
+    }
+    else{
+      m_shooter.setFeedPO(0.0);
+    }
+
     // 1. If I'm within some Distance to the Target
     distanceToSpeaker = m_drive.getDistanceToAllianceSpeaker();
    // if(distanceToSpeaker <= 5.0){ // TODO : Tune this, what's our furthest shot. ie - Podium shot is 2.286 meters 
@@ -60,6 +67,7 @@ public class Aim extends Command {
   public void end(boolean interrupted) {
     m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
+    m_shooter.setFeedPO(0.0);
     
 
   }
