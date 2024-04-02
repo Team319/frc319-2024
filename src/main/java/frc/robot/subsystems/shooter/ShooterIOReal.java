@@ -232,8 +232,6 @@ public class ShooterIOReal implements ShooterIO {
     public boolean isBeamBreakTripped(){
         return !beamBreak.get();
     }
-        return !beamBreak.get();
-    }
 
     @Override
     public void setFeedPO(double PO) {
