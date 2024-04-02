@@ -22,7 +22,7 @@ public class Elevator extends SubsystemBase {
   private static final LoggedTunableNumber kFF = new LoggedTunableNumber("Elevator/kFF", 0.0);
 
   private static LoggedTunableNumber elevatorSetpoint = new LoggedTunableNumber("Elevator/setpoint", 0.0);
-  private static double elevatorPosition = 0.0;
+  //private static double elevatorPosition = 0.0;
 
   /** Creates a new Elevator. */
   public Elevator(ElevatorIO io) {

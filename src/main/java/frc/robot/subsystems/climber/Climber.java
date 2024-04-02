@@ -7,20 +7,15 @@ package frc.robot.subsystems.climber;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.util.LoggedTunableNumber;
+//import frc.robot.util.LoggedTunableNumber;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/kP", 0.0);
-  private static final LoggedTunableNumber kI = new LoggedTunableNumber("Elevator/kI", 0.0);
-  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Elevator/kD", 0.0);
-  private static final LoggedTunableNumber kFF = new LoggedTunableNumber("Elevator/kFF", 0.0);
-
-  private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Elevator/setpoint", 0.0);
-  private static double climberPosition = 0.0;
+  //private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Climber/setpoint", 0.0);
+  //private static double climberPosition = 0.0;
 
   public Climber(ClimberIO io) {
     this.io = io;
@@ -37,6 +32,8 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("Climber",inputs);
   }
 
   public void stop() {
@@ -55,8 +52,12 @@ public class Climber extends SubsystemBase {
     return io.getVelocity();
   }
 
-  public double getPosition() {
-    return io.getPosition();
+  public double getLeftPosition() {
+    return io.getLeftPosition();
+  }  
+
+    public double getRightPosition() {
+    return io.getRightPosition();
   }  
 
   public double getCurrent() {

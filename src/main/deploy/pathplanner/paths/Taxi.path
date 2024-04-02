@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7726924717507405,
+        "y": 6.600586312811581
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.689169744135214,
+        "y": 7.1173234983049545
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.67389532403768,
+        "y": 7.565812376280334
+      },
+      "prevControl": {
+        "x": 1.9621629742071847,
+        "y": 7.2538201133409395
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Taxi Amp",
+  "previewStartingState": {
+    "rotation": 60.461217740441874,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -44,15 +44,28 @@ public class FireSub extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("RPM"+m_shooter.getVelocityRPM());
+    //System.out.println("RPM "+m_shooter.getVelocityRPM());
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
-    if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
-      m_shooter.setFeedPO (1.0);
-      passedCycles++;
-      System.out.println("passedCycles"+passedCycles);
+      if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
+        //m_shooter.setFeedPO (1.0);
+        passedCycles++;
+        //System.out.println("passedCycles: "+passedCycles);
 
+      }
+      else{
+        passedCycles = 0;
+      }
     }
-   }
+    else{
+      passedCycles = 0;
+    }
+
+    if(passedCycles > 5){
+      m_shooter.setFeedPO (1.0);
+    }
+
+
+
   }
 
   // Called once the command ends or is interrupted.

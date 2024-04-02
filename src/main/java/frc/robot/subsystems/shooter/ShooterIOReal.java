@@ -56,7 +56,7 @@ public class ShooterIOReal implements ShooterIO {
     configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
     // TODO: ADD ADJUSTABILITY SCALAR TO THIS
-    double scaler = 1.1; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
+    double scaler = 1.0; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
     wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub*scaler);
     wristPositionMap.put(0.00, WristConstants.Setpoints.sub*scaler);
     wristPositionMap.put(1.65, WristConstants.Setpoints.sub*scaler);
@@ -230,6 +230,8 @@ public class ShooterIOReal implements ShooterIO {
      
     @Override
     public boolean isBeamBreakTripped(){
+        return !beamBreak.get();
+    }
         return !beamBreak.get();
     }
 

@@ -38,8 +38,9 @@ public static class ClimberPIDGains {
 
   private final CANSparkMax leftClimber = new CANSparkMax(62, MotorType.kBrushless);
   private final CANSparkMax rightClimber = new CANSparkMax(61, MotorType.kBrushless);
+  private final RelativeEncoder leftClimberEncoder = leftClimber.getEncoder();
+  private final RelativeEncoder rightClimberEncoder = rightClimber.getEncoder();
 
-  private final RelativeEncoder climberEncoder = rightClimber.getEncoder();
   private final SparkPIDController climberPIDController = rightClimber.getPIDController();
 
   private double positionTargetSetpoint;
@@ -68,14 +69,24 @@ public static class ClimberPIDGains {
     leftClimber.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
 
-    climberPIDController.setFeedbackDevice(climberEncoder);
-    climberPIDController.setOutputRange(1.0, -1.0);
+    //climberPIDController.setFeedbackDevice(climberEncoder);
+    //climberPIDController.setOutputRange(1.0, -1.0);
 
-    //rightClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //rightClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
+     // Enable soft limits
+    
+    rightClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
+    rightClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    //rightClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
-    //rightClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
+    leftClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
+    leftClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    rightClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
+    rightClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
+
+    leftClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
+    leftClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
+
+    
   }
 
   
@@ -95,7 +106,9 @@ public static class ClimberPIDGains {
     inputs.targetPosition = this.positionTargetSetpoint;
     inputs.appliedVoltage = rightClimber.getAppliedOutput();
     inputs.outputCurrentAmps = getCurrent();
-    inputs.position = getPosition();
+    inputs.leftPosition = getLeftPosition();
+    inputs.rightPosition = getRightPosition();
+
     inputs.velocity = getVelocity();
 
   }
@@ -114,8 +127,13 @@ public static class ClimberPIDGains {
   }
 
   @Override
-  public double getPosition() {
-    return this.climberEncoder.getPosition();
+  public double getLeftPosition() {
+    return this.leftClimberEncoder.getPosition();
+  }
+
+  @Override
+  public double getRightPosition() {
+    return this.rightClimberEncoder.getPosition();
   }
 
   @Override
@@ -145,7 +163,7 @@ public static class ClimberPIDGains {
   }
 
   private void manageMotion(double targetPosition) {
-    double currentPosition = getPosition();
+    double currentPosition = getRightPosition();
       if (currentPosition > targetPosition) {
         configurePID(ClimberConstants.PID.kPUp, ClimberConstants.PID.kIUp, ClimberConstants.PID.kDUp, ClimberConstants.PID.kFFUp);
       }

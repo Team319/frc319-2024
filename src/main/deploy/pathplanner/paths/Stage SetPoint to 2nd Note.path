@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 3.3
+        "x": 7.4,
+        "y": 3.4
       },
       "prevControl": {
-        "x": 6.215794246315334,
-        "y": 3.816737185493371
+        "x": 5.697542563176294,
+        "y": 4.326837143702777
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Speaker Shot to ___ Note",
+  "folder": "Source Side to Center Piece",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
