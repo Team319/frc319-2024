@@ -2,19 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8093860062363999,
-      "y": 4.268366371490578
+      "x": 2.271155311541392,
+      "y": 7.402399762064483
     },
-    "rotation": -63.866312611387585
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ShootSub"
+            "pathName": "Smart_Aim_Test"
           }
         }
       ]

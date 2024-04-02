@@ -11,7 +11,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.HelperFunctions;
 
-public class Aim extends Command {
+public class AimInAuto extends Command {
   Drive m_drive;
   Shooter m_shooter;
   Collector m_collector;
@@ -19,7 +19,7 @@ public class Aim extends Command {
   boolean isWristAtDesiredSetpoint = false;
   double wristThreshold = 0.015;
   /** Creates a new Aim. */
-  public Aim(Drive drive , Shooter shooter, Collector collector) {
+  public AimInAuto(Drive drive , Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     m_shooter = shooter;
@@ -31,7 +31,7 @@ public class Aim extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-     // System.out.println("Aim In Auto: Init");
+      System.out.println("Aim In Auto: Init");
       m_drive.setUpdatePoseWithVision(true);
       m_collector.setTunnelRollersPO(1.0);
   }
@@ -39,15 +39,6 @@ public class Aim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  //  System.out.println("Aiming...");
-
-    if(m_shooter.isBeamBreakTripped()){
-      m_shooter.setFeedPO(-0.5);
-    }
-    else{
-      m_shooter.setFeedPO(0.0);
-    }
 
     // 1. If I'm within some Distance to the Target
     distanceToSpeaker = m_drive.getDistanceToAllianceSpeaker();
@@ -67,9 +58,8 @@ public class Aim extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setUpdatePoseWithVision(false);
+   // m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
-    m_shooter.setFeedPO(0.0);
     
 
   }

@@ -3,45 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.35,
-        "y": 3.41
+        "x": 4.13,
+        "y": 1.66
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0541358944950683,
-        "y": 3.071173838309672
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.4343764649524564,
-        "y": 3.2369197279962263
-      },
-      "prevControl": {
-        "x": 2.488649917917414,
-        "y": 3.197920695128801
-      },
-      "nextControl": {
-        "x": 4.35904759025317,
-        "y": 3.275050496049865
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.901065293817049,
-        "y": 3.7146578806221746
-      },
-      "prevControl": {
-        "x": 5.013837296083144,
-        "y": 3.7244076388390313
-      },
-      "nextControl": {
-        "x": 6.701016994846374,
-        "y": 3.7058672025888852
+        "x": 6.954039181237508,
+        "y": 0.8969777559507622
       },
       "isLocked": false,
       "linkedName": null
@@ -49,41 +17,35 @@
     {
       "anchor": {
         "x": 8.055761859742248,
-        "y": 2.905427948623118
+        "y": 1.90120285228694
       },
       "prevControl": {
-        "x": 6.729794742249817,
-        "y": 3.519662716285053
+        "x": 7.19778313665891,
+        "y": 1.238219293540725
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 0,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 25.40771810894857,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Source Shot to ____ Note",
   "previewStartingState": {
-    "rotation": -57.43000000000001,
+    "rotation": -37.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

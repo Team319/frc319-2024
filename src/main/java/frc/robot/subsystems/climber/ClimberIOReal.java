@@ -57,7 +57,7 @@ public static class ClimberPIDGains {
     rightClimber.clearFaults();
     leftClimber.clearFaults();
 
-    rightClimber.setInverted(true);
+    rightClimber.setInverted(false); //true
     leftClimber.setInverted(false);
 
     rightClimber.setSmartCurrentLimit(30);

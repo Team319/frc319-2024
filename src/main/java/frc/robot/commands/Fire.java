@@ -30,7 +30,7 @@ public class Fire extends Command {
     passedCycles = 0;
     firstDetectionOccured = false;
     setpoint = 5000;
-    threshold = 750;
+    threshold = 750; //750
     wristThreshold = 0.015;
     addRequirements(shooter);
 
@@ -56,6 +56,9 @@ public class Fire extends Command {
   @Override
   public void execute() 
   {
+
+    System.out.println("Firing");
+
     //Potentially redundant, but we want to make sure the wrist is at the right position
     if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
 
@@ -65,21 +68,23 @@ public class Fire extends Command {
     } 
 
     //System.out.println("RPM" + m_shooter.getVelocityRPM());
-    
+    //System.out.println(" is wrist happy? " +  HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold));
     if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
     { 
     /*if (firstDetectionOccured)
     { 
     if (m_shooter.isBeamBreakTripped()){
 */
+      //System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold));
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
         m_shooter.setFeedPO (1.0);
         
-        if(!m_shooter.isBeamBreakTripped()) {
+       // System.out.println(" Is Shooter Empty?: " + !m_shooter.isBeamBreakTripped());
+       // if( !m_shooter.isBeamBreakTripped() ) {
         passedCycles++;
-        System.out.println("passedCycles"+passedCycles);
-        }
+      //  System.out.println("passedCycles"+passedCycles);
+       // }
       }
     }
   }
@@ -89,7 +94,7 @@ public class Fire extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stop();
+    //m_shooter.stop();
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_shooter.setFeedPO(0.0);
     m_drive.setUpdatePoseWithVision(false);

@@ -467,13 +467,16 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
-  private Optional<Rotation2d> getRotationTargetOverride(){
+  public Optional<Rotation2d> getRotationTargetOverride(){ //(was private)pathplanner says public. if not able to view out of class then would pathplanner see it?
 
     //NOTE : Returned value must be a field relative angle
 
     if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
       if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
+
+        System.out.println("Override Heading!!");
+
         //Method 1 : Use Limelight
         //double theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
         //return Optional.of(Rotation2d.fromDegrees(theta));

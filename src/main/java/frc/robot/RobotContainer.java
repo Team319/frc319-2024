@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.HeadingTargets;
 import frc.robot.commands.Aim;
+import frc.robot.commands.AimInAuto;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.Collect;
 import frc.robot.commands.CollectAndIndex;
@@ -288,23 +289,26 @@ public class RobotContainer {
         new Fire(this.drive, this.shooter, this.collector));
 
     NamedCommands.registerCommand(
-      "Aim",
-        new Aim(this.drive, this.shooter, this.collector));
+      "AimInAuto",
+        new AimInAuto(this.drive, this.shooter, this.collector));
 
     NamedCommands.registerCommand(
+      "Aim",
+        new AimInAuto(this.drive, this.shooter, this.collector));
+
+
+/* 
+    NamedCommands.registerCommand(
       "LockHeadingToSpeaker",
-        Commands.runOnce(
-          ()-> {drive.setHeadingTarget(HeadingTargets.SPEAKER); }
-        ) 
+      DriveCommands.lockHeadingToSpeaker(this.drive)
+       
     );
 
     NamedCommands.registerCommand(
       "UnlockHeading",
-        Commands.runOnce(
-          ()-> {drive.unlockHeading(); }
-        ) 
+        DriveCommands.unlockHeading(this.drive) 
     );
-
+*/
       NamedCommands.registerCommand(
         "Spit", 
         new Spit(this.shooter, this.collector, this.elevator,4000));
@@ -354,7 +358,7 @@ public class RobotContainer {
               () -> driverController.getLeftTriggerAxis()));
 
         climber.setDefaultCommand(
-          ( new JoystickClimb(climber, () -> -operatorController.getLeftY(), () -> -operatorController.getRightY()) ));
+          ( new JoystickClimb(climber, () -> -operatorController.getRightY(), () -> -operatorController.getLeftY()) ));
 
         /*  ============================= Drive ============================= */
 

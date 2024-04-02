@@ -114,7 +114,11 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+    robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -127,7 +131,9 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
+      robotContainer.shooter.setShooterVelocity(5000);
       autonomousCommand.schedule();
+      
     }
   }
 
