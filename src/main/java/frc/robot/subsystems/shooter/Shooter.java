@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.util.LoggedTunableNumber;
 
@@ -35,9 +36,9 @@ public class Shooter extends SubsystemBase {
   private static final LoggedTunableNumber wrist_kFF = new LoggedTunableNumber("Wrist/kFF", WristConstants.PID.kFF);
 
 
-  private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", 0.0);
-  private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", 0.0);
-  private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", 0.0);
+  private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", ShooterConstants.PID.kP);
+  private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", ShooterConstants.PID.kI);
+  private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", ShooterConstants.PID.kD);
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
@@ -72,13 +73,13 @@ public class Shooter extends SubsystemBase {
 
     shooterVelocity = leftShooterVelocity;
 
-    //LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , flywheel_kP, flywheel_kI, flywheel_kD);
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , flywheel_kP, flywheel_kI, flywheel_kD);
 
-    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
+   // LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
 
-    LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setWristPosition(setpoint[0]) , wrist_setpoint);
+    //LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setWristPosition(setpoint[0]) , wrist_setpoint);
 
-    //LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setShooterVelocity(setpoint[0]) , shooter_setpoint);
+    LoggedTunableNumber.ifChanged(hashCode(), setpoint -> setShooterVelocity(setpoint[0]) , shooter_setpoint);
 
 
     //runShooterVelocity(shooterVelocity);
@@ -102,6 +103,10 @@ public class Shooter extends SubsystemBase {
   }
 
 // ====== Flywheel =========
+
+public void setShooterPO(double PO){
+  io.setShooterPO(PO);
+}
 
   /** Stops the flywheel. */
   public void setVoltages(double leftShooterVolts ,double rightShooterVolts, double feedVolts) {

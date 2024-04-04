@@ -160,7 +160,7 @@ public class DriveCommands {
                         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                         .getTranslation();
 
-                if (DriverStation.getAlliance().get() == Alliance.Red){
+                if ( DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
                     linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));
                 }
 

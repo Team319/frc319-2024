@@ -160,6 +160,7 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+   // robotContainer.shooter.setShooterPO(1.0);
   }
 
   /** This function is called periodically during operator control. */

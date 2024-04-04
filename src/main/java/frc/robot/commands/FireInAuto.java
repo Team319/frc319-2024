@@ -11,7 +11,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.HelperFunctions;
 
-public class Fire extends Command {
+public class FireInAuto extends Command {
   Drive m_drive;
   Shooter m_shooter;
   Collector m_collector;
@@ -22,7 +22,7 @@ public class Fire extends Command {
   double wristThreshold;
   boolean firstDetectionOccured = false;
   /** Creates a new Fire. */
-  public Fire(Drive drive, Shooter shooter, Collector collector) {
+  public FireInAuto(Drive drive, Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive; 
     m_shooter = shooter;
@@ -41,7 +41,7 @@ public class Fire extends Command {
   public void initialize() {
     m_shooter.setShooterVelocity(setpoint);
     m_shooter.setFeedPO(0.0);
-    //System.out.println("Fire init");
+    System.out.println("Fire init");
     passedCycles = 0;
     firstDetectionOccured = false;
     m_drive.setUpdatePoseWithVision(true);
@@ -67,7 +67,7 @@ public class Fire extends Command {
     { 
     if (m_shooter.isBeamBreakTripped()){
 */
-      System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold));
+      System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold)); 
       if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
       {
         m_shooter.setFeedPO (1.0);

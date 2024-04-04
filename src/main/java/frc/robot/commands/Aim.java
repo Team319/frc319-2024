@@ -24,7 +24,7 @@ public class Aim extends Command {
     m_drive = drive;
     m_shooter = shooter;
     m_collector = collector;
-
+    
     addRequirements(shooter);
   }
   
@@ -70,8 +70,6 @@ public class Aim extends Command {
     m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
     m_shooter.setFeedPO(0.0);
-    
-
   }
 
   // Returns true when the command should end.

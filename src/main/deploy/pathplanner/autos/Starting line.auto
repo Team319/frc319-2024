@@ -14,29 +14,36 @@
         {
           "type": "named",
           "data": {
-            "name": "Aim"
+            "name": "ShootSub"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Fire"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "Center to Amp Note"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Center to Amp Note"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Collect"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Collect"
+                  "waitTime": 5.0
                 }
               }
             ]
@@ -51,7 +58,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "FireInAuto"
           }
         },
         {
@@ -82,7 +89,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "FireInAuto"
           }
         },
         {
@@ -113,7 +120,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "FireInAuto"
           }
         }
       ]

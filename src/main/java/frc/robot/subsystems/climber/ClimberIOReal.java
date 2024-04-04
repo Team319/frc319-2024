@@ -10,15 +10,13 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberIOReal implements ClimberIO {
 
   public static class ClimberSetpoint {
-    public static final double TOP = 90.0; // 130.0
-    public static final double TRAP = TOP;
-    public static final double AMP = 47.85;
-    public static final double CLIMB = 5.0;
+    public static final double TOP = 29.0; // 
     public static final double BOTTOM = 2.0; // 2.0
 }
 
@@ -54,31 +52,45 @@ public static class ClimberPIDGains {
     rightClimber.restoreFactoryDefaults();
     leftClimber.restoreFactoryDefaults();
 
-    rightClimber.clearFaults();
+    rightClimber.clearFaults(); //Look at refresh rate and lower it if needed to stop error
     leftClimber.clearFaults();
 
-    rightClimber.setInverted(false); //true
-    leftClimber.setInverted(false);
+    for (int i = 0; i < 30; i++) {
+        rightClimber.setInverted(false); 
+        leftClimber.setInverted(true);
+    }
+
+    while(rightClimber.getInverted()){ // if the motor is inverted, keep setting it NOT inverted until it is correct
+      rightClimber.setInverted(false);
+      Timer.delay(0.001);
+    }
+
+    while(!leftClimber.getInverted()){ // if the motor is NOT inverted, keep setting it inverted until it is correct
+      leftClimber.setInverted(true);
+      Timer.delay(0.001);
+    }
 
     rightClimber.setSmartCurrentLimit(30);
     leftClimber.setSmartCurrentLimit(30);
 
-
     rightClimber.setIdleMode(CANSparkMax.IdleMode.kBrake);
     leftClimber.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
 
     climberPIDController.setFeedbackDevice(climberEncoder);
     climberPIDController.setOutputRange(1.0, -1.0);
 
-    //rightClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //rightClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    rightClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
+    rightClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    //rightClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
-    //rightClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
+    leftClimber.enableSoftLimit(SoftLimitDirection.kForward, true);
+    leftClimber.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    rightClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
+    rightClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
+
+    leftClimber.setSoftLimit(SoftLimitDirection.kForward, (float)ClimberConstants.Setpoints.top);
+    leftClimber.setSoftLimit(SoftLimitDirection.kReverse, (float)ClimberConstants.Setpoints.bottom);
   }
-
-  
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
@@ -97,7 +109,6 @@ public static class ClimberPIDGains {
     inputs.outputCurrentAmps = getCurrent();
     inputs.position = getPosition();
     inputs.velocity = getVelocity();
-
   }
 
   @Override

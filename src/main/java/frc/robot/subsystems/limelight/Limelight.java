@@ -136,7 +136,11 @@ public class Limelight {
 
     double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
 
-    retVal = (int) poseBuf[7];
+    if (poseBuf.length >= 7){
+      retVal = (int) poseBuf[7];
+    }
+
+    
 
 
     return retVal;

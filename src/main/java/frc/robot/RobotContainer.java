@@ -21,7 +21,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HeadingTargets;
+import frc.robot.Constants.WristConstants;
 import frc.robot.commands.Aim;
 import frc.robot.commands.AimInAuto;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -30,8 +32,10 @@ import frc.robot.commands.CollectAndIndex;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
+import frc.robot.commands.FireInAuto;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
+import frc.robot.commands.FireTrap;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.Spit;
@@ -274,7 +278,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootSub",
-        new FireSub(this.shooter, this.collector, 5000));
+        new FireSub(this.shooter, this.collector, 4000));
 
     NamedCommands.registerCommand(
       "ShootPod",
@@ -283,6 +287,10 @@ public class RobotContainer {
     NamedCommands.registerCommand(
       "ShootAmp",
         new FireAmp(this.shooter, this.collector, this.elevator, 2000));
+
+    NamedCommands.registerCommand(
+      "FireInAuto",
+        new FireInAuto(this.drive, this.shooter, this.collector));
 
     NamedCommands.registerCommand(
       "Fire",
@@ -361,14 +369,14 @@ public class RobotContainer {
           ( new JoystickClimb(climber, () -> -operatorController.getRightY(), () -> -operatorController.getLeftY()) ));
 
         /*  ============================= Drive ============================= */
-
+/* 
         driverController.rightStick().onTrue(
           Commands.runOnce(
           () -> drive.setHeadingTarget(HeadingTargets.SPEAKER), 
           drive
             )
         );
-        
+        */
          
         driverController.y().onTrue( 
           Commands.runOnce(
@@ -536,53 +544,18 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        
-        /* operatorController.rightTrigger().onTrue(Commands.runOnce(
+        operatorController.start().whileTrue(Commands.runOnce(
           () -> {
-            climber.setRightPO(0.1);
-            System.out.println("button pressed");
-          }
-        )
-        );
-
-        operatorController.rightTrigger().onFalse(Commands.runOnce(
-          () -> {
-            climber.setRightPO(0.0);
-          }
-        )
-        );
-
-        operatorController.leftTrigger().onTrue(Commands.runOnce(
-          () -> {
-            climber.setLeftPO(0.1);
-            System.out.println("button pressed");
-          }
-        )
-        );
-
-        operatorController.leftTrigger().onFalse(Commands.runOnce(
-          () -> {
-            climber.setLeftPO(0.0);
-          }
-        )
-        );
-
-        operatorController.povRight().onTrue(Commands.runOnce(
-          () -> {
-            climber.setLeftPO(-0.3);
-            climber.setRightPO(-0.3);
-          }
-        )
-        );
-
-        operatorController.povRight().onFalse(Commands.runOnce(
-          () -> {
-            climber.setLeftPO(0.0);
-            climber.setRightPO(0.0);
+            elevator.setPosition(ElevatorConstants.Setpoints.top);
+            shooter.setWristPosition(WristConstants.Setpoints.top);
+            collector.setTunnelRollersPO(0.2);
+            shooter.stop();;
           }
         )
         ); 
-*/
+
+        operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
+
         break;
     
       default:
