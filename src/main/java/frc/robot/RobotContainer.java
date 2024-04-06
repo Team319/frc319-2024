@@ -102,8 +102,8 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
           new Drive(
-            new GyroIOPigeon2(), // must restore
-           // new GyroIO(){},           // must remove. debugging only
+            new GyroIOPigeon2(), // must restore to this before matches
+            //new GyroIO(){},           // must remove. debugging only
             new ModuleIOTalonFX(0),
             new ModuleIOTalonFX(1),
             new ModuleIOTalonFX(2),
@@ -282,7 +282,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootPod",
-        new FirePod(this.shooter, this.collector, 5000));
+        new FireAmp(this.shooter, this.collector, this.elevator, 2000));
 
     NamedCommands.registerCommand(
       "ShootAmp",
@@ -421,9 +421,9 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.rightTrigger().whileTrue(new Fire(this.drive, this.shooter, this.collector)); //on true worked tunnel
+          driverController.leftBumper().whileTrue(new Fire(this.drive, this.shooter, this.collector)); //on true worked tunnel
 
-          driverController.rightTrigger().whileFalse(Commands.runOnce(
+          driverController.leftBumper().whileFalse(Commands.runOnce(
             ()-> {
               shooter.stop();
             }
@@ -432,7 +432,7 @@ public class RobotContainer {
 
         driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
-        // driverController.leftBumper().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
+        driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {

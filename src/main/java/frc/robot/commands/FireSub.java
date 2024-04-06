@@ -22,7 +22,7 @@ public class FireSub extends Command {
     m_shooter = shooter;
     m_collector = collector;
     setpoint = RPM;
-    threshold = 800;
+    threshold = 1000;
     wristThreshold = 0.015;
     addRequirements(shooter, collector);
 
