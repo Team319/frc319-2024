@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2537638750491173,
-      "y": 5.5430292057165325
+      "x": 0.9263275506607991,
+      "y": 6.630585568863446
     },
-    "rotation": 0
+    "rotation": 43.88
   },
   "command": {
     "type": "sequential",
@@ -26,15 +26,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Center to Amp Note"
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
                         "name": "Collect"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Amp Path 1"
                       }
                     }
                   ]
@@ -50,77 +50,53 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Aim"
+            "pathName": "Amp Path 2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "FireInAuto"
+            "name": "ShootPod"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "Amp Note to Center Note"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Collect"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Amp Path 3"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Collect"
+                  "waitTime": 5.0
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "FireInAuto"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center Piece to Podium Piece"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Collect"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "FireInAuto"
+            "pathName": "Amp Path 4"
           }
         }
       ]

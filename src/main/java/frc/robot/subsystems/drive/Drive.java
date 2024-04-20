@@ -60,7 +60,6 @@ import org.littletonrobotics.junction.Logger;
 public class Drive extends SubsystemBase {
 
   
-
   private HeadingTargets headingTarget = HeadingTargets.NO_TARGET;
 
   private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
@@ -235,7 +234,12 @@ public class Drive extends SubsystemBase {
 
           double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
 
-          double NumVisableShooterTargets = poseBuf[7];
+          double NumVisableShooterTargets = 0; 
+          
+          if (poseBuf.length >= 7){
+            NumVisableShooterTargets = (int) poseBuf[7];
+          }
+
           Logger.recordOutput("Limelight/NumVisableShooterTargets", NumVisableShooterTargets );
 
 
@@ -397,41 +401,42 @@ public class Drive extends SubsystemBase {
     //  this.headingSetpoint = heading.rotateBy(Rotation2d.fromRadians(Math.PI)).getRadians();
     //}
     this.headingSetpoint = headingRadians;
-
   }
 
   public Translation2d getCurrentTargetLocation(){
     Translation2d retVal = TargetLocations.ORIGIN;
 
-    switch (this.headingTarget) {
-      case SPEAKER:
-        switch (DriverStation.getAlliance().get()) {
-          case Red:
-            retVal = TargetLocations.RED_SPEAKER;
-            break;
-        
-          default: // Blue
-            retVal = TargetLocations.BLUE_SPEAKER;
-            break;
-        }
-        break;// Escape Speaker Case
+    if ( DriverStation.getAlliance().isPresent()){
+      switch (this.headingTarget) {
+        case SPEAKER:
+          switch (DriverStation.getAlliance().get()) {
+            case Red:
+              retVal = TargetLocations.RED_SPEAKER;
+              break;
+          
+            default: // Blue
+              retVal = TargetLocations.BLUE_SPEAKER;
+              break;
+          }
+          break;// Escape Speaker Case
 
-      case SOURCE:
-        switch (DriverStation.getAlliance().get()) {
-          case Red:
-            retVal = TargetLocations.RED_SOURCE;
-            break;
-        
-          default: // Blue
-            retVal = TargetLocations.BLUE_SOURCE;
-            break;
-        }
-        break; // Escape Source Case
-    
-      default:
-        retVal = TargetLocations.ORIGIN;
-        break; // Escape Default Case
-    }
+        case SOURCE:
+          switch (DriverStation.getAlliance().get()) {
+            case Red:
+              retVal = TargetLocations.RED_SOURCE;
+              break;
+          
+            default: // Blue
+              retVal = TargetLocations.BLUE_SOURCE;
+              break;
+          }
+          break; // Escape Source Case
+      
+        default:
+          retVal = TargetLocations.ORIGIN;
+          break; // Escape Default Case
+      }
+  }
     return retVal;
   }
 
@@ -467,8 +472,8 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
-  public Optional<Rotation2d> getRotationTargetOverride(){ //(was private)pathplanner says public. if not able to view out of class then would pathplanner see it?
-
+  public Optional<Rotation2d> getRotationTargetOverride(){ //was private
+    
     //NOTE : Returned value must be a field relative angle
 
     if (this.updatePoseUsingVision){
@@ -517,7 +522,7 @@ public class Drive extends SubsystemBase {
 
   public double getDistanceToAllianceSpeaker(){
     Translation2d allianceSpeaker = TargetLocations.BLUE_SPEAKER;
-    if (DriverStation.getAlliance().get() == Alliance.Red){
+    if ( DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
       allianceSpeaker = TargetLocations.RED_SPEAKER;
     }
     return getDistanceToTarget(allianceSpeaker);
@@ -535,8 +540,6 @@ public class Drive extends SubsystemBase {
     this.headingLocked = false;
   }
 
- 
-  
   /**
    * Adds a vision measurement to the pose estimator.
    *
@@ -575,7 +578,7 @@ public class Drive extends SubsystemBase {
     this.updatePoseUsingVision = input;
   }
 
-// ========================= Tank Drive =========================
+/*  ========================= Tank Drive ========================= */
 
   public Drive( GyroIO gyroIO, TankIO tankIO) {
     this.gyroIO = gyroIO;
@@ -601,14 +604,9 @@ public class Drive extends SubsystemBase {
     tankIO.drive(x, y);
   }
 // ========================= Empty / No Drivetrain =========================
-
 public Drive(GyroIO gyroIO){
   this.gyroIO = gyroIO;
   // Configure SysId
     sysId = null;
-}
-
-
-
-
+  }
 }

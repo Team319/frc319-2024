@@ -15,7 +15,6 @@ public interface CollectorIO {
         public double appliedPercentOutput = 0.0;
         public boolean isLeadMotorInverted = false;
         public double outputCurrentAmps = 0.0;
-
         public double feedRollerAmps = 0.0;
     }
 

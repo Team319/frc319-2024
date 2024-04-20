@@ -9,7 +9,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.shooter.Shooter;
 
-public class FireSub extends Command {
+public class FireTrap extends Command {
   Shooter m_shooter;
   Collector m_collector;
   int passedCycles;
@@ -17,15 +17,12 @@ public class FireSub extends Command {
   double threshold;
   double wristThreshold;
   /** Creates a new Fire. */
-  public FireSub(Shooter shooter, Collector collector, double RPM) {
+  public FireTrap(Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
-    setpoint = RPM;
-    threshold = 1000;
-    wristThreshold = 0.015;
+    wristThreshold = 0.015; //15
     addRequirements(shooter, collector);
-
   }
 
   // Called when the command is initially scheduled.
@@ -33,10 +30,9 @@ public class FireSub extends Command {
   public void initialize() {
     m_shooter.setShooterVelocity(setpoint);
     m_shooter.setFeedPO(0.0);
-   // System.out.println("init");
+    System.out.println("init");
     passedCycles = 0;
-    m_shooter.setWristPosition(WristConstants.Setpoints.sub);
-    m_collector.setTunnelRollersPO(0.2);
+    m_shooter.setWristPosition(WristConstants.Setpoints.top);
 
   }
  
@@ -45,26 +41,24 @@ public class FireSub extends Command {
   @Override
   public void execute() {
     
-    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
-      System.out.println("RPM"+m_shooter.getVelocityRPM());
-      if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
-        m_shooter.setFeedPO (1.0);
+
+    if (m_shooter.getWristPosition() > WristConstants.Setpoints.top-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.top+wristThreshold){
+        m_shooter.setFeedPO (-1.0);
+        m_shooter.getVelocityRPM();
+
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
 
+      }
     }
-   }
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
-    //System.out.println("end");
-    m_collector.setTunnelRollersPO(0.0);
-    m_shooter.setWristPosition(WristConstants.Setpoints.home);
-
+    System.out.println("end");
 
   }
 

@@ -28,6 +28,7 @@ public class Spit extends Command {
     setpoint = RPM;
     wristThreshold = 0.015;
     elevatorThreshold = 0.015;
+
     addRequirements(shooter, collector, elevator);
   }
 
@@ -37,7 +38,6 @@ public class Spit extends Command {
     m_collector.setRollersPO(-1.0);
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,7 +46,7 @@ public class Spit extends Command {
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
     m_shooter.setFeedPO(-1.0);
-    }
+  }
    
   
 

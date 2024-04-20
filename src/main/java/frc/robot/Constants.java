@@ -25,7 +25,7 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public final class Constants {
   public static final Mode currentMode = Mode.REAL;
-  public static final boolean tuningMode = false;
+  public static final boolean tuningMode = true;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -86,7 +86,7 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 1.0;
+        public static final double kP = 3.0; //1.0 was fine pre dcmp
         public static final double kI = 0.7; // 0.5 also worked
         public static final double kD = 0;
 
@@ -127,7 +127,7 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)125.0;// FYI: Real top is closer to 130-135 
+      public static final float top = (float)90.0;// FYI: Real top is closer to 130-135 
       public static final float trap = top;
       public static final float climb = top;
       public static final float amp = (float)47.785;
@@ -158,14 +158,14 @@ public final class Constants {
       public static final int iZoneDown = 0;
     }
 
-    public static class SoftLimits {
-    //  public static final float forwardSoftLimit = Setpoints.top;
-     // public static final float reverseSoftLimit = Setpoints.bottom;
+   public static class SoftLimits {
+     public static final float forwardSoftLimit = Setpoints.top;
+     public static final float reverseSoftLimit = Setpoints.bottom;
     }
 
     public static class Setpoints {
-      public static final float top = (float)0.0;
-      public static final float bottom = (float)0.0;
+      public static final float top = (float)100.0; //23 w/o 3:1
+      public static final float bottom = (float)-43; //-13 w/o 3:1 
     }
 
   }

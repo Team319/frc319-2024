@@ -14,12 +14,12 @@ public class Climber extends SubsystemBase {
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Elevator/kP", 0.0);
-  private static final LoggedTunableNumber kI = new LoggedTunableNumber("Elevator/kI", 0.0);
-  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Elevator/kD", 0.0);
-  private static final LoggedTunableNumber kFF = new LoggedTunableNumber("Elevator/kFF", 0.0);
+  private static final LoggedTunableNumber kP = new LoggedTunableNumber("Climber/kP", 0.0);
+  private static final LoggedTunableNumber kI = new LoggedTunableNumber("Climber/kI", 0.0);
+  private static final LoggedTunableNumber kD = new LoggedTunableNumber("Climber/kD", 0.0);
+  private static final LoggedTunableNumber kFF = new LoggedTunableNumber("Climber/kFF", 0.0);
 
-  private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Elevator/setpoint", 0.0);
+  private static LoggedTunableNumber climberSetpoint = new LoggedTunableNumber("Climber/setpoint", 0.0);
   private static double climberPosition = 0.0;
 
   public Climber(ClimberIO io) {
@@ -37,6 +37,8 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateInputs(inputs);
+    Logger.processInputs("Climber",inputs);
   }
 
   public void stop() {

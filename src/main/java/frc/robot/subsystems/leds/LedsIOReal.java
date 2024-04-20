@@ -53,11 +53,10 @@ public class LedsIOReal implements LedsIO {
   
   @Override
   public void allianceIdleColor() {
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
+    if ( DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
       setColor(255, 0, 0);
     } else {
       setColor(0, 0, 255);
     }
   }
-  
 }

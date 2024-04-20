@@ -143,12 +143,8 @@ public class CollectAndIndex extends Command {
         atFinalCompleted = true;
         
         break;
-    
-      
+      }
     }
-
-  }
-
   }
 
   // Called once the command ends or is interrupted.
@@ -161,7 +157,6 @@ public class CollectAndIndex extends Command {
     m_shooter.setFeedPO(0.0);
     // Pre-spin shooter wheels
     //m_shooter.setShooterVelocity(3000);
-
   }
 
   // Returns true when the command should end.

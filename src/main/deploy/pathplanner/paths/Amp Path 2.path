@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.13,
-        "y": 1.66
+        "x": 8.036373451664282,
+        "y": 7.425788070949362
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.954039181237508,
-        "y": 0.8969777559507622
+        "x": 7.055355466836289,
+        "y": 7.264799524128963
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.055761859742248,
-        "y": 2.15
+        "x": 5.253164694363576,
+        "y": 6.876162812154685
       },
       "prevControl": {
-        "x": 7.19778313665891,
-        "y": 1.487016441253785
+        "x": 6.15361458643145,
+        "y": 7.063269283233724
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,21 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 25.40771810894857,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Shot to ____ Note",
+  "folder": "Amp Auto",
   "previewStartingState": {
-    "rotation": -37.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

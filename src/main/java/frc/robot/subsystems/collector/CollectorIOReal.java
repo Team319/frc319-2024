@@ -30,14 +30,12 @@ public class CollectorIOReal implements CollectorIO {
   public void updateInputs(CollectorIOInputs inputs) {
     inputs.maxCurrentAmps = this.currentLimitAmps;
     inputs.outputCurrentAmps = getCollectorCurrent();
-
   }
 
   @Override
   public void setRollersPO(double PO) {
     lowerRollerMotor.set(PO);
     tunnelRollerMotor.set(PO);
-
   }
 
   @Override
@@ -76,8 +74,7 @@ public class CollectorIOReal implements CollectorIO {
     @Override
     public boolean isBeamBreakTripped(){
         return !beamBreak.get();
-    }
-
+  }
 }
 
  
