@@ -35,7 +35,7 @@ import frc.robot.commands.FireAmp;
 import frc.robot.commands.FireInAuto;
 import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
-import frc.robot.commands.FireTrap;
+//import frc.robot.commands.FireTrap;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.Spit;
@@ -554,7 +554,7 @@ public class RobotContainer {
         )
         ); 
 
-        operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
+        //operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
 
         break;
     
