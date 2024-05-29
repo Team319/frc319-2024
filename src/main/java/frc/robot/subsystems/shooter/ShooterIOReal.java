@@ -32,7 +32,7 @@ public class ShooterIOReal implements ShooterIO {
     public final InterpolatingDoubleTreeMap shooterPositionMap = new InterpolatingDoubleTreeMap();
     public final InterpolatingDoubleTreeMap shooterVelocityMap = new InterpolatingDoubleTreeMap();
 
-    private final TalonFX shooterLeft = new TalonFX(31); 
+    private final TalonFX shooterLeft = new TalonFX(35); 
     private final TalonFX shooterRight = new TalonFX(32);
 
     private final CANSparkMax feed = new CANSparkMax(34, MotorType.kBrushless);
@@ -131,10 +131,10 @@ public class ShooterIOReal implements ShooterIO {
     public void setShooterVelocity(double velocityRadPerSec, double ffVolts) {
         shooterLeft.setControl(
             new VelocityVoltage(
-                Units.radiansToRotations(velocityRadPerSec*1.0), 0.0, false, 0, 0, false, false, false));
+                Units.radiansToRotations(velocityRadPerSec*0.6), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
             new VelocityVoltage(                           // 0.6 was ok
-                Units.radiansToRotations(velocityRadPerSec) * 0.6 , 0.0, false, 0, 0, false, false, false));            
+                Units.radiansToRotations(velocityRadPerSec) * 1.0 , 0.0, false, 0, 0, false, false, false));            
         updateRPM();
     }
     @Override
