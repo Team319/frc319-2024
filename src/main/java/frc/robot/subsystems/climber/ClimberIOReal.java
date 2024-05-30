@@ -73,8 +73,8 @@ public static class ClimberPIDGains {
     rightClimber.setSmartCurrentLimit(30);
     leftClimber.setSmartCurrentLimit(30);
 
-    rightClimber.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    leftClimber.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    rightClimber.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    leftClimber.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     climberPIDController.setFeedbackDevice(climberEncoder);
     climberPIDController.setOutputRange(1.0, -1.0);

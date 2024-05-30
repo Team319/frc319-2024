@@ -41,8 +41,8 @@ public class JoystickClimb extends Command {
   public void execute() {
    // System.out.println("LeftPO: "+ leftPO + " RightPO: " + rightPO);
 
-    leftPO = MathUtil.applyDeadband(m_leftSupplier.getAsDouble(), DEADBAND);
-    rightPO = MathUtil.applyDeadband(m_rightSupplier.getAsDouble(), DEADBAND);
+    leftPO = MathUtil.applyDeadband(-m_leftSupplier.getAsDouble(), DEADBAND);
+    rightPO = MathUtil.applyDeadband(-m_rightSupplier.getAsDouble(), DEADBAND);
 
     m_climber.setLeftPO(leftPO);
     m_climber.setRightPO(rightPO);

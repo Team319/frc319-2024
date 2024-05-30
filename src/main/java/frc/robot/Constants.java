@@ -68,7 +68,7 @@ public final class Constants {
         }
   
         public static class Setpoints {
-          public static final double top = 0.485; //.4
+          public static final double top = 0.45; //.4
           public static final double shoot = 0.3;
           public static final double home = 0.0083; //0.025
           public static final double sub =0.083; //.08 worked
@@ -86,8 +86,8 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 3.0; //1.0 was fine pre dcmp
-        public static final double kI = 0.7; // 0.5 also worked
+        public static final double kP = 1.0; //1.0 was fine pre dcmp //3
+        public static final double kI = 0.0; // 0.5 also worked .7
         public static final double kD = 0;
 
         public static final int iZone = 0;
