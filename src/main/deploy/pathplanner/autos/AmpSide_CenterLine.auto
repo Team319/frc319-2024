@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.938021705103239,
-      "y": 4.490555305896938
+      "x": 0.84,
+      "y": 6.61
     },
-    "rotation": -45.97102193107921
+    "rotation": 51.0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "Fire"
           }
         },
         {
           "type": "race",
           "data": {
             "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 8.0
+                }
+              },
               {
                 "type": "parallel",
                 "data": {
@@ -34,16 +40,10 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Source Path 1"
+                        "pathName": "AmpSide_to_Note1"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 6.0
                 }
               }
             ]
@@ -52,19 +52,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source Path 2"
+            "pathName": "Note1_to_AmpSide"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootPod"
+            "name": "Fire"
           }
         },
         {
           "type": "race",
           "data": {
             "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 8.0
+                }
+              },
               {
                 "type": "parallel",
                 "data": {
@@ -78,16 +84,10 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Source Path 3"
+                        "pathName": "AmpSide_to_Note0"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 5.0
                 }
               }
             ]
@@ -96,13 +96,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source Path 4"
+            "pathName": "Note0_to_AmpSide"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "Fire"
           }
         }
       ]

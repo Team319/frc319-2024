@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSub"
+            "name": "FireInAuto"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TaxiPath"
+            "pathName": "TaxiAmp"
           }
         }
       ]
