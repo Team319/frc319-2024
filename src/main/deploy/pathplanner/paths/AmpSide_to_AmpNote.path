@@ -3,37 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1821823168586967,
-        "y": 5.498863634306841
+        "x": 0.8409407792687331,
+        "y": 6.610336071028438
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7914900114847843,
-        "y": 5.469809662643012
+        "x": 1.2755387560476945,
+        "y": 7.147019876788663
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.488649917917414,
-        "y": 5.498863634306841
+        "x": 2.547148467218551,
+        "y": 7.0198259161363925
       },
       "prevControl": {
-        "x": 1.8793403539055071,
-        "y": 5.469848893163417
+        "x": 1.7281687770026384,
+        "y": 7.0198259161363925
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,10 +49,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center Speaker to ___ Note",
+  "folder": "StartingLineAmp_AutoBC",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 51.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
