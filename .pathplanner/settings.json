@@ -3,8 +3,9 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "StartingLineAmp_AutoBC",
     "EKM",
+    "AmpSide_CenterLine",
+    "StartingLineAmp_AutoBC",
     "StartingLine_Sub",
     "TAXI"
   ],
