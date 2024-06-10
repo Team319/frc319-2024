@@ -40,7 +40,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "AmpSide_to_Note1"
+                        "pathName": "AmpNote"
                       }
                     }
                   ]
@@ -50,15 +50,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Note1_to_AmpSide"
+            "pathName": "AmpSub"
           }
         },
         {
@@ -90,7 +84,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "AmpSide_to_Note0"
+                        "pathName": "AmpSide_to_Note1"
                       }
                     }
                   ]
@@ -102,7 +96,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note0_to_AmpSide"
+            "pathName": "Note1_to_AmpSide"
           }
         },
         {

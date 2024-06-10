@@ -164,8 +164,8 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)100.0; //23 w/o 3:1
-      public static final float bottom = (float)-43; //-13 w/o 3:1 
+      public static final float top = (float)35.0; 
+      public static final float bottom = (float)-60.0; 
     }
 
   }

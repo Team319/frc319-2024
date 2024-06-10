@@ -16,8 +16,8 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberIOReal implements ClimberIO {
 
   public static class ClimberSetpoint {
-    public static final double TOP = 29.0; // 
-    public static final double BOTTOM = 2.0; // 2.0
+    public static final double TOP = 35.0; // 
+    public static final double BOTTOM = -60.0; // 2.0
 }
 
 public static class ClimberPIDGains {

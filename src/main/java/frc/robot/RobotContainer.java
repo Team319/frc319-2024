@@ -38,6 +38,7 @@ import frc.robot.commands.FireSub;
 //import frc.robot.commands.FireTrap;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
+import frc.robot.commands.SoftFire;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -421,7 +422,7 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.leftBumper().whileTrue(new Fire(this.drive, this.shooter, this.collector)); //on true worked tunnel
+        driverController.rightTrigger().whileTrue(new SoftFire (this.shooter, this.collector, 2000)); //OLD
 
           driverController.leftBumper().whileFalse(Commands.runOnce(
             ()-> {
