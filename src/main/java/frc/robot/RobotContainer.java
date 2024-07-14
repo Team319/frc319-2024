@@ -22,20 +22,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.HeadingTargets;
+//import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.Aim;
 import frc.robot.commands.AimInAuto;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.Collect;
 import frc.robot.commands.CollectAndIndex;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FireInAuto;
-import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
-//import frc.robot.commands.FireTrap;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.SoftFire;
@@ -422,18 +419,18 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-        driverController.rightTrigger().whileTrue(new SoftFire (this.shooter, this.collector, 2000)); //OLD
+        //driverController.rightTrigger().whileTrue(new SoftFire (this.shooter, this.collector)); //OLD
 
-          driverController.leftBumper().whileFalse(Commands.runOnce(
+          driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {
               shooter.stop();
             }
           )
         ); 
 
-        driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
+        //driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
-        driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
+       driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 4750)); //OLD
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
@@ -497,6 +494,8 @@ public class RobotContainer {
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
+            collector.setTunnelRollersPO(0);
+
             }
           )
         );
@@ -504,6 +503,7 @@ public class RobotContainer {
         operatorController.y().whileTrue(Commands.run(
           () -> {
             shooter.setWristPO(0.3);
+            collector.setTunnelRollersPO(.5);
             }
           )
         );
@@ -545,7 +545,7 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        operatorController.start().whileTrue(Commands.runOnce(
+        /*operatorController.start().whileTrue(Commands.runOnce(
           () -> {
             elevator.setPosition(ElevatorConstants.Setpoints.top);
             shooter.setWristPosition(WristConstants.Setpoints.top);
@@ -553,7 +553,7 @@ public class RobotContainer {
             shooter.stop();;
           }
         )
-        ); 
+        ); */
 
         //operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
 

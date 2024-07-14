@@ -55,7 +55,6 @@ public class ShooterIOReal implements ShooterIO {
     configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
     configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
-    // TODO: ADD ADJUSTABILITY SCALAR TO THIS
     double scaler = 1.15; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
     wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub*scaler);
     wristPositionMap.put(0.00, WristConstants.Setpoints.sub*scaler);
@@ -133,8 +132,8 @@ public class ShooterIOReal implements ShooterIO {
             new VelocityVoltage(
                 Units.radiansToRotations(velocityRadPerSec*1.0), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
-            new VelocityVoltage(                           // 0.6 was ok
-                Units.radiansToRotations(velocityRadPerSec) * 0.6 , 0.0, false, 0, 0, false, false, false));            
+            new VelocityVoltage(                           // 0.6 was here
+                Units.radiansToRotations(velocityRadPerSec) * 1.0  , 0.0, false, 0, 0, false, false, false));            
         updateRPM();
     }
     @Override

@@ -5,63 +5,70 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.collector.Collector;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.util.HelperFunctions;
 
 public class SoftFire extends Command {
   Shooter m_shooter;
   Collector m_collector;
+
   int passedCycles;
   double setpoint;
   double threshold;
-  double wristThreshold;
+  boolean firstDetectionOccured = false;
   /** Creates a new Fire. */
-  public SoftFire(Shooter shooter, Collector collector, double RPM) {
+  public SoftFire(Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
-    setpoint = RPM;
-    threshold = 1000;
-    addRequirements(shooter, collector);
-
+    passedCycles = 0;
+    firstDetectionOccured = false;
+    setpoint = 1000;
+    threshold = 750; 
+    
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_shooter.setShooterVelocity(setpoint);
-    m_shooter.setFeedPO(0.0);
-   // System.out.println("init");
+    m_shooter.setFeedPO(1.0);
+    //System.out.println("Fire init");
     passedCycles = 0;
-    m_collector.setTunnelRollersPO(0.2);
-
+    firstDetectionOccured = true;
   }
  
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
+  public void execute() 
+  {
+    if(m_shooter.isBeamBreakTripped() == true && firstDetectionOccured == true) {
+
+      System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold));
       if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
         m_shooter.setFeedPO (1.0);
-        passedCycles++;
-        System.out.println("passedCycles"+passedCycles);
 
+        
+       // System.out.println(" Is Shooter Empty?: " + !m_shooter.isBeamBreakTripped());
+       // if( !m_shooter.isBeamBreakTripped() ) {
+        passedCycles++;
+      //  System.out.println("passedCycles"+passedCycles);
+       // }
+      }
     }
-   }
-  
+  }
+  //}
+//}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stop();
+    //m_shooter.stop();
     m_shooter.setFeedPO(0.0);
-    //System.out.println("end");
     m_collector.setTunnelRollersPO(0.0);
-    m_shooter.setWristPosition(WristConstants.Setpoints.home);
-
-
   }
 
   // Returns true when the command should end.
@@ -70,4 +77,3 @@ public class SoftFire extends Command {
     return passedCycles >= 10;
   }
 }
-

@@ -86,8 +86,8 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 1.0; //1.0 was fine pre dcmp //3
-        public static final double kI = 0.0; // 0.5 also worked .7
+        public static final double kP = 0.75; //1.0 was fine but amp was being weird //.5 first quals match note in auto didn't shoot
+        public static final double kI = 0.0; // 0.5 but haven't used since before sps
         public static final double kD = 0;
 
         public static final int iZone = 0;
@@ -127,10 +127,10 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)90.0;// FYI: Real top is closer to 130-135 
+      public static final float top = (float)90.0;// FYI: it is now at real top
       public static final float trap = top;
       public static final float climb = top;
-      public static final float amp = (float)47.785;
+      public static final float amp = (float)47.785; 
       public static final float bottom = (float)2.0; // leaves some space for the elevator to settle without tapping bottom of travel
       public static final float shoot = bottom;
 

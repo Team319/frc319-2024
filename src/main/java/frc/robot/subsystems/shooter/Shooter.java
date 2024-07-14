@@ -187,16 +187,6 @@ public void setShooterPO(double PO){
   return io.getWristSetpointForDistance(distance);
 }
 
-   public Command shootCommand(double rpm) {
-    return Commands.runOnce(
-      () -> {
-        setShooterVelocity(3000); // TODO : Generic number
-
-      },
-      this
-    );
-  }
-
      public Command feedCommand() {
     return Commands.runOnce(
       () -> {
