@@ -48,8 +48,7 @@ public interface ShooterIO {
     public default void setFeedVelocity(double velocityRadPerSec, double ffVolts) {}
 
     public default void stop() {}
-
-    public default void configureFlywheelPID(double kP, double kI, double kD) {}
+    public default void configureFlywheelPID(double kP, double kI, double kD, double kV) {}
 
     public default void configureWristPID(double kP, double kI, double kD, double kFF) {}
 

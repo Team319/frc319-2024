@@ -141,14 +141,15 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousPeriodic() {
 
-    if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
+   /*  if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
       robotContainer.leds.setColor(0, 255, 0);
     }
     else{
       robotContainer.leds.setColor(0, 255, 0);
     }
-
+  */
   }
+
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -167,20 +168,19 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
 
-    if(robotContainer.collector.isBeamBreakTripped()){
+     if(robotContainer.collector.isBeamBreakTripped()){
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
       //robotContainer.leds.setColor(0x00, 0x00, 0xff);
     }
 
-   /*  else if(robotContainer.shooter.isBeamBreakTripped())
+    else if(robotContainer.shooter.isBeamBreakTripped())
     {
       robotContainer.leds.setColor(252, 92, 23);
       //robotContainer.leds.setColor(0x00, 0x00, 0x00);
-    }*/
-    else if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
-     // robotContainer.leds.setColor(0, 255, 0);
     }
+    
+
     else{
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);

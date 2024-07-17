@@ -86,12 +86,12 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 0.75; //1.0 was fine but amp was being weird //.5 first quals match note in auto didn't shoot
-        public static final double kI = 0.0; // 0.5 but haven't used since before sps
-        public static final double kD = 0;
+        public static final double kP = 0.0; //1.125  
+        public static final double kI = 0.0; // 1.5 
+        public static final double kD = 0.0;
 
         public static final int iZone = 0;
-        public static final double kFF = 0.0;
+        public static final double kV = 2.0; //5.5 1.8
       }
 
       public static class Setpoints {

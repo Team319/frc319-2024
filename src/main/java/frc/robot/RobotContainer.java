@@ -430,7 +430,7 @@ public class RobotContainer {
 
         //driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
-       driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 4750)); //OLD
+       driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 4750)); //4750
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
