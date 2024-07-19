@@ -32,7 +32,7 @@ public class ShooterIOReal implements ShooterIO {
     public final InterpolatingDoubleTreeMap shooterPositionMap = new InterpolatingDoubleTreeMap();
     public final InterpolatingDoubleTreeMap shooterVelocityMap = new InterpolatingDoubleTreeMap();
 
-    private final TalonFX shooterLeft = new TalonFX(35); 
+    private final TalonFX shooterLeft = new TalonFX(36); //another burnt motor :(
     private final TalonFX shooterRight = new TalonFX(32);
 
     private final CANSparkMax feed = new CANSparkMax(34, MotorType.kBrushless);

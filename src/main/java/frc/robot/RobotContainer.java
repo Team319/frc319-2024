@@ -276,7 +276,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootSub",
-        new FireSub(this.shooter, this.collector, 4000));
+        new FireSub(this.shooter, this.collector, 4750));
 
     NamedCommands.registerCommand(
       "ShootPod",

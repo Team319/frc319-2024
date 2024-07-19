@@ -29,8 +29,8 @@ public class Fire extends Command {
     m_collector = collector;
     passedCycles = 0;
     firstDetectionOccured = false;
-    setpoint = 5000;
-    threshold = 750; 
+    setpoint = 4750;
+    threshold = 75; 
     wristThreshold = 0.015;
     
     addRequirements(shooter);
@@ -55,14 +55,13 @@ public class Fire extends Command {
   {
     if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
 
-    m_shooter.setWristPosition(m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()));
     } else {
       firstDetectionOccured = true;
     } 
 
     System.out.println(" is wrist happy? " +  HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold));
-    if ( HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold) )
-    { 
+    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
+      { 
     /*if (firstDetectionOccured)
     { 
     if (m_shooter.isBeamBreakTripped()){
@@ -79,6 +78,7 @@ public class Fire extends Command {
        // }
       }
     }
+   }
   }
   //}
 //}
@@ -96,6 +96,6 @@ public class Fire extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return passedCycles >= 10;
+    return passedCycles >= 5;
   }
 }
