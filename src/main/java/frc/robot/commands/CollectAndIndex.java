@@ -48,7 +48,7 @@ public class CollectAndIndex extends Command {
   public void initialize() {
 
     // 1. Shooter Flywheels should stop
-    m_shooter.setShooterVelocity(5000);
+    m_shooter.setShooterVelocity(2500); //Was 5000 for comp changed for SPS
 
     // 2. Shooter should go to a Preload position
     m_shooter.setWristPosition(WristConstants.Setpoints.home);

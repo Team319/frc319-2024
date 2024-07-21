@@ -5,33 +5,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.collector.Collector;
-import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.HelperFunctions;
 
-public class Fire extends Command {
-  Drive m_drive;
+public class SoftFire extends Command {
   Shooter m_shooter;
   Collector m_collector;
 
   int passedCycles;
   double setpoint;
   double threshold;
-  double wristThreshold;
   boolean firstDetectionOccured = false;
   /** Creates a new Fire. */
-  public Fire(Drive drive, Shooter shooter, Collector collector) {
+  public SoftFire(Shooter shooter, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = drive; 
     m_shooter = shooter;
     m_collector = collector;
     passedCycles = 0;
     firstDetectionOccured = false;
-    setpoint = 4750;
-    threshold = 75; 
-    wristThreshold = 0.015;
+    setpoint = 1000;
+    threshold = 750; 
     
     addRequirements(shooter);
   }
@@ -40,12 +34,10 @@ public class Fire extends Command {
   @Override
   public void initialize() {
     m_shooter.setShooterVelocity(setpoint);
-    m_shooter.setFeedPO(0.0);
+    m_shooter.setFeedPO(1.0);
     //System.out.println("Fire init");
     passedCycles = 0;
-    firstDetectionOccured = false;
-    m_drive.setUpdatePoseWithVision(true);
-    m_collector.setTunnelRollersPO(0.5);
+    firstDetectionOccured = true;
   }
  
   
@@ -53,23 +45,12 @@ public class Fire extends Command {
   @Override
   public void execute() 
   {
-    if(m_shooter.isBeamBreakTripped() == false && firstDetectionOccured == false) {
+    if(m_shooter.isBeamBreakTripped() == true && firstDetectionOccured == true) {
 
-    } else {
-      firstDetectionOccured = true;
-    } 
-
-    System.out.println(" is wrist happy? " +  HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold));
-    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
-      { 
-    /*if (firstDetectionOccured)
-    { 
-    if (m_shooter.isBeamBreakTripped()){
-*/
       System.out.println(" is rpm happy? " + HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold));
-      if ( HelperFunctions.isWithin(m_shooter.getVelocityRPM(), setpoint, threshold) ) //( m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) 
-      {
+      if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
         m_shooter.setFeedPO (1.0);
+
         
        // System.out.println(" Is Shooter Empty?: " + !m_shooter.isBeamBreakTripped());
        // if( !m_shooter.isBeamBreakTripped() ) {
@@ -78,7 +59,6 @@ public class Fire extends Command {
        // }
       }
     }
-   }
   }
   //}
 //}
@@ -87,15 +67,13 @@ public class Fire extends Command {
   @Override
   public void end(boolean interrupted) {
     //m_shooter.stop();
-    m_shooter.setWristPosition(WristConstants.Setpoints.home);
     m_shooter.setFeedPO(0.0);
-    m_drive.setUpdatePoseWithVision(false);
     m_collector.setTunnelRollersPO(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return passedCycles >= 5;
+    return passedCycles >= 10;
   }
 }

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8444684695637196,
-      "y": 6.607197259978566
+      "x": 1.4057878828008366,
+      "y": 5.531335051274091
     },
-    "rotation": 51.34019174590992
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "FireInAuto"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TaxiAmp"
+            "name": "Fire"
           }
         }
       ]

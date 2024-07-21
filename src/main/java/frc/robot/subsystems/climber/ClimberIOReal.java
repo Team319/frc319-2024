@@ -16,8 +16,8 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberIOReal implements ClimberIO {
 
   public static class ClimberSetpoint {
-    public static final double TOP = 29.0; // 
-    public static final double BOTTOM = 2.0; // 2.0
+    public static final double TOP = 35.0; // 
+    public static final double BOTTOM = -60.0; // 2.0
 }
 
 public static class ClimberPIDGains {
@@ -61,12 +61,12 @@ public static class ClimberPIDGains {
     }
 
     while(rightClimber.getInverted()){ // if the motor is inverted, keep setting it NOT inverted until it is correct
-      rightClimber.setInverted(false);
+      rightClimber.setInverted(true);
       Timer.delay(0.001);
     }
 
     while(!leftClimber.getInverted()){ // if the motor is NOT inverted, keep setting it inverted until it is correct
-      leftClimber.setInverted(true);
+      leftClimber.setInverted(false);
       Timer.delay(0.001);
     }
 

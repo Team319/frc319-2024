@@ -37,8 +37,8 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    io.updateInputs(inputs);
-    Logger.processInputs("Climber",inputs);
+   // io.updateInputs(inputs);
+    //Logger.processInputs("Climber",inputs);
   }
 
   public void stop() {

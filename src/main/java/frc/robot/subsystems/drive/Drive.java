@@ -129,7 +129,7 @@ public class Drive extends SubsystemBase {
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
 
-    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
+   // PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
@@ -473,11 +473,11 @@ public class Drive extends SubsystemBase {
     return headingPID.calculate(getRotation().getRadians(), theta);
   }
 
-  public Optional<Rotation2d> getRotationTargetOverride(){ //was private
+  //public Optional<Rotation2d> getRotationTargetOverride(){ //was private
     
     //NOTE : Returned value must be a field relative angle
 
-    if (this.updatePoseUsingVision){
+   /*  if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
       if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
 
@@ -502,8 +502,8 @@ public class Drive extends SubsystemBase {
     }
     
 
-    
-  }
+   */ 
+  //}
 
   public double getAngleToCurrentTarget(){
     return getCurrentTargetLocation().minus(getPose().getTranslation()).getAngle().getRadians();
