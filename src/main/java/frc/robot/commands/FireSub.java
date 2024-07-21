@@ -46,8 +46,10 @@ public class FireSub extends Command {
   public void execute() {
     
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
+      System.out.println("Ding");
       System.out.println("RPM"+m_shooter.getVelocityRPM());
       if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
+        System.out.println("Dong");
         m_shooter.setFeedPO (1.0);
         passedCycles++;
         System.out.println("passedCycles"+passedCycles);
@@ -71,6 +73,6 @@ public class FireSub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return passedCycles >= 10;
+    return passedCycles >= 5; //was 10 TODO: Change back to 10 and change auto to Fire
   }
 }

@@ -91,7 +91,7 @@ public final class Constants {
         public static final double kD = 0.0;
 
         public static final int iZone = 0;
-        public static final double kV = 2.0; //5.5 1.8
+        public static final double kV = 0.15; //2.1
       }
 
       public static class Setpoints {
