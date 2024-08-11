@@ -51,6 +51,7 @@ import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TargetLocations;
 import frc.robot.subsystems.limelight.Limelight;
+import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
 
@@ -78,6 +79,7 @@ public class Drive extends SubsystemBase {
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = new Rotation2d();
+  private double rawGyroVelocityRadPerSec = 0.0;
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -90,6 +92,8 @@ public class Drive extends SubsystemBase {
 
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+
+  private boolean doRejectVisionUpdate = true;
 	
   @AutoLogOutput(key = "Drive/headingSetpoint")
   private double headingSetpoint = 0.0;
@@ -210,10 +214,12 @@ public class Drive extends SubsystemBase {
           // If the gyro is connected, replace the theta component of the twist
           // with the change in angle since the last loop cycle.
           rawGyroRotation = gyroInputs.yawPosition;
+          rawGyroVelocityRadPerSec = gyroInputs.yawVelocityRadPerSec;
         } else {
           // Apply the twist (change since last loop cycle) to the current pose
           Twist2d twist = kinematics.toTwist2d(moduleDeltas);
           rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
+          rawGyroVelocityRadPerSec = 0.0;
         }
 
         poseEstimator.update(rawGyroRotation, modulePositions);
@@ -231,9 +237,9 @@ public class Drive extends SubsystemBase {
  
           double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
           Logger.recordOutput("Drive/poseDifference", poseDifference);
-
+          
+          /* - Previous Localization implemetation
           double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
-
           double NumVisableShooterTargets = 0; 
           
           if (poseBuf.length >= 7){
@@ -242,15 +248,15 @@ public class Drive extends SubsystemBase {
 
           Logger.recordOutput("Limelight/NumVisableShooterTargets", NumVisableShooterTargets );
 
-
+ 
           double xyzStds = 999.0;
           double degStds = 999.0; // always trust the gyro
-          
+
           if( NumVisableShooterTargets >= 2.0 ) // If 2 tags are visible
           { 
             xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-            if(poseDifference >= 1.0 /*&& this.updatePoseUsingVision*/ ){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
+            if(poseDifference >= 1.0  ){ //    && this.updatePoseUsingVision         if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
               poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
             }
             
@@ -264,9 +270,28 @@ public class Drive extends SubsystemBase {
           else{
             xyzStds = 999.0; // don't accept any values
           }
-
           poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
           poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - (poseBuf[6]/1000.0) ); // poseBuf[6] = Limelight latency = tl + cl
+          */
+
+          LimelightHelpers.SetRobotOrientation("limelight-shooter", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+          LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-shooter");
+          
+          if(Math.abs(rawGyroVelocityRadPerSec) > Units.degreesToRadians(720) ) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+          {
+            doRejectVisionUpdate = true;
+          }
+          if(mt2.tagCount == 0)
+          {
+            doRejectVisionUpdate = true;
+          }
+          if(!doRejectVisionUpdate)
+          {
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            poseEstimator.addVisionMeasurement(
+                mt2.pose,
+                mt2.timestampSeconds);
+          }
           
         }
 
