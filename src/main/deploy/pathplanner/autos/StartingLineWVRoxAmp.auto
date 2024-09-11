@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.84,
-      "y": 6.71
+      "x": 1.382399573915957,
+      "y": 5.531335051274091
     },
-    "rotation": 51.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -22,28 +22,28 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 8.0
-                }
-              },
-              {
                 "type": "parallel",
                 "data": {
                   "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "CenterSub_to_CenterNote"
+                      }
+                    },
                     {
                       "type": "named",
                       "data": {
                         "name": "Collect"
                       }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "AmpNote"
-                      }
                     }
                   ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 7.0
                 }
               }
             ]
@@ -52,7 +52,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpSub"
+            "pathName": "CenterNote_to_CenterSubWV"
           }
         },
         {
@@ -66,28 +66,28 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 8.0
-                }
-              },
-              {
                 "type": "parallel",
                 "data": {
                   "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Amp Side 1"
+                      }
+                    },
                     {
                       "type": "named",
                       "data": {
                         "name": "Collect"
                       }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "AmpSide_to_Note1"
-                      }
                     }
                   ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 7.0
                 }
               }
             ]
@@ -96,7 +96,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note1_to_AmpSide"
+            "pathName": "Amp Side 2"
           }
         },
         {

@@ -33,6 +33,7 @@ import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FireInAuto;
 import frc.robot.commands.FireSub;
+import frc.robot.commands.FireTest;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
 import frc.robot.commands.SoftFire;
@@ -276,7 +277,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootSub",
-        new FireSub(this.shooter, this.collector, 4750));
+        new FireTest(this.shooter, this.collector, 2500));
 
     NamedCommands.registerCommand(
       "ShootPod",
@@ -361,7 +362,8 @@ public class RobotContainer {
               () -> -driverController.getLeftX(), // Note this is Y supplier because the field's Y axis is across the field 
               () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
-              () -> driverController.getLeftTriggerAxis()));
+              () -> driverController.getLeftTriggerAxis()
+              ));
 
         climber.setDefaultCommand(
           ( new JoystickClimb(climber, () -> -operatorController.getRightY(), () -> -operatorController.getLeftY()) ));
@@ -376,7 +378,7 @@ public class RobotContainer {
         );
         */
          
-        driverController.y().onTrue( 
+        /*driverController.y().onTrue( 
           Commands.runOnce(
             () -> drive.setHeadingSetpoint(0.0),
             drive
@@ -400,7 +402,7 @@ public class RobotContainer {
             drive
           )
         );
-      
+      */
         
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -419,7 +421,22 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-        //driverController.rightTrigger().whileTrue(new SoftFire (this.shooter, this.collector)); //OLD
+        driverController.leftBumper().whileTrue(new SoftFire (this.shooter, this.collector, 2500)); //OLD
+        driverController.rightBumper().whileTrue(new FireSub (this.shooter, this.collector, 4550));
+
+        driverController.leftBumper().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
+
+        driverController.rightBumper().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
 
           driverController.rightTrigger().whileFalse(Commands.runOnce(
             ()-> {
@@ -430,7 +447,7 @@ public class RobotContainer {
 
         //driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
-       driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 4750)); //4750
+       driverController.rightTrigger().whileTrue(new FireTest(this.shooter, this.collector, 2500)); //4550
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
