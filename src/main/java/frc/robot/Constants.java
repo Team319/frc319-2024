@@ -70,8 +70,10 @@ public final class Constants {
         public static class Setpoints {
           public static final double top = 0.45; //.4
           public static final double shoot = 0.3;
+          public static final double bloop = 0.25;
           public static final double home = 0.0083; //0.025
-          public static final double sub =0.083; //.08 worked
+          public static final double sub1 =0.083; //.083
+          public static final double sub2 =0.075; //.083
           public static final double podium = 0.18; //.185
           public static final double amp =0.475;
           public static final double bottom = 0.0083; 
@@ -86,12 +88,12 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 0.0; //1.125  
-        public static final double kI = 0.0; // 1.5 
+        public static final double kP = 0.0;  
+        public static final double kI = 0.0; //0.6
         public static final double kD = 0.0;
 
         public static final int iZone = 0;
-        public static final double kV = 0.15; //2.1
+        public static final double kV = 0.15; //0.15
       }
 
       public static class Setpoints {
@@ -165,7 +167,7 @@ public final class Constants {
 
     public static class Setpoints {
       public static final float top = (float)35.0; 
-      public static final float bottom = (float)-60.0; 
+      public static final float bottom = (float)-70.0; 
     }
 
   }

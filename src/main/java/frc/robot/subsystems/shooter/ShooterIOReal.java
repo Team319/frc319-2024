@@ -56,9 +56,9 @@ public class ShooterIOReal implements ShooterIO {
     configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD, ShooterConstants.PID.kV);
 
     double scaler = 1.15; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
-    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub*scaler);
-    wristPositionMap.put(0.00, WristConstants.Setpoints.sub*scaler);
-    wristPositionMap.put(1.65, WristConstants.Setpoints.sub*scaler);
+    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub1*scaler);
+    wristPositionMap.put(0.00, WristConstants.Setpoints.sub1*scaler);
+    wristPositionMap.put(1.65, WristConstants.Setpoints.sub1*scaler);
     wristPositionMap.put(2.4, 0.135*scaler);
     //wristPositionMap.put(3.1, WristConstants.Setpoints.podium*scaler);
     wristPositionMap.put(3.1,0.15*scaler);

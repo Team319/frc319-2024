@@ -60,7 +60,7 @@ public class Fire extends Command {
     } 
 
     System.out.println(" is wrist happy? " +  HelperFunctions.isWithin(m_shooter.getWristPosition(), m_shooter.getWristSetpointForDistance(m_drive.getDistanceToAllianceSpeaker()), wristThreshold));
-    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub+wristThreshold){
+    if (m_shooter.getWristPosition() > WristConstants.Setpoints.sub1-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.sub1+wristThreshold){
       { 
     /*if (firstDetectionOccured)
     { 

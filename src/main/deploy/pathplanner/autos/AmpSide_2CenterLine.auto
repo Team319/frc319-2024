@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "ShootSub"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
           }
         },
         {
@@ -47,12 +53,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1000.0
           }
         }
       ]

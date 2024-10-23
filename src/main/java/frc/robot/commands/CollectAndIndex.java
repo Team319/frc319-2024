@@ -48,7 +48,7 @@ public class CollectAndIndex extends Command {
   public void initialize() {
 
     // 1. Shooter Flywheels should stop
-    m_shooter.setShooterVelocity(2500); //Was 5000 for comp changed for SPS
+    //m_shooter.setShooterVelocity(2500); //2500
 
     // 2. Shooter should go to a Preload position
     m_shooter.setWristPosition(WristConstants.Setpoints.home);
@@ -131,8 +131,9 @@ public class CollectAndIndex extends Command {
 
       case GOING_FINAL:
         m_collector.setLowerRollersPO(0.0);
-        m_collector.setTunnelRollersPO(0.3);
-        m_shooter.setFeedPO(0.20);
+        m_collector.setTunnelRollersPO(0.0);//.3
+        m_shooter.setFeedPO(0.0);//.2
+        m_shooter.setShooterVelocity(3500);
 
         if ( m_shooter.isBeamBreakTripped() ){
           collectState = CollectorStates.AT_FINAL;
