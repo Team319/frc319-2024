@@ -73,6 +73,6 @@ public class FireSub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return passedCycles >= 5; 
+    return passedCycles >= 10; 
 }
 }

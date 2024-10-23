@@ -7,23 +7,30 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.collector.Collector;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class SoftFire extends Command {
   Shooter m_shooter;
   Collector m_collector;
+  Elevator m_elevator;
   int passedCycles;
   double setpoint;
   double threshold;
   double wristThreshold;
+  double elevatorThreshold;
   /** Creates a new Fire. */
-  public SoftFire(Shooter shooter, Collector collector, double RPM) {
+  public SoftFire(Shooter shooter, Collector collector, Elevator elevator, double RPM) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_collector = collector;
+    m_elevator = elevator;
     setpoint = RPM;
-    threshold = 750;
+    threshold = 75;
     wristThreshold = 0.015;
+    elevatorThreshold = 0.5;
+
     addRequirements(shooter, collector);
 
   }
@@ -36,7 +43,9 @@ public class SoftFire extends Command {
    // System.out.println("init");
     passedCycles = 0;
     m_shooter.setWristPosition(WristConstants.Setpoints.bloop);
-    m_collector.setTunnelRollersPO(0.2);
+    m_collector.setTunnelRollersPO(0.35); //0.2
+    m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.AMP);
+
 
   }
  
@@ -48,7 +57,9 @@ public class SoftFire extends Command {
     if (m_shooter.getWristPosition() > WristConstants.Setpoints.bloop-wristThreshold && m_shooter.getWristPosition() < WristConstants.Setpoints.bloop+wristThreshold){
       System.out.println("Ding");
       System.out.println("RPM"+m_shooter.getVelocityRPM());
-      if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
+    if (m_elevator.getPosition() > ElevatorIOReal.ElevatorSetpoint.AMP-elevatorThreshold && m_elevator.getPosition() < ElevatorIOReal.ElevatorSetpoint.AMP+elevatorThreshold){
+        System.out.println("Dong");
+    if (m_shooter.getVelocityRPM() > setpoint-threshold && m_shooter.getVelocityRPM() < setpoint+threshold) {
         System.out.println("Dong");
         m_collector.setTunnelRollersPO(0.4);
         m_shooter.setFeedPO (1.0);
@@ -58,12 +69,14 @@ public class SoftFire extends Command {
     }
    }
   }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
     m_shooter.setFeedPO(0.0);
+    m_elevator.setPosition(ElevatorIOReal.ElevatorSetpoint.BOTTOM);
     //System.out.println("end");
     m_collector.setTunnelRollersPO(0.0);
     m_shooter.setWristPosition(WristConstants.Setpoints.home);

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.19,
-        "y": 0.6314843398917582
+        "x": 8.34,
+        "y": 2.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.717872416485572,
-        "y": 0.21788621645619666
+        "x": 5.558412084345536,
+        "y": 0.018140918902920855
       },
       "isLocked": false,
       "linkedName": null
@@ -51,7 +51,7 @@
   "reversed": false,
   "folder": "TAXI",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 33.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

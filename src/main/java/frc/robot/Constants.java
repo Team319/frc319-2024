@@ -70,7 +70,7 @@ public final class Constants {
         public static class Setpoints {
           public static final double top = 0.45; //.4
           public static final double shoot = 0.3;
-          public static final double bloop = 0.3;
+          public static final double bloop = 0.25;
           public static final double home = 0.0083; //0.025
           public static final double sub1 =0.083; //.083
           public static final double sub2 =0.075; //.083

@@ -421,8 +421,8 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-        driverController.leftBumper().whileTrue(new SoftFire (this.shooter, this.collector, 2500)); //OLD
-        driverController.rightBumper().whileTrue(new FireSub (this.shooter, this.collector, 4550));
+        driverController.rightBumper().whileTrue(new SoftFire (this.shooter, this.collector, this.elevator, 2500)); //OLD left
+        driverController.leftBumper().whileTrue(new FireSub (this.shooter, this.collector, 4550));
 
         driverController.leftBumper().whileFalse(Commands.runOnce(
             ()-> {
@@ -447,7 +447,7 @@ public class RobotContainer {
 
         //driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
 
-       driverController.rightTrigger().whileTrue(new FireTest(this.shooter, this.collector, 2500)); //4550
+       driverController.rightTrigger().whileTrue(new FireTest(this.shooter, this.collector, 4000)); //4550
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
@@ -458,7 +458,7 @@ public class RobotContainer {
 
         
     /*    driverController
-            .b()
+            .b()0
             .onTrue(
                 Commands.runOnce(
                         () ->
@@ -468,7 +468,7 @@ public class RobotContainer {
                     .ignoringDisable(true)); */
       
 
-        /*  ============================= Collector  ============================= */
+        /*  =====================\======== Collector  ============================= */
 
         operatorController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
 

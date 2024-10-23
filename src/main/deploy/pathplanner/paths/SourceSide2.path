@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "StartingLineWVRox",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": -35.0,
     "velocity": 0
   },
   "useDefaultConstraints": false
