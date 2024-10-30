@@ -277,7 +277,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootSub",
-        new FireTest(this.shooter, this.collector, 2500));
+        new FireTest(this.shooter, this.collector, 3000));//2500
 
     NamedCommands.registerCommand(
       "ShootPod",
@@ -421,7 +421,7 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-        driverController.rightBumper().whileTrue(new SoftFire (this.shooter, this.collector, this.elevator, 2500)); //OLD left
+        driverController.rightBumper().whileTrue(new SoftFire (this.shooter, this.collector, this.elevator, 4000)); //OLD left
         driverController.leftBumper().whileTrue(new FireSub (this.shooter, this.collector, 4550));
 
         driverController.leftBumper().whileFalse(Commands.runOnce(
@@ -543,7 +543,7 @@ public class RobotContainer {
 
         /*  ============================= Operator Shooter ============================= */
 
-        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,1000));
+        operatorController.x().whileTrue(new FireAmp(this.shooter, this.collector, this.elevator,900));
 
           operatorController.povLeft().onTrue(Commands.runOnce(
           () -> {
@@ -562,7 +562,7 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        /*operatorController.start().whileTrue(Commands.runOnce(
+        operatorController.start().whileTrue(Commands.runOnce(
           () -> {
             elevator.setPosition(ElevatorConstants.Setpoints.top);
             shooter.setWristPosition(WristConstants.Setpoints.top);
@@ -570,7 +570,7 @@ public class RobotContainer {
             shooter.stop();;
           }
         )
-        ); */
+        ); 
 
         //operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
 

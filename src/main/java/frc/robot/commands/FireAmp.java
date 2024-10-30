@@ -27,7 +27,7 @@ public class FireAmp extends Command {
     m_collector = collector;
     m_elevator = elevator;
     setpoint = RPM;
-    threshold = 75;
+    threshold = 175;
     wristThreshold = 0.015;
     elevatorThreshold = 0.5;
 
