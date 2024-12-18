@@ -127,7 +127,7 @@ public class Drive extends SubsystemBase {
                 && DriverStation.getAlliance().get() == Alliance.Red,
         this);
 
-    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
+   // PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride); // NOTE : Comment me out if i really bork the autos. there is some funky "lockHeading" stuff in the 'smart' Aim and Fire commands
 
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
@@ -162,7 +162,7 @@ public class Drive extends SubsystemBase {
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
 
-    Logger.recordOutput("Drive/DistanceToAllianceSpeaker", getDistanceToAllianceSpeaker());
+    //Logger.recordOutput("Drive/DistanceToAllianceSpeaker", getDistanceToAllianceSpeaker());
 
     switch (Constants.currentMode) {
       case REAL:
@@ -357,7 +357,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void setHeadingSetpoint(double headingRadians) {
-    lockHeading();
+   // lockHeading();
     headingTarget = HeadingTargets.NO_TARGET;
 
     Rotation2d heading = Rotation2d.fromRadians(headingRadians);
@@ -407,7 +407,7 @@ public class Drive extends SubsystemBase {
 
   public void setHeadingTarget(HeadingTargets target){
     this.headingTarget = target;
-    lockHeading();
+    //lockHeading();
   }
 
   public HeadingTargets getHeadingTarget(){
@@ -424,11 +424,11 @@ public class Drive extends SubsystemBase {
       return headingPID.calculate(theta, 0.0); // try and make the Horizontal Offset 0, meaning the target is centered
     }
 
-  public Optional<Rotation2d> getRotationTargetOverride(){ //was private
+  //public Optional<Rotation2d> getRotationTargetOverride(){ //was private
     
     //NOTE : Returned value must be a field relative angle
 
-    if (this.updatePoseUsingVision){
+   /*  if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
 
         //Method 1 : Use Limelight

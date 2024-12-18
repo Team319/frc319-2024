@@ -20,7 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 5.0
           }
         },
         {
@@ -38,6 +38,12 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "named",
+                      "data": {
+                        "name": "Collect"
+                      }
+                    },
+                    {
                       "type": "path",
                       "data": {
                         "pathName": "AmpSide_to_Note0"
@@ -47,24 +53,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note0_to_AmpSide"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSub"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AmpSide_to_Note1"
           }
         }
       ]

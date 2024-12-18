@@ -70,8 +70,10 @@ public final class Constants {
         public static class Setpoints {
           public static final double top = 0.45; //.4
           public static final double shoot = 0.3;
+          public static final double bloop = 0.25;
           public static final double home = 0.0083; //0.025
-          public static final double sub =0.083; //.08 worked
+          public static final double sub1 =0.083; //.083
+          public static final double sub2 =0.075; //.083
           public static final double podium = 0.18; //.185
           public static final double amp =0.475;
           public static final double bottom = 0.0083; 
@@ -86,12 +88,12 @@ public final class Constants {
 
     public static class ShooterConstants {
       public static class PID {
-        public static final double kP = 1.0; //1.0 was fine pre dcmp //3
-        public static final double kI = 0.0; // 0.5 also worked .7
-        public static final double kD = 0;
+        public static final double kP = 0.0;  
+        public static final double kI = 0.0; //0.6
+        public static final double kD = 0.0;
 
         public static final int iZone = 0;
-        public static final double kFF = 0.0;
+        public static final double kV = 0.15; //0.15
       }
 
       public static class Setpoints {
@@ -127,10 +129,10 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)90.0;// FYI: Real top is closer to 130-135 
+      public static final float top = (float)90.0;// FYI: it is now at real top
       public static final float trap = top;
       public static final float climb = top;
-      public static final float amp = (float)47.785;
+      public static final float amp = (float)47.785; 
       public static final float bottom = (float)2.0; // leaves some space for the elevator to settle without tapping bottom of travel
       public static final float shoot = bottom;
 
@@ -164,8 +166,8 @@ public final class Constants {
     }
 
     public static class Setpoints {
-      public static final float top = (float)100.0; //23 w/o 3:1
-      public static final float bottom = (float)-43; //-13 w/o 3:1 
+      public static final float top = (float)35.0; 
+      public static final float bottom = (float)-70.0; 
     }
 
   }

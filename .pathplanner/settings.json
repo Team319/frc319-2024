@@ -1,12 +1,13 @@
 {
-  "robotWidth": 0.7,
-  "robotLength": 0.81,
+  "robotWidth": 0.87,
+  "robotLength": 0.95,
   "holonomicMode": true,
   "pathFolders": [
-    "EKM",
+    "3Row",
     "AmpSide_CenterLine",
+    "EKM",
+    "StartingLineWVRox",
     "StartingLineAmp_AutoBC",
-    "StartingLine_Sub",
     "TAXI"
   ],
   "autoFolders": [],

@@ -39,6 +39,7 @@ public class Shooter extends SubsystemBase {
   private static final LoggedTunableNumber flywheel_kP = new LoggedTunableNumber("Flywheel/kP", ShooterConstants.PID.kP);
   private static final LoggedTunableNumber flywheel_kI = new LoggedTunableNumber("Flywheel/kI", ShooterConstants.PID.kI);
   private static final LoggedTunableNumber flywheel_kD = new LoggedTunableNumber("Flywheel/kD", ShooterConstants.PID.kD);
+  private static final LoggedTunableNumber flywheel_kV = new LoggedTunableNumber("Flywheel/kV", ShooterConstants.PID.kV);
     
   /** Creates a new Shooter. */
   public Shooter(ShooterIO io) { 
@@ -73,7 +74,7 @@ public class Shooter extends SubsystemBase {
 
     shooterVelocity = leftShooterVelocity;
 
-    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2]) , flywheel_kP, flywheel_kI, flywheel_kD);
+    LoggedTunableNumber.ifChanged(hashCode(), pid -> configureFlywheelPID(pid[0], pid[1], pid[2], pid[3]) , flywheel_kP, flywheel_kI, flywheel_kD, flywheel_kV);
 
    // LoggedTunableNumber.ifChanged(hashCode(), pid -> configureWristPID(pid[0], pid[1], pid[2],pid[3]) , wrist_kP, wrist_kI, wrist_kD, wrist_kFF);
 
@@ -141,8 +142,8 @@ public void setShooterPO(double PO){
     runFeedVelocity(this.shooterVelocity);
   }
 
-  public void configureFlywheelPID(double kP, double kI, double kD) {
-    io.configureFlywheelPID(kP, kI, kD);
+  public void configureFlywheelPID(double kP, double kI, double kD, double kV) {
+    io.configureFlywheelPID(kP, kI, kD, kV);
   }
 
   public void configureWristPID(double kP, double kI, double kD, double kFF) {
@@ -176,7 +177,7 @@ public void setShooterPO(double PO){
 }
   /** Returns the current velocity in RPM. */
   public double getVelocityRPM() {
-    return (io.getLeftShooterVelocityRPM());
+    return (io.getRightShooterVelocityRPM());
   }
 
  public boolean isBeamBreakTripped() {
@@ -186,16 +187,6 @@ public void setShooterPO(double PO){
  public double getWristSetpointForDistance(double distance) {
   return io.getWristSetpointForDistance(distance);
 }
-
-   public Command shootCommand(double rpm) {
-    return Commands.runOnce(
-      () -> {
-        setShooterVelocity(3000); // TODO : Generic number
-
-      },
-      this
-    );
-  }
 
      public Command feedCommand() {
     return Commands.runOnce(

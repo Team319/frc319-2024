@@ -53,13 +53,12 @@ public class ShooterIOReal implements ShooterIO {
     setupShooter();
     setupWrist();
     configureWristPID(WristConstants.PID.kP,WristConstants.PID.kI,WristConstants.PID.kD,WristConstants.PID.kFF );
-    configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
+    configureFlywheelPID(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD, ShooterConstants.PID.kV);
 
-    // TODO: ADD ADJUSTABILITY SCALAR TO THIS
     double scaler = 1.15; // increasing this will make the shooter angle more agressive for each distance -> setpoint pair
-    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub*scaler);
-    wristPositionMap.put(0.00, WristConstants.Setpoints.sub*scaler);
-    wristPositionMap.put(1.65, WristConstants.Setpoints.sub*scaler);
+    wristPositionMap.put(Double.NEGATIVE_INFINITY, WristConstants.Setpoints.sub1*scaler);
+    wristPositionMap.put(0.00, WristConstants.Setpoints.sub1*scaler);
+    wristPositionMap.put(1.65, WristConstants.Setpoints.sub1*scaler);
     wristPositionMap.put(2.4, 0.135*scaler);
     //wristPositionMap.put(3.1, WristConstants.Setpoints.podium*scaler);
     wristPositionMap.put(3.1,0.15*scaler);
@@ -133,8 +132,8 @@ public class ShooterIOReal implements ShooterIO {
             new VelocityVoltage(
                 Units.radiansToRotations(velocityRadPerSec*1.0), 0.0, false, 0, 0, false, false, false));
         shooterRight.setControl(
-            new VelocityVoltage(                           // 0.6 was ok
-                Units.radiansToRotations(velocityRadPerSec) * 0.6 , 0.0, false, 0, 0, false, false, false));            
+            new VelocityVoltage(                           // 0.6 was here
+                Units.radiansToRotations(velocityRadPerSec) * 1.0  , 0.0, false, 0, 0, false, false, false));            
         updateRPM();
     }
     @Override
@@ -164,11 +163,12 @@ public class ShooterIOReal implements ShooterIO {
     }
 
     @Override
-    public void configureFlywheelPID(double kP, double kI, double kD) { 
+    public void configureFlywheelPID(double kP, double kI, double kD, double kV) { 
         var shooterConfig = new Slot0Configs();
         shooterConfig.kP = kP;
         shooterConfig.kI = kI;
         shooterConfig.kD = kD;
+        shooterConfig.kV = kV;
         
         shooterLeft.getConfigurator().apply(shooterConfig);
         shooterRight.getConfigurator().apply(shooterConfig);

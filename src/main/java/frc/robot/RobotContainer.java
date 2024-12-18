@@ -22,22 +22,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.HeadingTargets;
+//import frc.robot.Constants.HeadingTargets;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.Aim;
 import frc.robot.commands.AimInAuto;
 // import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.Collect;
 import frc.robot.commands.CollectAndIndex;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.Fire;
 import frc.robot.commands.FireAmp;
 import frc.robot.commands.FireInAuto;
-import frc.robot.commands.FirePod;
 import frc.robot.commands.FireSub;
-//import frc.robot.commands.FireTrap;
+import frc.robot.commands.FireTest;
 import frc.robot.commands.GoHome;
 import frc.robot.commands.JoystickClimb;
+import frc.robot.commands.SoftFire;
 import frc.robot.commands.Spit;
 import frc.robot.subsystems.drive.Drive;
 
@@ -278,7 +277,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
       "ShootSub",
-        new FireSub(this.shooter, this.collector, 4000));
+        new FireTest(this.shooter, this.collector, 2500));
 
     NamedCommands.registerCommand(
       "ShootPod",
@@ -363,7 +362,8 @@ public class RobotContainer {
               () -> -driverController.getLeftX(), // Note this is Y supplier because the field's Y axis is across the field 
               () -> -driverController.getRightY(), 
               () -> -driverController.getRightX(),
-              () -> driverController.getLeftTriggerAxis()));
+              () -> driverController.getLeftTriggerAxis()
+              ));
 
         climber.setDefaultCommand(
           ( new JoystickClimb(climber, () -> -operatorController.getRightY(), () -> -operatorController.getLeftY()) ));
@@ -378,7 +378,7 @@ public class RobotContainer {
         );
         */
          
-        driverController.y().onTrue( 
+        /*driverController.y().onTrue( 
           Commands.runOnce(
             () -> drive.setHeadingSetpoint(0.0),
             drive
@@ -402,7 +402,7 @@ public class RobotContainer {
             drive
           )
         );
-      
+      */
         
         driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -421,18 +421,33 @@ public class RobotContainer {
          // driverController.povDown().whileTrue(new Spit(this.shooter, this.collector, this.elevator, 4000)); 
 
           // ------
-          driverController.leftBumper().whileTrue(new Fire(this.drive, this.shooter, this.collector)); //on true worked tunnel
+        driverController.rightBumper().whileTrue(new SoftFire (this.shooter, this.collector, this.elevator, 2500)); //OLD left
+        driverController.leftBumper().whileTrue(new FireSub (this.shooter, this.collector, 4550));
 
-          driverController.leftBumper().whileFalse(Commands.runOnce(
+        driverController.leftBumper().whileFalse(Commands.runOnce(
             ()-> {
               shooter.stop();
             }
           )
         ); 
 
-        driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
+        driverController.rightBumper().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
 
-        driverController.rightTrigger().whileTrue(new FireSub(this.shooter, this.collector, 5000)); //OLD
+          driverController.rightTrigger().whileFalse(Commands.runOnce(
+            ()-> {
+              shooter.stop();
+            }
+          )
+        ); 
+
+        //driverController.rightBumper().onTrue(new Aim( this.drive, this.shooter, this.collector));
+
+       driverController.rightTrigger().whileTrue(new FireTest(this.shooter, this.collector, 4000)); //4550
 
         /*  driverController.leftBumper().whileFalse(Commands.runOnce(
           ()-> {
@@ -443,7 +458,7 @@ public class RobotContainer {
 
         
     /*    driverController
-            .b()
+            .b()0
             .onTrue(
                 Commands.runOnce(
                         () ->
@@ -453,7 +468,7 @@ public class RobotContainer {
                     .ignoringDisable(true)); */
       
 
-        /*  ============================= Collector  ============================= */
+        /*  =====================\======== Collector  ============================= */
 
         operatorController.leftBumper().onTrue(new CollectAndIndex(this.shooter, this.collector) );
 
@@ -496,6 +511,8 @@ public class RobotContainer {
         operatorController.y().whileFalse(Commands.runOnce(
           () -> {
             shooter.setWristPO(0.0);
+            collector.setTunnelRollersPO(0);
+
             }
           )
         );
@@ -503,6 +520,7 @@ public class RobotContainer {
         operatorController.y().whileTrue(Commands.run(
           () -> {
             shooter.setWristPO(0.3);
+            collector.setTunnelRollersPO(.5);
             }
           )
         );
@@ -544,7 +562,7 @@ public class RobotContainer {
 
         /* ============================== Climber ========================================= */
 
-        operatorController.start().whileTrue(Commands.runOnce(
+        /*operatorController.start().whileTrue(Commands.runOnce(
           () -> {
             elevator.setPosition(ElevatorConstants.Setpoints.top);
             shooter.setWristPosition(WristConstants.Setpoints.top);
@@ -552,7 +570,7 @@ public class RobotContainer {
             shooter.stop();;
           }
         )
-        ); 
+        ); */
 
         //operatorController.back().whileTrue(new FireTrap(this.shooter, this.collector));
 

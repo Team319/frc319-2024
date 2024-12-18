@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 0.84,
-      "y": 6.71
+      "y": 4.37
     },
-    "rotation": 51.0
+    "rotation": -51.0
   },
   "command": {
     "type": "sequential",
@@ -18,29 +18,23 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 8.0
-                }
-              },
               {
                 "type": "parallel",
                 "data": {
                   "commands": [
                     {
+                      "type": "named",
+                      "data": {
+                        "name": "Collect"
+                      }
+                    },
+                    {
                       "type": "path",
                       "data": {
-                        "pathName": "AmpSide_to_Note0"
+                        "pathName": "TaxiSource"
                       }
                     }
                   ]
@@ -52,19 +46,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note0_to_AmpSide"
+            "pathName": "TaxiSourceBackwards"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ShootSub"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AmpSide_to_Note1"
           }
         }
       ]
