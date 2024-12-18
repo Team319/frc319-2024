@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.subsystems.limelight.Limelight;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -130,26 +129,16 @@ public class Robot extends LoggedRobot {
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
+    /*if (autonomousCommand != null) {
       robotContainer.shooter.setShooterVelocity(5000);
       autonomousCommand.schedule();
       
-    }
+    }*/
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-
-    if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
-      robotContainer.leds.setColor(0, 255, 0);
-    }
-    else{
-      robotContainer.leds.setColor(0, 255, 0);
-    }
-
-  }
-
+  public void autonomousPeriodic() {}
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
@@ -178,9 +167,6 @@ public class Robot extends LoggedRobot {
       robotContainer.leds.setColor(252, 92, 23);
       //robotContainer.leds.setColor(0x00, 0x00, 0x00);
     }*/
-    else if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){
-      robotContainer.leds.setColor(0, 255, 0);
-    }
     else{
       robotContainer.driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
       robotContainer.operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);

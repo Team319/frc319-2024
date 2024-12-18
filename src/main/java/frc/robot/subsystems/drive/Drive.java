@@ -48,9 +48,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.HeadingTargets;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TargetLocations;
-import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.PolarCoordinate;
 
@@ -62,7 +60,7 @@ public class Drive extends SubsystemBase {
   
   private HeadingTargets headingTarget = HeadingTargets.NO_TARGET;
 
-  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(17.3);
+  private static final double MAX_LINEAR_SPEED = Units.feetToMeters(10.3);
   private static final double TRACK_WIDTH_X = Units.inchesToMeters(22.0);
   private static final double TRACK_WIDTH_Y = Units.inchesToMeters(22.0);
   private static final double DRIVE_BASE_RADIUS =
@@ -219,26 +217,8 @@ public class Drive extends SubsystemBase {
         poseEstimator.update(rawGyroRotation, modulePositions);
         Logger.recordOutput("Odometry/Robot", getPose());
  
-         
-        if(Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER) /*&& DriverStation.isTeleop()*/ )
-        {
-          double [] poseBuf = Limelight.getBotPose(LimelightConstants.Device.SHOOTER);
-          Pose3d visionPose = new Pose3d(
-                                new Translation3d(poseBuf[0],poseBuf[1],poseBuf[2]), 
-                                new Rotation3d(Units.degreesToRadians(poseBuf[3]), Units.degreesToRadians(poseBuf[4]),Units.degreesToRadians(poseBuf[5]))
-                              );
-          Logger.recordOutput("Odometry/VisionPose", visionPose.toPose2d());
- 
-          double poseDifference = poseEstimator.getEstimatedPosition().getTranslation().getDistance(visionPose.toPose2d().getTranslation());
-          Logger.recordOutput("Drive/poseDifference", poseDifference);
-
-          double targetSize = Limelight.getTargetArea(LimelightConstants.Device.SHOOTER);
-
           double NumVisableShooterTargets = 0; 
-          
-          if (poseBuf.length >= 7){
-            NumVisableShooterTargets = (int) poseBuf[7];
-          }
+        
 
           Logger.recordOutput("Limelight/NumVisableShooterTargets", NumVisableShooterTargets );
 
@@ -250,24 +230,8 @@ public class Drive extends SubsystemBase {
           { 
             xyzStds = 0.5; // accept a ton of values, need to tune. I really want the speaker to update the pose
             
-            if(poseDifference >= 1.0 /*&& this.updatePoseUsingVision*/ ){ // if we see 2 tags, and our pose error is large, reset to the tags. as they're likely correct.
-              poseEstimator.resetPosition(rawGyroRotation, modulePositions, visionPose.toPose2d());
-            }
-            
-          }  
-          else if( targetSize > 0.8 && poseDifference < 0.5 ){ // close target, larger window for adjusting
-            xyzStds = 1.0; // arbitrary value
-          }
-          else if(targetSize > 0.1 && poseDifference < 0.3 ){ // far away target, but measurement is close to robot
-            xyzStds = 2.0; // arbitrary value
-          }
-          else{
-            xyzStds = 999.0; // don't accept any values
-          }
 
-          poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));
-          poseEstimator.addVisionMeasurement(visionPose.toPose2d(), Timer.getFPGATimestamp() - (poseBuf[6]/1000.0) ); // poseBuf[6] = Limelight latency = tl + cl
-          
+          poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyzStds,xyzStds,degStds));          
         }
 
         break; // End of Swerve logic
@@ -455,23 +419,10 @@ public class Drive extends SubsystemBase {
     double theta = 0.0;
     // Target - Robot 
 
-   boolean isTargetVisible = Limelight.isValidTargetSeen(LimelightConstants.Device.SHOOTER);
-
-    if(false/*isTargetVisible*/){
-      //System.out.println("Target Visible, use limelight data to automatically control heading");
-      theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
+  
 
       return headingPID.calculate(theta, 0.0); // try and make the Horizontal Offset 0, meaning the target is centered
     }
-    else{
-      //System.out.println("Target Not Visible, using odometry and pose for best guess");
-      
-      //System.out.println("Robot x:" + getPose().getTranslation().getX() + "Robot y:" + getPose().getTranslation().getY()  );
-      Translation2d difference = getCurrentTargetLocation().minus(getPose().getTranslation());
-      theta = difference.rotateBy(Rotation2d.fromRadians(Math.PI)).getAngle().getRadians();
-    }
-    return headingPID.calculate(getRotation().getRadians(), theta);
-  }
 
   public Optional<Rotation2d> getRotationTargetOverride(){ //was private
     
@@ -479,9 +430,6 @@ public class Drive extends SubsystemBase {
 
     if (this.updatePoseUsingVision){
       // this expects the limelight pipeline is only filtering for speaker tags (be sure to filter both april tags for both alliances on the same speaker pipeline)
-      if(Limelight.getNumTargets(LimelightConstants.Device.SHOOTER) >= 2){ 
-
-        System.out.println("Override Heading!!");
 
         //Method 1 : Use Limelight
         //double theta = Limelight.getHorizontalOffset(LimelightConstants.Device.SHOOTER);
@@ -496,14 +444,6 @@ public class Drive extends SubsystemBase {
         return Optional.empty();
       }
     }
-    else // heading is unlocked
-    {
-      return Optional.empty();
-    }
-    
-
-    
-  }
 
   public double getAngleToCurrentTarget(){
     return getCurrentTargetLocation().minus(getPose().getTranslation()).getAngle().getRadians();
